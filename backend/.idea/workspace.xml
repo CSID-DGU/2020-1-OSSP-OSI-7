@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="9517ee32-7d6d-4259-8ced-504d918953f5" name="Default Changelist" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Go File" />
+      </list>
+    </option>
+  </component>
+  <component name="GOROOT" path="E:\Go" />
+  <component name="GoLibraries">
+    <option name="indexEntireGoPath" value="false" />
+  </component>
+  <component name="ProjectId" id="1XbtrSmj6MSck8cw3j58ziB5cuY" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showExcludedFiles" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DefaultGoTemplateProperty" value="Go File" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="configurable.Global.GOPATH.is.expanded" value="true" />
+    <property name="configurable.Module.GOPATH.is.expanded" value="true" />
+    <property name="configurable.Project.GOPATH.is.expanded" value="true" />
+    <property name="go.import.settings.migrated" value="true" />
+    <property name="go.tried.to.enable.integration.vgo.integrator" value="true" />
+    <property name="last_opened_file_path" value="$USER_HOME$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="settings.editor.selected.configurable" value="com.goide.configuration.GoLibrariesConfigurableProvider" />
+  </component>
+  <component name="RunManager">
+    <configuration name="go build main.go" type="GoApplicationRunConfiguration" factoryName="Go Application" temporary="true" nameIsGenerated="true">
+      <module name="awsomeproject" />
+      <working_directory value="$PROJECT_DIR$/" />
+      <kind value="FILE" />
+      <filePath value="$PROJECT_DIR$/main.go" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Go Build.go build main.go" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="VgoProject">
+    <integration-enabled>true</integration-enabled>
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="552" y="200" key="#GOPATH" timestamp="1581326900905">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="552" y="200" key="#GOPATH/0.0.1920.1080@0.0.1920.1080" timestamp="1581326900905" />
+    <state x="80" y="188" key="#Go_Modules_(vgo)" timestamp="1587928388305">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="80" y="188" key="#Go_Modules_(vgo)/0.0.1920.1080@0.0.1920.1080" timestamp="1587928388305" />
+    <state x="414" y="196" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1581327020320">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="414" y="196" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1080@0.0.1920.1080" timestamp="1581327020320" />
+    <state x="682" y="171" key="#go_build_main.go" timestamp="1581327030655">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="682" y="171" key="#go_build_main.go/0.0.1920.1080@0.0.1920.1080" timestamp="1581327030655" />
+    <state x="740" y="296" key="FileChooserDialogImpl" timestamp="1587927899039">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="740" y="296" key="FileChooserDialogImpl/0.0.1920.1080@0.0.1920.1080" timestamp="1587927899039" />
+    <state width="918" height="274" key="GridCell.Tab.0.bottom" timestamp="1587959651704">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="918" height="274" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1587959651704" />
+    <state width="918" height="274" key="GridCell.Tab.0.center" timestamp="1587959651704">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="918" height="274" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1587959651704" />
+    <state width="918" height="274" key="GridCell.Tab.0.left" timestamp="1587959651704">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="918" height="274" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1587959651704" />
+    <state width="918" height="274" key="GridCell.Tab.0.right" timestamp="1587959651704">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state width="918" height="274" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1587959651704" />
+    <state x="19" y="188" key="SettingsEditor" timestamp="1587927900379">
+      <screen x="0" y="0" width="1920" height="1080" />
+    </state>
+    <state x="19" y="188" key="SettingsEditor/0.0.1920.1080@0.0.1920.1080" timestamp="1587927900379" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/main.go</url>
+          <line>139</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/main.go</url>
+          <line>65</line>
+          <option name="timeStamp" value="2" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
+</project>
