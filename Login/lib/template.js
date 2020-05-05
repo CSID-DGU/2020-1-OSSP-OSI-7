@@ -51,7 +51,7 @@ module.exports={
         </body>
         </html> 
         `;
-    },SIGNUP:function(){
+    },SIGNUP:function(fm=''){
         return `
         <!DOCTYPE html>
         <html lang="en">
@@ -65,11 +65,26 @@ module.exports={
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
         <link rel="stylesheet" href="/css/signup.css">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script>
+         function validate(){
+             var inputPW=document.getElementById("inputPW").value;
+             var checkPW=document.getElementById("checkPW").value;
+             var resultStatus=true;
+
+             if(inputPW!=checkPW){
+                 resultStatus=false;
+             }
+             if(resultStatus==false){
+                 alert("비밀번호를 확인해 주세요!");
+             }
+          return resultStatus;
+         }
+        </script>
         </head>
         <body>
         <div class="signup-form">
-            <form action="/signup_process" method="post">
+            <form action="/signup_process" method="post" onsubmit="return validate();">
                 <h2>회원가입</h2>
                 <p>Please fill in this form to create an account!</p>
                 <hr>
@@ -84,11 +99,12 @@ module.exports={
                         <span class="input-group-addon"><i class="fa fa-paper-plane"></i></span>
                         <input type="email" class="form-control" name="email" placeholder="이메일 주소" required="required">
                     </div>
+                    <nav style="color:#FF0000;">${fm}</nav>
                 </div>
                 <div class="form-group">
                     <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                        <input type="text" class="form-control" name="pw" placeholder="비밀번호" required="required">
+                        <input type="text" class="form-control" id="inputPW" name="pw" placeholder="비밀번호" required="required">
                     </div>
                 </div>
                 <div class="form-group">
@@ -97,7 +113,7 @@ module.exports={
                             <i class="fa fa-lock"></i>
                             <i class="fa fa-check"></i>
                         </span>
-                        <input type="text" class="form-control" name="confirm_password" placeholder="비밀번호 확인" required="required">
+                        <input type="text" class="form-control" id="checkPW" name="confirm_password" placeholder="비밀번호 확인" required="required">
                     </div>
                 </div>
                 <div class="form-group">
