@@ -1,40 +1,35 @@
-import React, {useState} from 'react';
-import {Button, Form, Dropdown, Container, Row, Col, Badge} from 'react-bootstrap';
+import React from 'react';
+import {Button, Form, Dropdown, Container, Row, Col} from 'react-bootstrap';
 
 
 
 
 const QuizForm = (props)=>{
-    const [id, setId] = useState(props.index);
-    const [type, setType] = useState(props.type);
-    const [question, setQuestion] = useState("");
     const koreanDict = {"mul_choices":"객관식", "essay":"주관식", "short_answer":"단답형","binary":"OX형"};
-    const removeQuiz = props.removeQuiz;
-    // const convert2Korean = (quizType)=>{
+    const {onRemove, onTypeChange, index, AnswerForm} = props;
 
-    // }
     return(
         <Container>
         <Row>
             <Col md={"auto"} className="mr-auto">
-            <Button variant="secondary">문항 {id}</Button>
+            <Button variant="secondary">문항 {index+1}</Button>
             </Col>
 
             <Col md={"auto"}>
             <Dropdown>
             <Dropdown.Toggle variant="success" id="dropdown-basic">
-                {koreanDict[type]}
+                {koreanDict[props.type]}
             </Dropdown.Toggle>
             <Dropdown.Menu>
-                <Dropdown.Item onClick={()=>{setType("mul_choices")}}>객관식</Dropdown.Item>
-                <Dropdown.Item onClick={()=>{setType("essay")}}>주관식</Dropdown.Item>
-                <Dropdown.Item onClick={()=>{setType("short_answer")}}>단답형</Dropdown.Item>
-                <Dropdown.Item onClick={()=>{setType("binary")}}>OX형</Dropdown.Item>
+                <Dropdown.Item onClick={()=>{onTypeChange(index,"mul_choices")}}>객관식</Dropdown.Item>
+                <Dropdown.Item onClick={()=>{onTypeChange(index,"essay")}}>주관식</Dropdown.Item>
+                <Dropdown.Item onClick={()=>{onTypeChange(index,"short_answer")}}>단답형</Dropdown.Item>
+                <Dropdown.Item onClick={()=>{onTypeChange(index,"binary")}}>OX형</Dropdown.Item>
             </Dropdown.Menu>
             </Dropdown>
             </Col>
             <Col md={"auto"}>
-                <Button variant="danger" onClick={()=>removeQuiz(id-1)}>X</Button>
+                <Button variant="danger" onClick={()=>onRemove(index)}>X</Button>
             </Col>
         </Row>
 
@@ -48,8 +43,8 @@ const QuizForm = (props)=>{
             <Form.Label>Description</Form.Label>
             <Form.Control></Form.Control>
         </Form.Group>
+        {AnswerForm}
         </Form>
-
         </Container>
         );
 }
