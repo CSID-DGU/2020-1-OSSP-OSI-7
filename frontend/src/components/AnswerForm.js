@@ -3,13 +3,13 @@ import {Form} from 'react-bootstrap';
 import ChoicesList from './ChoicesList';
 
 const AnswerForm = (props) =>{
-    const {addChoices} = props;
+    const {addChoices, onChange, quiz} = props;
     if(props.quiz.type === "mul_choices"){
         return (
             <Fragment>
-            <Form.Label>Answer - {props.quiz.type}</Form.Label>
+            <Form.Label>Answer - {quiz.type}</Form.Label>
             <Form.Row>
-            <ChoicesList choices={props.quiz.content.choices} addChoices={addChoices} quiz_id={props.quiz.id}/>
+            <ChoicesList choices={quiz.content.choices} addChoices={addChoices} onChange={onChange} quiz={quiz}/>
             </Form.Row>
             </Fragment>
             );
@@ -17,7 +17,7 @@ const AnswerForm = (props) =>{
     return (
         <Form.Group>
             <Form.Label>Answer {props.quiz.type}</Form.Label>
-            <Form.Control></Form.Control>
+            <Form.Control name="answer" index={quiz.id} value={quiz.content.answer} onChange={(e)=>onChange(e)}></Form.Control>
         </Form.Group>
     )
 }

@@ -4,10 +4,10 @@ import AnswerForm from "./AnswerForm";
 
 
 const QuizList = (props) => {
-    const { quizzes, onRemove, onTypeChange, addChoices} = props;
+    const { quizzes, onRemove, onTypeChange, addChoices, onChange} = props;
 
     const QuizLists = quizzes.map((quiz, index) => 
-        <QuizForm key={quiz.id} index={quiz.id} type={quiz.type} onRemove={onRemove} onTypeChange={onTypeChange} AnswerForm={<AnswerForm quiz={quiz} addChoices={addChoices}/>} />
+        <QuizForm key={quiz.id} onRemove={onRemove} onTypeChange={onTypeChange} AnswerForm={AnswerForm} addChoices={addChoices} quiz={quiz} onChange={onChange} />
         );
 
     return (

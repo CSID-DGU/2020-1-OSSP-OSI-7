@@ -14,7 +14,7 @@ const Quiz = () => {
     };
 
     const onRemove = (index) => {
-        let modifiedArray = quizzes.filter((quiz) => quiz.id !== index).map((quiz, index) => ({ id: index, type: quiz.type }));
+        let modifiedArray = quizzes.filter((quiz) => quiz.id !== index).map((quiz, index) => ({...quiz, id: index}));
         setQuizzes(modifiedArray);
         setCount(count - 1);
     };
@@ -31,7 +31,7 @@ const Quiz = () => {
         let quiz = {
             id: id,
             type: type,
-            title: "",
+            question: "",
             description: "",
             content:{
                 answer:"",  
@@ -40,19 +40,49 @@ const Quiz = () => {
 
         if(type === 'mul_choices'){
                 quiz.content.choices = [
-                    {id:0,choice:"choice 1"},
-                    {id:1,choice:"choice 2"},
+                    {id:0,choice:""},
+                    {id:1,choice:""},
                 ];
         }
         
         return quiz;
     }
 
+    const onChange = (e)=>{
+        let data = {
+            index: Number(e.target.getAttribute('index')),
+        }
+        if(e.target.name === "choice"){
+            data['content'] = changedChoices(e.target);
+        }
+
+        if(e.target.name === "answer"){
+            data['content'] = {answer:e.target.value};
+        } else {
+            data[e.target.name] = e.target.value;
+        }
+        handleChange(data)
+    }
+
+    const handleChange = (data)=>{
+        const targetName= Object.keys(data)[1];
+        setQuizzes(quizzes.map((quiz)=>(quiz.id == data.index ?{...quiz, [targetName]:data[targetName]}:quiz )));
+    }
+
+    const changedChoices= (target)=>{
+        const quizId = target.getAttribute("index");
+        const index = target.getAttribute("choiceId");
+        let content = quizzes.filter((quiz)=>quiz.id == quizId)[0].content;
+        content.choices[index] = {id:index,choice:target.value};
+        return content
+    }
+
+
     return (
         <Container>
             <h1>Quiz</h1>
             <h2>TOTAL : {count}</h2>
-            <QuizList quizzes={quizzes} onRemove={onRemove} onTypeChange={onTypeChange} addChoices={addChoices}/>
+            <QuizList quizzes={quizzes} onRemove={onRemove} onTypeChange={onTypeChange} addChoices={addChoices} onChange={onChange}/>
             <Container>
                 <ButtonToolbar>
                     <ButtonGroup className="mr-2">
