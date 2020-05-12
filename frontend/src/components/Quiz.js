@@ -80,13 +80,21 @@ const Quiz = () => {
         content.choices[index] = {id:index,choice:target.value};
         return content
     }
-
+    const onRemoveChoice = (quizId, choiceId) =>{
+        // id 초기화 해줘야함
+        let quiz = quizzes.filter((quiz)=>quiz.id == quizId)[0];
+        const changedChoices = {content:{
+            answer:quiz.content.answer,
+            choices:quiz.content.choices.filter((c)=>c.id !== choiceId)}}
+        console.log(changedChoices);
+        setQuizzes(quizzes.map((quiz)=>(quiz.id == quizId ? {...quiz, content:changedChoices.content}: quiz)));        
+    }
 
     return (
         <Container>
             <h1>Quiz</h1>
             <h2>TOTAL : {count}</h2>
-            <QuizList quizzes={quizzes} onRemove={onRemove} onTypeChange={onTypeChange} addChoices={addChoices} onChange={onChange}/>
+            <QuizList quizzes={quizzes} onRemove={onRemove} onTypeChange={onTypeChange} addChoices={addChoices} onChange={onChange} onRemoveChoice={onRemoveChoice}/>
             <Container>
                 <ButtonToolbar>
                     <ButtonGroup className="mr-2">

@@ -6,7 +6,7 @@ import {Button, Form, Dropdown, Container, Row, Col} from 'react-bootstrap';
 
 const QuizForm = (props)=>{
     const koreanDict = {"mul_choices":"객관식", "essay":"주관식", "short_answer":"단답형","binary":"OX형"};
-    const {onRemove, onTypeChange, AnswerForm, onChange, quiz, addChoices} = props;
+    const {onRemove, onTypeChange, AnswerForm, onChange, quiz, addChoices, onRemoveChoice} = props;
     const {id, type} = quiz;
 
 
@@ -46,7 +46,7 @@ const QuizForm = (props)=>{
             <Form.Label>Description</Form.Label>
             <Form.Control name="description" index={id} value={quiz.description} onChange={(e)=>{onChange(e)}}></Form.Control>
         </Form.Group>
-        <AnswerForm  addChoices={addChoices} onChange={onChange} quiz={quiz}/>
+        <AnswerForm  addChoices={addChoices} onChange={onChange} quiz={quiz} onRemoveChoice={onRemoveChoice}/>
         </Form>
         </Container>
         );
