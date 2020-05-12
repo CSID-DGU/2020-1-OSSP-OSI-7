@@ -1,27 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { Button, Container, ButtonToolbar, ButtonGroup } from "react-bootstrap";
 import QuizList from "./QuizList";
-import AnswerForm from "./AnswerForm";
 
 const Quiz = () => {
     const [count, setCount] = useState(0);
     const [quizzes, setQuizzes] = useState([]);
 
     const addQuiz = (type) => {
-        let eachQuiz = {
-            id: count,
-            type: type,
-            title: "",
-            description: "",
-            content:{
-                answer:"",  
-            },
-        }
-        if (type === "mul_choices") {
-            eachQuiz.content.choices = [];
-        }
         setQuizzes(
-            quizzes.concat(eachQuiz)
+            quizzes.concat(initiateState(count,type))
         );
         setCount(count + 1);
     };
@@ -33,15 +20,39 @@ const Quiz = () => {
     };
 
     const onTypeChange = (index, type) => {
-        console.log(type);
-        setQuizzes(quizzes.map((quiz) => (quiz.id === index ? { ...quiz, type: type } : quiz)));
+        setQuizzes(quizzes.map((quiz) => (quiz.id === index ? initiateState(index,type) : quiz)));
     };
+
+    const addChoices = (quiz_id, data) =>{
+        setQuizzes(quizzes.map((quiz)=>(quiz_id === quiz.id ? {...quiz, content:{answer:quiz.content.answer,choices:quiz.content.choices.concat(data)}}: quiz)));
+    }
+
+    const initiateState = (id, type) => {
+        let quiz = {
+            id: id,
+            type: type,
+            title: "",
+            description: "",
+            content:{
+                answer:"",  
+            },
+        }
+
+        if(type === 'mul_choices'){
+                quiz.content.choices = [
+                    {id:0,choice:"choice 1"},
+                    {id:1,choice:"choice 2"},
+                ];
+        }
+        
+        return quiz;
+    }
 
     return (
         <Container>
             <h1>Quiz</h1>
             <h2>TOTAL : {count}</h2>
-            <QuizList quizzes={quizzes} onRemove={onRemove} onTypeChange={onTypeChange} AnswerForm={<AnswerForm/>}/>
+            <QuizList quizzes={quizzes} onRemove={onRemove} onTypeChange={onTypeChange} addChoices={addChoices}/>
             <Container>
                 <ButtonToolbar>
                     <ButtonGroup className="mr-2">

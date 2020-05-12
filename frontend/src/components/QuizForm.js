@@ -17,7 +17,7 @@ const QuizForm = (props)=>{
 
             <Col md={"auto"}>
             <Dropdown>
-            <Dropdown.Toggle variant="success" id="dropdown-basic">
+            <Dropdown.Toggle variant="info" id="dropdown-basic">
                 {koreanDict[props.type]}
             </Dropdown.Toggle>
             <Dropdown.Menu>
