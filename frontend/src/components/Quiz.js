@@ -1,4 +1,4 @@
-import React, { useState} from "react";
+import React, { useState, useEffect} from "react";
 import { Button, Container, ButtonToolbar, ButtonGroup } from "react-bootstrap";
 import QuizList from "./QuizList";
 
@@ -6,6 +6,10 @@ const Quiz = () => {
     const [count, setCount] = useState(0);
     const [quizzes, setQuizzes] = useState([]);
 
+    useEffect(()=>{
+        addQuiz("mul_choices");
+    },[]);
+    
     const addQuiz = (type) => {
         setQuizzes(
             quizzes.concat(initiateState(count,type))
