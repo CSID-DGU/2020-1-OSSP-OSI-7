@@ -12,10 +12,10 @@ const QuizForm = (props)=>{
 
 
     return(
-        <Container>
+        <Container draggable='true'>
         <Row>
             <Col xs={"auto"} className="mr-auto">
-            <Button draggable='true' variant="secondary">문항 {id+1}</Button>
+            <Button variant="secondary">문항 {id+1}</Button>
             </Col>
 
             <Col xs={"auto"}>
