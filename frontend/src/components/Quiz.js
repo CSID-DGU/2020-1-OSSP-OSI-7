@@ -9,6 +9,23 @@ const Quiz = () => {
     useEffect(()=>{
         addQuiz("mul_choices");
     },[]);
+
+    const initiateState = (id, type) => {
+        let quiz = {
+            id: id,
+            type: type,
+            question: "",
+            description: "",
+            answer:"",  
+        }
+        if(type === 'mul_choices'){
+                quiz.choices = [
+                    {id:0,choice:""},
+                    {id:1,choice:""},
+                ];
+        }
+        return quiz;
+    }
     
     const addQuiz = (type) => {
         setQuizzes(
@@ -18,8 +35,7 @@ const Quiz = () => {
     };
 
     const onRemove = (index) => {
-        let modifiedArray = quizzes.filter((quiz) => quiz.id !== index).map((quiz, index) => ({...quiz, id: index}));
-        setQuizzes(modifiedArray);
+        setQuizzes(quizzes.filter((quiz) => quiz.id !== index).map((quiz, index) => ({...quiz, id: index})));
         setCount(count - 1);
     };
 
@@ -27,41 +43,17 @@ const Quiz = () => {
         setQuizzes(quizzes.map((quiz) => (quiz.id === index ? initiateState(index,type) : quiz)));
     };
 
-    const addChoices = (quiz_id, data) =>{
-        setQuizzes(quizzes.map((quiz)=>(quiz_id === quiz.id ? {...quiz, content:{answer:quiz.content.answer,choices:quiz.content.choices.concat(data)}}: quiz)));
+    const addChoices = (quizId, data) =>{
+        setQuizzes(quizzes.map((quiz)=>(quizId === quiz.id ? {...quiz, choices:quiz.choices.concat(data)}: quiz)));
     }
 
-    const initiateState = (id, type) => {
-        let quiz = {
-            id: id,
-            type: type,
-            question: "",
-            description: "",
-            content:{
-                answer:"",  
-            },
-        }
-
-        if(type === 'mul_choices'){
-                quiz.content.choices = [
-                    {id:0,choice:""},
-                    {id:1,choice:""},
-                ];
-        }
-        
-        return quiz;
-    }
 
     const onChange = (e)=>{
         let data = {
-            index: Number(e.target.getAttribute('index')),
+            quizId: Number(e.target.getAttribute('quizId')),
         }
         if(e.target.name === "choice"){
-            data['content'] = changedChoices(e.target);
-        }
-
-        if(e.target.name === "answer"){
-            data['content'] = {answer:e.target.value};
+            data['choices'] = changedChoices(e.target);
         } else {
             data[e.target.name] = e.target.value;
         }
@@ -70,30 +62,29 @@ const Quiz = () => {
 
     const handleChange = (data)=>{
         const targetName= Object.keys(data)[1];
-        setQuizzes(quizzes.map((quiz)=>(quiz.id == data.index ?{...quiz, [targetName]:data[targetName]}:quiz )));
+        setQuizzes(quizzes.map((quiz)=>(quiz.id == data.quizId ?{...quiz, [targetName]:data[targetName]}:quiz )));
     }
 
     const changedChoices= (target)=>{
-        const quizId = target.getAttribute("index");
-        const index = target.getAttribute("choiceId");
-        let content = quizzes.filter((quiz)=>quiz.id == quizId)[0].content;
-        content.choices[index] = {id:index,choice:target.value};
-        return content
+        const quizId = target.getAttribute("quizId");
+        const choiceId = target.getAttribute("choiceId");
+
+        let quiz = quizzes.filter((quiz)=>quiz.id == quizId)[0];
+        quiz.choices[choiceId] = {id:choiceId,choice:target.value};
+        return quiz.choices
     }
     const onRemoveChoice = (quizId, choiceId) =>{
-        // id 초기화 해줘야함
         let quiz = quizzes.filter((quiz)=>quiz.id == quizId)[0];
-        const changedChoices = {content:{
-            answer:quiz.content.answer,
-            choices:quiz.content.choices.filter((c)=>c.id !== choiceId)}}
-        console.log(changedChoices);
-        setQuizzes(quizzes.map((quiz)=>(quiz.id == quizId ? {...quiz, content:changedChoices.content}: quiz)));        
+        const changedChoices = quiz.choices.filter((c)=>c.id !== choiceId).map((c, index) => ({...c, id: index}));
+        setQuizzes(quizzes.map((quiz)=>(quiz.id == quizId ? {...quiz, choices:changedChoices}: quiz)));        
     }
 
     return (
         <Container>
-            <h1>Quiz</h1>
-            <h2>TOTAL : {count}</h2>
+            <Container>
+                <h1>Quiz</h1>
+                <h2>TOTAL : {count}</h2>
+            </Container>
             <QuizList quizzes={quizzes} onRemove={onRemove} onTypeChange={onTypeChange} addChoices={addChoices} onChange={onChange} onRemoveChoice={onRemoveChoice}/>
             <Container>
                 <ButtonToolbar>

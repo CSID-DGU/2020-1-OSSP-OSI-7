@@ -14,11 +14,11 @@ const QuizForm = (props)=>{
     return(
         <Container>
         <Row>
-            <Col md={"auto"} className="mr-auto">
-            <Button variant="secondary">문항 {id+1}</Button>
+            <Col xs={"auto"} className="mr-auto">
+            <Button draggable='true' variant="secondary">문항 {id+1}</Button>
             </Col>
 
-            <Col md={"auto"}>
+            <Col xs={"auto"}>
             <Dropdown>
             <Dropdown.Toggle variant="info" id="dropdown-basic">
                 {koreanDict[type]}
@@ -31,7 +31,7 @@ const QuizForm = (props)=>{
             </Dropdown.Menu>
             </Dropdown>
             </Col>
-            <Col md={"auto"}>
+            <Col xs={"auto"}>
                 <Button variant="danger" onClick={()=>onRemove(id)}>X</Button>
             </Col>
         </Row>

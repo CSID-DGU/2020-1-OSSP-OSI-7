@@ -9,7 +9,7 @@ const AnswerForm = (props) =>{
             <Fragment>
             <Form.Label>Answer - {quiz.type}</Form.Label>
             <Form.Row>
-            <ChoicesList choices={quiz.content.choices} addChoices={addChoices} onChange={onChange} quiz={quiz} onRemoveChoice={onRemoveChoice}/>
+            <ChoicesList choices={quiz.choices} addChoices={addChoices} onChange={onChange} quiz={quiz} onRemoveChoice={onRemoveChoice}/>
             </Form.Row>
             </Fragment>
             );
@@ -17,7 +17,7 @@ const AnswerForm = (props) =>{
     return (
         <Form.Group>
             <Form.Label>Answer {props.quiz.type}</Form.Label>
-            <Form.Control name="answer" index={quiz.id} value={quiz.content.answer} onChange={(e)=>onChange(e)}></Form.Control>
+            <Form.Control name="answer" index={quiz.id} value={quiz.answer} onChange={(e)=>onChange(e)}></Form.Control>
         </Form.Group>
     )
 }

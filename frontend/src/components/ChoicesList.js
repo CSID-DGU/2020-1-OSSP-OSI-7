@@ -7,12 +7,11 @@ const ChoicesList = (props) =>{
     
     const [count, setCount] = useState(2);
     
-    const choiceLength = choices.length;
     return (
         <Fragment>
             {choices.map((c)=><ChoiceItem onChange={onChange} choice={c} quizId={quiz.id} onRemoveChoice={onRemoveChoice}/>)}
             <Form.Group as={Col}>
-        <Button variant="success" onClick={()=>{addChoices(quiz.id, {id:choiceLength, choice:`choice ${choiceLength+1}`})}}>+</Button>
+        <Button variant="success" onClick={()=>{addChoices(quiz.id, {id:choices.length, choice:""})}}>+</Button>
         </Form.Group>
         </Fragment>
     );

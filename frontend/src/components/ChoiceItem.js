@@ -23,14 +23,14 @@ const ChoicesItem = (props) =>{
     const {choice, onChange, quizId, onRemoveChoice} = props;
     const [focus,setFocus] = useState(false);
 
+    const placeholder = `choice ${choice.id+1}`
 
-    const placeholder = `choice ${choice.id}`
     return (
         <Form.Group as={Col} md={2}
             onMouseLeave={() => setFocus(false)}
             onMouseEnter={()=> setFocus(true)}>
             <Form.Control placeholder={placeholder} 
-                name='choice' index={quizId} 
+                name='choice' quizId={quizId} 
                 value={choice.choice} choiceId={choice.id} 
                 onChange={(e)=>onChange(e)}></Form.Control>
             {focus && (
