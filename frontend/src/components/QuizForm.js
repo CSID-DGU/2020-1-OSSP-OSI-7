@@ -6,13 +6,13 @@ import {Button, Form, Dropdown, Container, Row, Col} from 'react-bootstrap';
 
 const QuizForm = (props)=>{
     const koreanDict = {"mul_choices":"객관식", "essay":"주관식", "short_answer":"단답형","binary":"OX형"};
-    const {onRemove, onTypeChange, AnswerForm, onChange, quiz, addChoices, onRemoveChoice} = props;
+    const {onRemove, onTypeChange, AnswerForm, onChange, quiz, addChoices, onRemoveChoice, selectAnswerChoice} = props;
     const {id, type} = quiz;
 
 
 
     return(
-        <Container>
+        <Container className="quiz_container">
         <Row className="row_margin">
             <Col xs={"auto"} className="mr-auto">
             <Button variant="secondary">문항 {id+1}</Button>
@@ -38,15 +38,24 @@ const QuizForm = (props)=>{
 
             
         <Form>
-        <Form.Group>
-            <Form.Label>QUESTION</Form.Label>
-            <Form.Control name="question" quizId={id} value={quiz.question} onChange={(e)=>{onChange(e)}}></Form.Control>
+        <Form.Group as={Row}>
+            <Form.Label  column sm="2">QUESTION</Form.Label>
+            <Col sm="10">
+            <Form.Control  as="textarea" name="question" quizId={id} value={quiz.question} onChange={(e)=>{onChange(e)}}></Form.Control>
+            </Col>
         </Form.Group>
-        <Form.Group>
-            <Form.Label>DESCRIPTION</Form.Label>
-            <Form.Control name="description" quizId={id} value={quiz.content.description} onChange={(e)=>{onChange(e)}}></Form.Control>
+        <Form.Group as={Row}>
+            <Form.Label  column sm="2">DESCRIPTION</Form.Label>
+            <Col sm="10">
+                <Form.Control as="textarea" name="description" quizId={id} value={quiz.content.description} onChange={(e)=>{onChange(e)}}></Form.Control>
+            </Col>
         </Form.Group>
-        <AnswerForm  addChoices={addChoices} onChange={onChange} quiz={quiz} onRemoveChoice={onRemoveChoice}/>
+        <Form.Group as={Row}>
+        <AnswerForm  addChoices={addChoices} onChange={onChange}
+        quiz={quiz} onRemoveChoice={onRemoveChoice}
+        selectAnswerChoice={selectAnswerChoice}
+        />
+        </Form.Group>
         </Form>
         </Container>
         );

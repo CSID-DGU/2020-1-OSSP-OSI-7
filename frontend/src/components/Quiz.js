@@ -1,11 +1,13 @@
 import React, { useState, useEffect} from "react";
-import { Button, Container, ButtonToolbar, ButtonGroup } from "react-bootstrap";
+import { Button, Container, ButtonToolbar, ButtonGroup,Form, Row,Col } from "react-bootstrap";
 import QuizList from "./QuizList";
 
 const Quiz = () => {
     const [count, setCount] = useState(0);
     const [quizzes, setQuizzes] = useState([]);
-
+    const [quizSetName, setQuizSetName] = useState("");
+    const [classId, setClassId] = useState("");
+    
     useEffect(()=>{
         addQuiz("mul_choices");
     },[]);
@@ -53,16 +55,22 @@ const Quiz = () => {
 
     const onChange = (e)=>{
         const targetName = e.target.name;
-        let data = {
-            quizId: Number(e.target.getAttribute('quizId')),
+        if (targetName === "quizSetName"){
+            setQuizSetName(e.target.value);
+        }else if(targetName === "classId"){
+            setClassId(e.target.value);
+        }else {
+            let data = {
+                quizId: Number(e.target.getAttribute('quizId')),
+            }
+            if(targetName === "choice" || targetName === "description"){
+                data['content'] = changeContent(e.target, targetName);
+            }
+            else {
+                data[targetName] = e.target.value;
+            }
+            handleChange(data);
         }
-        if(targetName === "choice" || targetName === "description"){
-            data['content'] = changeContent(e.target, targetName);
-        }
-        else {
-            data[targetName] = e.target.value;
-        }
-        handleChange(data)
     }
 
     const handleChange = (data)=>{
@@ -85,17 +93,64 @@ const Quiz = () => {
     }
     const onRemoveChoice = (quizId, choiceId) =>{
         let quiz = quizzes.filter((quiz)=>quiz.id === quizId)[0];
+
+        let answerList = quiz.answer.split(",").filter((an) => an !== String(choiceId)).map((an) => (Number(an) > choiceId ? String(an -1) : an));
+        const answer = answerList.join(",");
+
         const changedChoices = quiz.content.choices.filter((c)=>c.id !== choiceId).map((c, index) => ({...c, id: index}));
-        setQuizzes(quizzes.map((quiz)=>(quiz.id === quizId ? {...quiz, content:{description:quiz.content.description,choices:changedChoices}}: quiz)));        
+        setQuizzes(quizzes.map((quiz)=>(quiz.id === quizId ? {...quiz, answer:answer,content:{description:quiz.content.description,choices:changedChoices}}: quiz)));        
+    }
+    const selectAnswerChoice = (quizId, choiceId) =>{
+        let joinAnswer;
+        let answers = quizzes.filter((quiz)=>quiz.id === quizId)[0].answer;
+        if(answers.length >= 1){
+            let answerList = answers.split(',');
+            if(answerList.indexOf(String(choiceId)) !== -1){
+                joinAnswer = answerList.filter((an) => an !== String(choiceId)).join(",");
+            } else {
+                answerList.push(`${choiceId}`);
+                joinAnswer = answerList.join(",");
+            }
+        } else{
+            joinAnswer = `${choiceId}`
+        }
+
+        handleChange({quizId:quizId,answer:joinAnswer});
+    }
+
+    const onSubmit = ()=>{
+        const quizSet = {
+            quizset_name: quizSetName,
+            class_id: classId,
+            quizzes:quizzes
+        }
+        console.log(JSON.stringify(quizSet));
     }
 
     return (
-        <Container>
+        <Container className="container_mr_top">
             <Container>
-                <h1>Quiz</h1>
+                <h1>QUIZ 만들기</h1>
                 <h2>TOTAL : {count}</h2>
+                <Form>
+                    <Form.Group as={Row}>
+                    <Form.Label column sm="2">NAME</Form.Label>
+                    <Col sm="4">
+                    <Form.Control value={quizSetName} name="quizSetName" onChange={(e)=>onChange(e)}></Form.Control>
+                    </Col>
+                    </Form.Group>
+                    <Form.Group as={Row}>
+                    <Form.Label column sm="2">CLASS_ID</Form.Label>
+                    <Col sm="4">
+                    <Form.Control value={classId} name="classId" onChange={(e)=>onChange(e)} ></Form.Control>
+                    </Col>
+                    </Form.Group>
+                </Form>
             </Container>
-            <QuizList quizzes={quizzes} onRemove={onRemove} onTypeChange={onTypeChange} addChoices={addChoices} onChange={onChange} onRemoveChoice={onRemoveChoice}/>
+            <QuizList quizzes={quizzes} onRemove={onRemove} 
+            onTypeChange={onTypeChange} addChoices={addChoices} 
+            onChange={onChange} onRemoveChoice={onRemoveChoice}
+            selectAnswerChoice={selectAnswerChoice} />
             <Container>
                 <ButtonToolbar>
                     <ButtonGroup className="mr-2">
@@ -107,8 +162,11 @@ const Quiz = () => {
                     <ButtonGroup className="mr-2">
                         <Button onClick={() => addQuiz("short_answer")}>단답형</Button>
                     </ButtonGroup>
-                    <ButtonGroup>
+                    <ButtonGroup className="mr-2">
                         <Button onClick={() => addQuiz("binary")}>OX형</Button>
+                    </ButtonGroup>
+                    <ButtonGroup >
+                        <Button onClick={() => onSubmit()} variant="success">저장</Button>
                     </ButtonGroup>
                 </ButtonToolbar>
             </Container>
