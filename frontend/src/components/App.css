@@ -8,12 +8,17 @@
     font-family: "TestFont" !important;
 }
 
+body {
+    background-color: #edf2f9 !important;
+}
+body::-webkit-scrollbar {display:none;}
 .row_margin {
     margin-bottom: 1rem;
 }
 
 .container_mr_top{
     margin-top: 1rem;
+    padding-bottom:15px;
 }
 
 .delete_btn_background{
@@ -27,9 +32,18 @@
 }
 
 .quiz_container {
-    border: solid #b3e5fc !important;
+    /* border: solid #b3e5fc !important; */
+    background-color: #fff !important;
+    border: 0 solid #edf2f9 !important;
+
     margin-bottom: 30px;
     opacity:0.9;
     padding-top: 15px !important;
     border-radius: 10px !important;
+    box-shadow: 0 7px 14px 0 rgba(65,69,88,.1), 0 3px 6px 0 rgba(0,0,0,.07);
 }
+
+.last_quiz_row {
+    margin-bottom: 15px;
+}
+

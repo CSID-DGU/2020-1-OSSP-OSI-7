@@ -128,7 +128,7 @@ const Quiz = () => {
     }
 
     return (
-        <Container className="container_mr_top">
+        <Container className="container_mr_top quiz_container">
             <Container>
                 <h1>QUIZ 만들기</h1>
                 <h2>TOTAL : {count}</h2>

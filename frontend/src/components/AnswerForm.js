@@ -9,12 +9,12 @@ const AnswerForm = (props) =>{
             <Fragment>
                 <Form.Label  column sm="2">CHOICES</Form.Label>
                 <Col sm="10">
-                <Form.Row>
-                <ChoicesList choices={quiz.content.choices} addChoices={addChoices}
-                onChange={onChange} quiz={quiz} onRemoveChoice={onRemoveChoice}
-                selectAnswerChoice={selectAnswerChoice}
-                />
-                </Form.Row>
+                    <Form.Row>
+                        <ChoicesList choices={quiz.content.choices} addChoices={addChoices}
+                        onChange={onChange} quiz={quiz} onRemoveChoice={onRemoveChoice}
+                        selectAnswerChoice={selectAnswerChoice}
+                        />
+                    </Form.Row>
                 </Col>
             </Fragment>
             );
@@ -22,7 +22,7 @@ const AnswerForm = (props) =>{
     return (
         <Fragment>
             <Form.Label  column sm="2">ANSWER</Form.Label>
-            <Col sm="10">
+            <Col sm="10" className="last_quiz_row">
             <Form.Control name="answer" quizId={quiz.id} value={quiz.answer} onChange={(e)=>onChange(e)}></Form.Control>
             </Col>
         </Fragment>
