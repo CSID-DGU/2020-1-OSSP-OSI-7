@@ -1,11 +1,37 @@
-import React, { useState} from "react";
-import { Button, Container, ButtonToolbar, ButtonGroup } from "react-bootstrap";
+import React, { useState, useEffect} from "react";
+import { Button, Container, ButtonToolbar, ButtonGroup,Form, Row,Col } from "react-bootstrap";
 import QuizList from "./QuizList";
 
 const Quiz = () => {
     const [count, setCount] = useState(0);
     const [quizzes, setQuizzes] = useState([]);
+    const [quizSetName, setQuizSetName] = useState("");
+    const [classId, setClassId] = useState("");
+    
+    useEffect(()=>{
+        addQuiz("mul_choices");
+    },[]);
 
+    const initiateState = (id, type) => {
+        let quiz = {
+            id: id,
+            type: type,
+            question: "",
+            answer:"",
+            content:{
+                description: "",
+
+            }  
+        }
+        if(type === 'mul_choices'){
+                quiz.content.choices = [
+                    {id:0,choice:""},
+                    {id:1,choice:""},
+                ];
+        }
+        return quiz;
+    }
+    
     const addQuiz = (type) => {
         setQuizzes(
             quizzes.concat(initiateState(count,type))
@@ -14,8 +40,7 @@ const Quiz = () => {
     };
 
     const onRemove = (index) => {
-        let modifiedArray = quizzes.filter((quiz) => quiz.id !== index).map((quiz, index) => ({...quiz, id: index}));
-        setQuizzes(modifiedArray);
+        setQuizzes(quizzes.filter((quiz) => quiz.id !== index).map((quiz, index) => ({...quiz, id: index})));
         setCount(count - 1);
     };
 
@@ -23,66 +48,109 @@ const Quiz = () => {
         setQuizzes(quizzes.map((quiz) => (quiz.id === index ? initiateState(index,type) : quiz)));
     };
 
-    const addChoices = (quiz_id, data) =>{
-        setQuizzes(quizzes.map((quiz)=>(quiz_id === quiz.id ? {...quiz, content:{answer:quiz.content.answer,choices:quiz.content.choices.concat(data)}}: quiz)));
+    const addChoices = (quizId, data) =>{
+        setQuizzes(quizzes.map((quiz)=>(quizId === quiz.id ? {...quiz, content:{description:quiz.content.description, choices:quiz.content.choices.concat(data)}}: quiz)));
     }
 
-    const initiateState = (id, type) => {
-        let quiz = {
-            id: id,
-            type: type,
-            question: "",
-            description: "",
-            content:{
-                answer:"",  
-            },
-        }
-
-        if(type === 'mul_choices'){
-                quiz.content.choices = [
-                    {id:0,choice:""},
-                    {id:1,choice:""},
-                ];
-        }
-        
-        return quiz;
-    }
 
     const onChange = (e)=>{
-        let data = {
-            index: Number(e.target.getAttribute('index')),
+        const targetName = e.target.name;
+        if (targetName === "quizSetName"){
+            setQuizSetName(e.target.value);
+        }else if(targetName === "classId"){
+            setClassId(e.target.value);
+        }else {
+            let data = {
+                quizId: Number(e.target.getAttribute('quizId')),
+            }
+            if(targetName === "choice" || targetName === "description"){
+                data['content'] = changeContent(e.target, targetName);
+            }
+            else {
+                data[targetName] = e.target.value;
+            }
+            handleChange(data);
         }
-        if(e.target.name === "choice"){
-            data['content'] = changedChoices(e.target);
-        }
-
-        if(e.target.name === "answer"){
-            data['content'] = {answer:e.target.value};
-        } else {
-            data[e.target.name] = e.target.value;
-        }
-        handleChange(data)
     }
 
     const handleChange = (data)=>{
         const targetName= Object.keys(data)[1];
-        setQuizzes(quizzes.map((quiz)=>(quiz.id == data.index ?{...quiz, [targetName]:data[targetName]}:quiz )));
+        setQuizzes(quizzes.map((quiz)=>(quiz.id === data.quizId ?{...quiz, [targetName]:data[targetName]}:quiz )));
     }
 
-    const changedChoices= (target)=>{
-        const quizId = target.getAttribute("index");
-        const index = target.getAttribute("choiceId");
-        let content = quizzes.filter((quiz)=>quiz.id == quizId)[0].content;
-        content.choices[index] = {id:index,choice:target.value};
+    const changeContent= (target, contentType)=>{
+        const quizId = Number(target.getAttribute("quizId"));
+        let content = quizzes.filter((quiz)=>quiz.id === quizId)[0].content;
+        
+        if(contentType === "choice"){
+            const choiceId = Number(target.getAttribute("choiceId"));
+            content.choices[choiceId] = {id:choiceId,choice:target.value};
+        }else if(contentType === "description"){
+            content.description = target.value;
+        }
+
         return content
     }
+    const onRemoveChoice = (quizId, choiceId) =>{
+        let quiz = quizzes.filter((quiz)=>quiz.id === quizId)[0];
 
+        let answerList = quiz.answer.split(",").filter((an) => an !== String(choiceId)).map((an) => (Number(an) > choiceId ? String(an -1) : an));
+        const answer = answerList.join(",");
+
+        const changedChoices = quiz.content.choices.filter((c)=>c.id !== choiceId).map((c, index) => ({...c, id: index}));
+        setQuizzes(quizzes.map((quiz)=>(quiz.id === quizId ? {...quiz, answer:answer,content:{description:quiz.content.description,choices:changedChoices}}: quiz)));        
+    }
+    const selectAnswerChoice = (quizId, choiceId) =>{
+        let joinAnswer;
+        let answers = quizzes.filter((quiz)=>quiz.id === quizId)[0].answer;
+        if(answers.length >= 1){
+            let answerList = answers.split(',');
+            if(answerList.indexOf(String(choiceId)) !== -1){
+                joinAnswer = answerList.filter((an) => an !== String(choiceId)).join(",");
+            } else {
+                answerList.push(`${choiceId}`);
+                joinAnswer = answerList.join(",");
+            }
+        } else{
+            joinAnswer = `${choiceId}`
+        }
+
+        handleChange({quizId:quizId,answer:joinAnswer});
+    }
+
+    const onSubmit = ()=>{
+        const quizSet = {
+            quizset_name: quizSetName,
+            class_id: classId,
+            quizzes:quizzes
+        }
+        console.log(JSON.stringify(quizSet));
+    }
 
     return (
-        <Container>
-            <h1>Quiz</h1>
-            <h2>TOTAL : {count}</h2>
-            <QuizList quizzes={quizzes} onRemove={onRemove} onTypeChange={onTypeChange} addChoices={addChoices} onChange={onChange}/>
+        <Container className="container_mr_top">
+            <Container>
+                <h1>QUIZ 만들기</h1>
+                <h2>TOTAL : {count}</h2>
+                <Form>
+                    <Form.Group as={Row}>
+                    <Form.Label column sm="2">NAME</Form.Label>
+                    <Col sm="4">
+                    <Form.Control value={quizSetName} name="quizSetName" onChange={(e)=>onChange(e)}></Form.Control>
+                    </Col>
+                    </Form.Group>
+                    <Form.Group as={Row}>
+                    <Form.Label column sm="2">CLASS_ID</Form.Label>
+                    <Col sm="4">
+                    <Form.Control value={classId} name="classId" onChange={(e)=>onChange(e)} ></Form.Control>
+                    </Col>
+                    </Form.Group>
+                </Form>
+            </Container>
+            <QuizList quizzes={quizzes} onRemove={onRemove} 
+            onTypeChange={onTypeChange} addChoices={addChoices} 
+            onChange={onChange} onRemoveChoice={onRemoveChoice}
+            selectAnswerChoice={selectAnswerChoice} />
             <Container>
                 <ButtonToolbar>
                     <ButtonGroup className="mr-2">
@@ -94,8 +162,11 @@ const Quiz = () => {
                     <ButtonGroup className="mr-2">
                         <Button onClick={() => addQuiz("short_answer")}>단답형</Button>
                     </ButtonGroup>
-                    <ButtonGroup>
+                    <ButtonGroup className="mr-2">
                         <Button onClick={() => addQuiz("binary")}>OX형</Button>
+                    </ButtonGroup>
+                    <ButtonGroup >
+                        <Button onClick={() => onSubmit()} variant="success">저장</Button>
                     </ButtonGroup>
                 </ButtonToolbar>
             </Container>

@@ -3,13 +3,15 @@ import ChoiceItem from './ChoiceItem';
 import {Button,Form, Col} from 'react-bootstrap';
 
 const ChoicesList = (props) =>{
-    const {choices, addChoices, quiz, onChange} = props;
-    const choiceLength = choices.length;
+    const {choices, addChoices, quiz, onChange, onRemoveChoice, selectAnswerChoice} = props;   
+    
+    const answers = quiz.answer.split(",");
+
     return (
         <Fragment>
-            {choices.map((c)=><ChoiceItem onChange={onChange} choice={c} quizId={quiz.id}/>)}
-            <Form.Group as={Col}>
-        <Button variant="success" onClick={()=>{addChoices(quiz.id, {id:choiceLength,choice:`choice ${choiceLength+1}`})}}>+</Button>
+            {choices.map((c)=><ChoiceItem onChange={onChange} isAnswer={answers.indexOf(String(c.id))}choice={c} quizId={quiz.id} selectAnswerChoice={selectAnswerChoice} onRemoveChoice={onRemoveChoice}/>)}
+        <Form.Group as={Col}>
+        <Button variant="success" onClick={()=>{addChoices(quiz.id, {id:choices.length, choice:""})}}>+</Button>
         </Form.Group>
         </Fragment>
     );

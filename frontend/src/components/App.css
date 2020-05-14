@@ -1,0 +1,35 @@
+@font-face{
+    font-family: 'TestFont';
+    src: url("../fonts/NanumSquareRoundOTFEB.otf") format('opentype');
+}
+
+
+* {
+    font-family: "TestFont" !important;
+}
+
+.row_margin {
+    margin-bottom: 1rem;
+}
+
+.container_mr_top{
+    margin-top: 1rem;
+}
+
+.delete_btn_background{
+    background-color: #ef9a9a !important;
+    opacity: 0.7;
+}
+
+.answer_btn_background{
+    background-color: #66bb6a !important;
+    opacity: 0.7;
+}
+
+.quiz_container {
+    border: solid #b3e5fc !important;
+    margin-bottom: 30px;
+    opacity:0.9;
+    padding-top: 15px !important;
+    border-radius: 10px !important;
+}
