@@ -7,10 +7,10 @@ import (
 	"time"
 )
 
-func clsasPayload(data interface{}) jwt.MapClaims {
-	if v, ok := data.(*User); ok {
+func classPayload(data interface{}) jwt.MapClaims {
+	if v, ok := data.(*dto.User); ok {
 		return jwt.MapClaims{
-			identityKey: v.UserName,
+			identityKey : v.UserName,
 		}
 	}
 	return jwt.MapClaims{}
@@ -18,13 +18,13 @@ func clsasPayload(data interface{}) jwt.MapClaims {
 
 func classIdentifyHandler(c *gin.Context) interface{} {
 	claims := jwt.ExtractClaims(c)
-	return &User{
+	return &dto.User{
 		UserName: claims[identityKey].(string),
 	}
 }
 
 func classAuthenticator (c *gin.Context) (interface{}, error) {
-	var loginVals login
+	var loginVals dto.Login
 	if err := c.ShouldBind(&loginVals); err != nil {
 		return "", jwt.ErrMissingLoginValues
 	}
@@ -49,21 +49,12 @@ func classAuthenticator (c *gin.Context) (interface{}, error) {
 }
 
 func classAuthorizator (data interface{}, c *gin.Context) bool {
-	if _, ok := data.(*User); ok {
-		/*
-				result, err := App.Repositories.UserRepository().GetByUserName(v.UserName)
+	if _, ok := data.(*dto.User); ok {
 
-				if err != nil {
-					return false
-				}
+//		result, err := App.Repositories.UserRepository().GetByUserName(user.UserName)
 
-				if (result.Admin == ADMIN) {
-					return true
-				}
-				return true
-			}
 
-		*/
+
 		return true
 	}
 	return false
@@ -83,7 +74,7 @@ func getClassAuthMiddleware() (*jwt.GinJWTMiddleware, error){
 		Timeout:     time.Hour,
 		MaxRefresh:  time.Hour,
 		IdentityKey: identityKey,
-		PayloadFunc: clsasPayload,
+		PayloadFunc: classPayload,
 		IdentityHandler: classIdentifyHandler,
 		Authenticator: classAuthenticator,
 		Authorizator: classAuthorizator,

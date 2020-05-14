@@ -8,23 +8,25 @@ import (
 )
 
 func payload(data interface{}) jwt.MapClaims {
-	if v, ok := data.(*User); ok {
+	if v, ok := data.(*dto.User); ok {
+		println(v)
 		return jwt.MapClaims{
-			identityKey: v.UserName,
+			identityKey : v.UserName,
 		}
 	}
+
 	return jwt.MapClaims{}
 }
 
 func identifyHandler(c *gin.Context) interface{} {
 	claims := jwt.ExtractClaims(c)
-	return &User{
+	return &dto.User{
 		UserName: claims[identityKey].(string),
 	}
 }
 
 func authenticator (c *gin.Context) (interface{}, error) {
-	var loginVals login
+	var loginVals dto.Login
 	if err := c.ShouldBind(&loginVals); err != nil {
 		return "", jwt.ErrMissingLoginValues
 	}
@@ -37,7 +39,7 @@ func authenticator (c *gin.Context) (interface{}, error) {
 		return nil, jwt.ErrFailedAuthentication
 	}
 
-	if (result.Password == password) {
+	if result.Password == password {
 		return &dto.User{
 			UserId: result.UserId,
 			NickName: result.NickName,
@@ -49,21 +51,7 @@ func authenticator (c *gin.Context) (interface{}, error) {
 }
 
 func authorizator (data interface{}, c *gin.Context) bool {
-	if _, ok := data.(*User); ok {
-		/*
-				result, err := App.Repositories.UserRepository().GetByUserName(v.UserName)
-
-				if err != nil {
-					return false
-				}
-
-				if (result.Admin == ADMIN) {
-					return true
-				}
-				return true
-			}
-
-		*/
+	if _, ok := data.(*dto.User); ok {
 		return true
 	}
 	return false

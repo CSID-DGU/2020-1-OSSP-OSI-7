@@ -45,23 +45,21 @@ func initSqlStore() (*sql.DB, *gorp.DbMap) {
 
 	}
 
-	_, _ = db.Exec(`DROP TABLE class`)
+	_, err = db.Exec(`DROP TABLE class`)
 	_, err = db.Exec(`CREATE TABLE class (
     	class_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     	class_name VARCHAR(30) NOT NULL,
     	class_code VARCHAR(30) NOT NULL
 	)`)
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {}
 
-	_, _ = db.Exec(`DROP TABLE class_user`)
+	_, err = db.Exec(`DROP TABLE class_user`)
 	_, err = db.Exec(`CREATE TABLE class_user (
     	class_user_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     	class_id BIGINT NOT NULL,
     	user_id BIGINT NOT NULL,
     	FOREIGN KEY (user_id) REFERENCES user (user_id) ON DELETE CASCADE,
-    	FOREIGN KEY (class_id) REFERENCES  class (class_id) ON DELETE CASCADE,
+    	FOREIGN KEY (class_id) REFERENCES  class (class_id) ON DELETE CASCADE
 	)`)
 	if err != nil {
 		panic(err)
@@ -130,6 +128,15 @@ func initSqlStore() (*sql.DB, *gorp.DbMap) {
 	)`)
 
 	dbmap.AddTableWithName(models.User{}, "user")
+	dbmap.AddTableWithName(models.Class{}, "class")
+	dbmap.AddTableWithName(models.ClassUser{}, "class_user")
+	dbmap.AddTableWithName(models.ClassAdmin{}, "class_admin")
+	dbmap.AddTableWithName(models.QuizSet{}, "quiz_set")
+	dbmap.AddTableWithName(models.ClassQuizSet{}, "class_quiz_set")
+	dbmap.AddTableWithName(models.Quiz{}, "quiz");
+	dbmap.AddTableWithName(models.QuizResult{}, "quiz_result")
+	dbmap.AddTableWithName(models.QuizSetResult{}, "quiz_set_result")
+
 	return db, dbmap
 }
 
