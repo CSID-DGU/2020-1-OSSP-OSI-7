@@ -12,8 +12,8 @@ const QuizForm = (props)=>{
 
 
     return(
-        <Container draggable='true'>
-        <Row>
+        <Container>
+        <Row className="row_margin">
             <Col xs={"auto"} className="mr-auto">
             <Button variant="secondary">문항 {id+1}</Button>
             </Col>
@@ -36,15 +36,15 @@ const QuizForm = (props)=>{
             </Col>
         </Row>
 
-
+            
         <Form>
         <Form.Group>
-            <Form.Label>Question</Form.Label>
-            <Form.Control name="question" index={id} value={quiz.question} onChange={(e)=>{onChange(e)}}></Form.Control>
+            <Form.Label>QUESTION</Form.Label>
+            <Form.Control name="question" quizId={id} value={quiz.question} onChange={(e)=>{onChange(e)}}></Form.Control>
         </Form.Group>
         <Form.Group>
-            <Form.Label>Description</Form.Label>
-            <Form.Control name="description" index={id} value={quiz.description} onChange={(e)=>{onChange(e)}}></Form.Control>
+            <Form.Label>DESCRIPTION</Form.Label>
+            <Form.Control name="description" quizId={id} value={quiz.content.description} onChange={(e)=>{onChange(e)}}></Form.Control>
         </Form.Group>
         <AnswerForm  addChoices={addChoices} onChange={onChange} quiz={quiz} onRemoveChoice={onRemoveChoice}/>
         </Form>

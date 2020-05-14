@@ -1,0 +1,13 @@
+@font-face{
+    font-family: 'TestFont';
+    src: url("../fonts/NanumSquareRoundOTFEB.otf") format('opentype');
+}
+
+
+* {
+    font-family: "TestFont" !important;
+}
+
+.row_margin {
+    margin-bottom: 1rem;
+}

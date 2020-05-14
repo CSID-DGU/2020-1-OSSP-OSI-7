@@ -6,17 +6,17 @@
     "quiz":[
         {
             "id":1,
-            "type":"multiple_choices",
+            "type":"mul_choices",
             "question":"과일이 아닌 것은?",
             "content":{
                 "choices":[
-                    {"1":"사과"},
-                    {"2":"배"},
-                    {"3":"복숭아"},
-                    {"4":"수박"}
-                ],
-                "answer":1
-            }
+                    {"id":"1","choice":"사과"},
+                    {"id":"2","choice":"배"},
+                    {"id":"3","choice":"복숭아"},
+                    {"id":"4","choice":"수박"}
+                ]
+            },
+            "answer":"1"
         },
         {
             "id":2,

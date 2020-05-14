@@ -15,11 +15,14 @@ const Quiz = () => {
             id: id,
             type: type,
             question: "",
-            description: "",
-            answer:"",  
+            answer:"",
+            content:{
+                description: "",
+
+            }  
         }
         if(type === 'mul_choices'){
-                quiz.choices = [
+                quiz.content.choices = [
                     {id:0,choice:""},
                     {id:1,choice:""},
                 ];
@@ -44,39 +47,46 @@ const Quiz = () => {
     };
 
     const addChoices = (quizId, data) =>{
-        setQuizzes(quizzes.map((quiz)=>(quizId === quiz.id ? {...quiz, choices:quiz.choices.concat(data)}: quiz)));
+        setQuizzes(quizzes.map((quiz)=>(quizId === quiz.id ? {...quiz, content:{description:quiz.content.description, choices:quiz.content.choices.concat(data)}}: quiz)));
     }
 
 
     const onChange = (e)=>{
+        const targetName = e.target.name;
         let data = {
             quizId: Number(e.target.getAttribute('quizId')),
         }
-        if(e.target.name === "choice"){
-            data['choices'] = changedChoices(e.target);
-        } else {
-            data[e.target.name] = e.target.value;
+        if(targetName === "choice" || targetName === "description"){
+            data['content'] = changeContent(e.target, targetName);
+        }
+        else {
+            data[targetName] = e.target.value;
         }
         handleChange(data)
     }
 
     const handleChange = (data)=>{
         const targetName= Object.keys(data)[1];
-        setQuizzes(quizzes.map((quiz)=>(quiz.id == data.quizId ?{...quiz, [targetName]:data[targetName]}:quiz )));
+        setQuizzes(quizzes.map((quiz)=>(quiz.id === data.quizId ?{...quiz, [targetName]:data[targetName]}:quiz )));
     }
 
-    const changedChoices= (target)=>{
-        const quizId = target.getAttribute("quizId");
-        const choiceId = target.getAttribute("choiceId");
+    const changeContent= (target, contentType)=>{
+        const quizId = Number(target.getAttribute("quizId"));
+        let content = quizzes.filter((quiz)=>quiz.id === quizId)[0].content;
+        
+        if(contentType === "choice"){
+            const choiceId = Number(target.getAttribute("choiceId"));
+            content.choices[choiceId] = {id:choiceId,choice:target.value};
+        }else if(contentType === "description"){
+            content.description = target.value;
+        }
 
-        let quiz = quizzes.filter((quiz)=>quiz.id == quizId)[0];
-        quiz.choices[choiceId] = {id:choiceId,choice:target.value};
-        return quiz.choices
+        return content
     }
     const onRemoveChoice = (quizId, choiceId) =>{
-        let quiz = quizzes.filter((quiz)=>quiz.id == quizId)[0];
-        const changedChoices = quiz.choices.filter((c)=>c.id !== choiceId).map((c, index) => ({...c, id: index}));
-        setQuizzes(quizzes.map((quiz)=>(quiz.id == quizId ? {...quiz, choices:changedChoices}: quiz)));        
+        let quiz = quizzes.filter((quiz)=>quiz.id === quizId)[0];
+        const changedChoices = quiz.content.choices.filter((c)=>c.id !== choiceId).map((c, index) => ({...c, id: index}));
+        setQuizzes(quizzes.map((quiz)=>(quiz.id === quizId ? {...quiz, content:{description:quiz.content.description,choices:changedChoices}}: quiz)));        
     }
 
     return (

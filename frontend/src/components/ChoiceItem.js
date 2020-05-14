@@ -6,7 +6,7 @@ import {MdDelete} from 'react-icons/md';
 const DeleteBtn = styled.span`
     position: absolute;
     text-align:center;
-    top:4px;
+    top:6px;
     height:30px;
     width:20px;
     right:14px;
@@ -26,11 +26,11 @@ const ChoicesItem = (props) =>{
     const placeholder = `choice ${choice.id+1}`
 
     return (
-        <Form.Group as={Col} md={2}
+        <Form.Group as={Col} sm={2}
             onMouseLeave={() => setFocus(false)}
             onMouseEnter={()=> setFocus(true)}>
             <Form.Control placeholder={placeholder} 
-                name='choice' quizId={quizId} 
+                name='choice' quizId={Number(quizId)} 
                 value={choice.choice} choiceId={choice.id} 
                 onChange={(e)=>onChange(e)}></Form.Control>
             {focus && (
