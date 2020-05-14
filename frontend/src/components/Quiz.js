@@ -8,19 +8,20 @@ const Quiz = () => {
     const [quizSetName, setQuizSetName] = useState("");
     const [classId, setClassId] = useState("");
     
+    const koreanDict = {"mul_choices":"객관식", "essay":"주관식", "short_answer":"단답형","binary":"OX형"};
+
     useEffect(()=>{
         addQuiz("mul_choices");
     },[]);
 
-    const initiateState = (id, type) => {
+    const initiateState = (quizId, type) => {
         let quiz = {
-            id: id,
+            id: quizId,
             type: type,
             question: "",
             answer:"",
             content:{
                 description: "",
-
             }  
         }
         if(type === 'mul_choices'){
@@ -33,9 +34,7 @@ const Quiz = () => {
     }
     
     const addQuiz = (type) => {
-        setQuizzes(
-            quizzes.concat(initiateState(count,type))
-        );
+        setQuizzes(quizzes.concat(initiateState(count,type)));
         setCount(count + 1);
     };
 
@@ -44,8 +43,8 @@ const Quiz = () => {
         setCount(count - 1);
     };
 
-    const onTypeChange = (index, type) => {
-        setQuizzes(quizzes.map((quiz) => (quiz.id === index ? initiateState(index,type) : quiz)));
+    const onTypeChange = (quizId, type) => {
+        setQuizzes(quizzes.map((quiz) => (quiz.id === quizId ? initiateState(quizId,type) : quiz)));
     };
 
     const addChoices = (quizId, data) =>{
@@ -55,11 +54,12 @@ const Quiz = () => {
 
     const onChange = (e)=>{
         const targetName = e.target.name;
+        
         if (targetName === "quizSetName"){
             setQuizSetName(e.target.value);
         }else if(targetName === "classId"){
             setClassId(e.target.value);
-        }else {
+        } else {
             let data = {
                 quizId: Number(e.target.getAttribute('quizId')),
             }
@@ -100,6 +100,8 @@ const Quiz = () => {
         const changedChoices = quiz.content.choices.filter((c)=>c.id !== choiceId).map((c, index) => ({...c, id: index}));
         setQuizzes(quizzes.map((quiz)=>(quiz.id === quizId ? {...quiz, answer:answer,content:{description:quiz.content.description,choices:changedChoices}}: quiz)));        
     }
+
+    
     const selectAnswerChoice = (quizId, choiceId) =>{
         let joinAnswer;
         let answers = quizzes.filter((quiz)=>quiz.id === quizId)[0].answer;
@@ -127,23 +129,30 @@ const Quiz = () => {
         console.log(JSON.stringify(quizSet));
     }
 
+    const QuizBtn = ({quizType}) => (
+        <ButtonGroup className="mr-2">
+            <Button onClick={() => addQuiz(quizType)}>{koreanDict[quizType]}</Button>
+        </ButtonGroup>
+    );
+
+
     return (
         <Container className="container_mr_top quiz_container">
             <Container>
                 <h1>QUIZ 만들기</h1>
-                <h2>TOTAL : {count}</h2>
+                <h3>TOTAL : {count}</h3>
                 <Form>
                     <Form.Group as={Row}>
-                    <Form.Label column sm="2">NAME</Form.Label>
-                    <Col sm="4">
-                    <Form.Control value={quizSetName} name="quizSetName" onChange={(e)=>onChange(e)}></Form.Control>
-                    </Col>
+                        <Form.Label column sm="2">NAME</Form.Label>
+                        <Col sm="4">
+                            <Form.Control value={quizSetName} name="quizSetName" onChange={(e)=>onChange(e)}></Form.Control>
+                        </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
-                    <Form.Label column sm="2">CLASS_ID</Form.Label>
-                    <Col sm="4">
-                    <Form.Control value={classId} name="classId" onChange={(e)=>onChange(e)} ></Form.Control>
-                    </Col>
+                        <Form.Label column sm="2">CLASS_ID</Form.Label>
+                        <Col sm="4">
+                            <Form.Control value={classId} name="classId" onChange={(e)=>onChange(e)} ></Form.Control>
+                        </Col>
                     </Form.Group>
                 </Form>
             </Container>
@@ -153,18 +162,10 @@ const Quiz = () => {
             selectAnswerChoice={selectAnswerChoice} />
             <Container>
                 <ButtonToolbar>
-                    <ButtonGroup className="mr-2">
-                        <Button onClick={() => addQuiz("mul_choices")}>객관식</Button>
-                    </ButtonGroup>
-                    <ButtonGroup className="mr-2">
-                        <Button onClick={() => addQuiz("essay")}>주관식</Button>
-                    </ButtonGroup>
-                    <ButtonGroup className="mr-2">
-                        <Button onClick={() => addQuiz("short_answer")}>단답형</Button>
-                    </ButtonGroup>
-                    <ButtonGroup className="mr-2">
-                        <Button onClick={() => addQuiz("binary")}>OX형</Button>
-                    </ButtonGroup>
+                    <QuizBtn quizType="mul_choices" />
+                    <QuizBtn quizType="essay" />
+                    <QuizBtn quizType="short_answer" />
+                    <QuizBtn quizType="binary" />
                     <ButtonGroup >
                         <Button onClick={() => onSubmit()} variant="success">저장</Button>
                     </ButtonGroup>
