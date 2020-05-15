@@ -9,4 +9,5 @@ jobs:
       - name: checkout source code    
         uses: actions/checkout@dev-frontend
       - name: echo Hello              
+        working-directory: ./frontend
         run: echo "Hello" 
