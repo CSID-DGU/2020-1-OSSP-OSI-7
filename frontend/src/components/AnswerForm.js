@@ -22,7 +22,7 @@ const AnswerForm = (props) =>{
     return (
         <Fragment>
             <Form.Label  column sm="2">ANSWER</Form.Label>
-            <Col sm="10" className="last_quiz_row">
+            <Col sm="10" className="quizitem__last__row">
             <Form.Control name="answer" quizId={quiz.id} value={quiz.answer} onChange={(e)=>onChange(e)}></Form.Control>
             </Col>
         </Fragment>

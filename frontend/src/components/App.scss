@@ -1,0 +1,21 @@
+@import url('Quiz.scss');
+@import url('./auth/Auth.scss');
+
+$main_color : #edf2f9;
+
+@font-face{
+    font-family: 'TestFont';
+    src: url("../fonts/NanumSquareRoundOTFEB.otf") format('opentype');
+}
+
+
+* {
+    font-family: "TestFont" !important;
+}
+
+body {
+    background-color: $main_color !important;
+    &::-webkit-scrollbar {
+        display:none;
+    }
+}

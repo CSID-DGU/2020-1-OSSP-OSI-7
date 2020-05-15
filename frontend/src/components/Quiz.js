@@ -4,9 +4,9 @@ import QuizList from "./QuizList";
 
 const Quiz = () => {
     const [count, setCount] = useState(0);
-    const [quizzes, setQuizzes] = useState([]);
     const [quizSetName, setQuizSetName] = useState("");
     const [classId, setClassId] = useState("");
+    const [quizzes, setQuizzes] = useState([]);
     
     const koreanDict = {"mul_choices":"객관식", "essay":"주관식", "short_answer":"단답형","binary":"OX형"};
 
@@ -54,7 +54,7 @@ const Quiz = () => {
 
     const onChange = (e)=>{
         const targetName = e.target.name;
-        
+
         if (targetName === "quizSetName"){
             setQuizSetName(e.target.value);
         }else if(targetName === "classId"){
@@ -137,7 +137,7 @@ const Quiz = () => {
 
 
     return (
-        <Container className="container_mr_top quiz_container">
+        <Container className="quiz__container">
             <Container>
                 <h1>QUIZ 만들기</h1>
                 <h3>TOTAL : {count}</h3>
