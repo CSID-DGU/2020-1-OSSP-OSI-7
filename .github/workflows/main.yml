@@ -1,4 +1,4 @@
-name: my workflow                     
+name: React build test
 on:
   push:
     branches:
@@ -14,10 +14,19 @@ jobs:
         with:
           ref: dev-action-test
 
+      - name: Cache node modules      # node modules 캐싱
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
+
       - name: Install Dependencies    # 의존 파일 설치
         working-directory: ./frontend
         run: npm install
 
       - name: Build                   # React Build
         working-directory: ./frontend
-        run: npm run build
+        run: yarn start build
