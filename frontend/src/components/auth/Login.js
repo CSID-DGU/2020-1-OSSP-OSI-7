@@ -1,11 +1,11 @@
-import React,{Fragment} from "react";
+import React from "react";
 import AuthBase from './AuthBase';
 import AuthForm from './AuthForm';
 
-const Login = () =>{
+const Login = (props) =>{
     return (
         <AuthBase>
-            <AuthForm type='Login'/>
+            <AuthForm type='Login' {...props}/>
         </AuthBase>
     );
 }
