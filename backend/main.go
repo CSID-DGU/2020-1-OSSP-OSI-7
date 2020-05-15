@@ -28,7 +28,7 @@ func main() {
 		port = "8000"
 	}
 
-	if err := http.ListenAndServe(":"+port, context.Engine); err != nil {
+	if err := http.ListenAndServeTLS(":"+port, "server.crt", "server.key", context.Engine); err != nil {
 		log.Fatal(err)
 	}
 }
