@@ -41,7 +41,7 @@ const AuthForm = ({authenticated, type, handleSubmit, location})=>{
 
     const handleSignIn = () =>{
         try{
-            handleSubmit({email, password});
+            handleSubmit({username, password});
         } catch{
             alert("Failed to login");
             setEmail("");
@@ -51,7 +51,7 @@ const AuthForm = ({authenticated, type, handleSubmit, location})=>{
 
     const handleSignUp = () =>{
         try{
-            handleSubmit({email, username,password});
+            handleSubmit({username,password});
         } catch{
             alert("Failed to Register");
             setEmail("");

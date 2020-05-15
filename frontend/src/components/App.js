@@ -6,15 +6,16 @@ import Home from './Home';
 import Login from './auth/Login';
 import Register from './auth/Register';
 import AuthRoute from './auth/AuthRoute';
+import {login, registerTo} from '../lib/api/auth';
 
 
 const App = () => {
   const [user, setUser] = useState(null);
   const authenticated = user != null;
 
-  const logIn = ({email,password}) =>setUser("ok");
+  const logIn = ({username, password}) =>login({username, password});
   const logOut = () =>setUser(null);
-  const register = ({email,username, password}) => console.log("register");
+  const register = ({username, password}) => registerTo({username, password});
 
 
   return (
