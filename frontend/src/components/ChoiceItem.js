@@ -32,11 +32,12 @@ const ChoicesItem = (props) =>{
     const [btnfocus,setBtnFocus] = useState(false);
 
     const placeholder = `choice ${choice.id+1}`
+
     const inputBackground = ()=>{
         if(btnfocus === "delete"){
-            return 'delete_btn_background';
+            return 'delete__background';
         } else if(btnfocus ==="answer" || isAnswer > -1){
-            return 'answer_btn_background';
+            return 'answer__background';
         }
     }
 

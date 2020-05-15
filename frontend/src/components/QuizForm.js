@@ -12,8 +12,8 @@ const QuizForm = (props)=>{
 
 
     return(
-        <Container className="quiz_container">
-        <Row className="row_margin">
+        <Container className="quiz__container">
+        <Row className="row__mr__bottom">
             <Col xs={"auto"} className="mr-auto">
             <Button variant="secondary">문항 {id+1}</Button>
             </Col>
