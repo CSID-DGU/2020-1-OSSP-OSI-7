@@ -9,6 +9,7 @@ type UserRepository interface {
 	GetByUserId() (*models.User, *models.AppError)
 	Create(user models.User) (*models.User, *models.AppError)
 	GetAllManagingClass(username string) ([]*models.Class, *models.AppError)
+	GetAllEnrolledClass(username string) ([]*models.Class, *models.AppError)
 }
 
 type SqlUserRepository struct {
@@ -39,10 +40,30 @@ func (u *SqlUserRepository) Create(user models.User) (*models.User, *models.AppE
 	return nil, nil
 }
 
+func (u *SqlUserRepository) GetAllEnrolledClass(username string) ([]*models.Class, *models.AppError) {
+	var class *models.Class
+
+	result, err := u.Master.Select(&class,
+		"SELECT c.class_id, c.class_name, c.class_code FROM class c WHERE c.class_id = ANY(SELECT cu.class_id FROM class_user cu WHERE cu.user_id = ANY(SELECT u.user_id from user u WHERE u.username = ?))", username);
+
+	if err != nil {
+		return nil, models.NewDatabaseAppError(err, "no class matches", "class_admin_repository.go")
+	}
+
+	var classes []*models.Class
+	for i := 0; i < len(result); i++ {
+		if newClass, ok := result[i].(*models.Class); ok {
+			classes = append(classes, newClass)
+		}
+	}
+	return classes, nil
+}
+
 func (u *SqlUserRepository) GetAllManagingClass(username string) ([]*models.Class, *models.AppError) {
 	var class *models.Class
+
 	result, err := u.Master.Select(&class,
-		"SELECT * FROM class c WHERE c.class_id = (SELECT ca.class_id FROM class_admin ca WHERE ca.user_id = (SELECT u.user_id from user u WHERE u.username = ?))", username);
+		"SELECT c.class_id, c.class_name, c.class_code FROM class c WHERE c.class_id = ANY(SELECT ca.class_id FROM class_admin ca WHERE ca.user_id = ANY(SELECT u.user_id from user u WHERE u.username = ?))", username);
 
 	if err != nil {
 		return nil, models.NewDatabaseAppError(err, "no class matches", "class_admin_repository.go")

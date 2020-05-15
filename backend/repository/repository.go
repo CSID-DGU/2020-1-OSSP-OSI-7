@@ -53,7 +53,7 @@ func initSqlStore() (*sql.DB, *gorp.DbMap) {
 	)`)
 	if err != nil {}
 
-	_, err = db.Exec(`DROP TABLE class_user`)
+	//_, err = db.Exec(`DROP TABLE class_user`)
 	_, err = db.Exec(`CREATE TABLE class_user (
     	class_user_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     	class_id BIGINT NOT NULL,
@@ -61,11 +61,9 @@ func initSqlStore() (*sql.DB, *gorp.DbMap) {
     	FOREIGN KEY (user_id) REFERENCES user (user_id) ON DELETE CASCADE,
     	FOREIGN KEY (class_id) REFERENCES  class (class_id) ON DELETE CASCADE
 	)`)
-	if err != nil {
-		panic(err)
-	}
+	if err != nil {}
 
-	_, _ = db.Exec(`DROP TABLE class_admin`)
+	//_, err = db.Exec(`DROP TABLE class_admin`)
 	_, err = db.Exec(`CREATE TABLE class_admin (
     	class_admin_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     	class_id BIGINT NOT NULL,
@@ -74,10 +72,10 @@ func initSqlStore() (*sql.DB, *gorp.DbMap) {
     	FOREIGN KEY (class_id) REFERENCES  class (class_id) ON DELETE CASCADE
 	)`)
 	if err != nil {
-		panic(err)
+	//	panic(err)
 	}
 
-	_, _ = db.Exec(`DROP TABLE quiz_set`)
+	//_, err = db.Exec(`DROP TABLE quiz_set`)
 	_, err = db.Exec(`CREATE TABLE quiz_set (
     	quiz_set_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     	user_id BIGINT NOT NULL,
@@ -86,7 +84,7 @@ func initSqlStore() (*sql.DB, *gorp.DbMap) {
     	FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE
 	)`)
 
-	_, _ = db.Exec(`DROP TABLE class_quiz_set`)
+	//_, _ = db.Exec(`DROP TABLE class_quiz_set`)
 	_, err = db.Exec( `CREATE TABLE class_quiz_set (
     	class_quiz_set_id BIGINT NOT NULL PRIMARY KEY,
     	quiz_set_id BIGINT NOT NULL,

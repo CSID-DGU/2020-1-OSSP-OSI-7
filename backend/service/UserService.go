@@ -1,7 +1,9 @@
 package service
 
 import (
+	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
+	"oss/dto"
 	"oss/models"
 	"oss/web"
 )
@@ -31,7 +33,7 @@ func Register (context *web.Context) gin.HandlerFunc {
 			return
 		}
 
-		_, exist := context.Repositories.UserRepository().GetByUserName(user.UserName)
+		exist, _  := context.Repositories.UserRepository().GetByUserName(user.UserName)
 
 		if exist != nil {
 			c.JSON(400, "the username exists")
@@ -42,6 +44,30 @@ func Register (context *web.Context) gin.HandlerFunc {
 
 		if creatErr != nil {
 			println("error !", creatErr.Message)
+		}
+	}
+}
+
+func GetAllEnrolledClass(context *web.Context) gin.HandlerFunc {
+	return func(c *gin.Context) {
+		claims := jwt.ExtractClaims(c)
+		userName := claims["UserName"].(string)
+
+		result, err := context.Repositories.UserRepository().GetAllEnrolledClass(userName)
+
+		var compacted []*dto.Class
+
+		for i := 0; i < len(result); i++ {
+			dtoClass := &dto.Class{
+				result[i].ClassName,
+				result[i].ClassCode,
+			}
+			compacted = append(compacted, dtoClass)
+		}
+		if err != nil {
+			c.JSON(200, "")
+		} else {
+			c.JSON(200, compacted)
 		}
 	}
 }

@@ -19,12 +19,6 @@ var (
 
 var identityKey = "UserName"
 
-func helloHandler(c *gin.Context) {
-	c.JSON(200, gin.H{
-		"text":     "Hello World.",
-	})
-}
-
 var App *web.Context
 
 func InitRouters(context *web.Context) {
@@ -38,7 +32,9 @@ func InitRouters(context *web.Context) {
 	if err != nil {
 		log.Fatal("JWT Error:" + err.Error())
 	}
-
+	r.GET("/", func (c *gin.Context) {
+		c.JSON(200,"why???")
+	})
 	r.POST("/login", authMiddleware.LoginHandler)
 
 	r.NoRoute(authMiddleware.MiddlewareFunc(), func(c *gin.Context) {
@@ -53,22 +49,14 @@ func InitRouters(context *web.Context) {
 
 	class := r.Group("/class")
 	class.Use(classMiddleware.MiddlewareFunc())
-	class.GET("/", func (c *gin.Context) {
-		c.JSON(200, gin.H{
-			"text":     "Hello World.",
-		})
-	})
 	class.POST("/", service.CreateClass(context))
-	class.GET("/user/:username", service.GetAllManagingClass(context))
+	class.POST("/enroll/:classcode", service.JoinClass(context));
 
-	auth := r.Group("/auth")
-	// Refresh time can be longer than token timeout
+	auth := r.Group("/user")
 	auth.GET("/refresh_token", authMiddleware.RefreshHandler)
 	auth.Use(authMiddleware.MiddlewareFunc())
-	auth.GET("/hello", helloHandler)
-	public := r.Group("/public")
-	public.GET("/good", func(c *gin.Context) {
-		c.JSON(200, "good")
-	})
+	auth.GET("/users/:name", service.GetUserByUserName(context))
+	auth.GET("/classes/enrolled/", service.GetAllEnrolledClass(context))
+	auth.GET("/classes/managing/", service.GetAllManagingClass(context))
 
 }

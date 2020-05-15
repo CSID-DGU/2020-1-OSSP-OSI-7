@@ -4,6 +4,7 @@ type Repositories interface {
 	UserRepository() UserRepository
 	ClassRepository() ClassRepository
 	ClassAdminRepository() ClassAdminRepository
+	ClassUserRepository() ClassUserRepository
 }
 
 type SqlRepositories struct {
@@ -11,6 +12,7 @@ type SqlRepositories struct {
 	userRepository UserRepository
 	classRepository ClassRepository
 	classAdminRepository ClassAdminRepository
+	classUserRepository ClassUserRepository
 }
 
 func NewSqlRepositories(repository *Repository) *SqlRepositories {
@@ -47,6 +49,17 @@ func (r *SqlRepositories) ClassAdminRepository() ClassAdminRepository {
 	}
 
 	var v ClassAdminRepository = &SqlClassAdminRepository{
+		r.Repository,
+	}
+	return v
+}
+
+func (r *SqlRepositories) ClassUserRepository() ClassUserRepository {
+	if r.classUserRepository != nil {
+		return r.classUserRepository
+	}
+
+	var v ClassUserRepository = &SqlClassUserRepository{
 		r.Repository,
 	}
 	return v
