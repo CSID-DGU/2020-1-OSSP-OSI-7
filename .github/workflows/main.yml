@@ -1,12 +1,23 @@
 name: my workflow                     
-on: [push]                            
+on:
+  push:
+    branches:
+      - dev-action-test                         
 
 jobs:                                 
   build:                              
     name: hello github action         
-    runs-on: ubuntu-18.04             
+    runs-on: ubuntu-latest           
     steps:                            
-      - name: checkout source code    
-        uses: actions/checkout@dev-action-test
-      - name: echo Hello              
-        run: echo "Hello" 
+      - name: Checkout source code.   # 레포지토리 체크아웃
+        uses: actions/checkout@master
+        with:
+          ref: dev-action-test
+
+      - name: Install Dependencies    # 의존 파일 설치
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Build                   # React Build
+        working-directory: ./frontend
+        run: npm run build
