@@ -35,6 +35,8 @@ func initSqlStore() (*sql.DB, *gorp.DbMap) {
 
 	_, err = db.Exec(`CREATE TABLE user (
 			user_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+			student_code BIGINT NOT NULL,
+			email VARCHAR(30) NOT NULL,
 			nickname VARCHAR(20) NOT NULL,
 			username VARCHAR(20) NOT NULL,
 			password VARCHAR(20) NOT NULL,

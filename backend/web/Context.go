@@ -5,7 +5,9 @@ import (
 	"oss/repository"
 )
 
-func InitContext () *Context {
+var Context0 *Context = initContext()
+
+func initContext () *Context {
 	r := gin.New()
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())

@@ -7,6 +7,8 @@ type UserRepository interface {
 	GetByUserName(username string) (*models.User, *models.AppError)
 	// Primary key 로 조회
 	GetByUserId() (*models.User, *models.AppError)
+	// 학번으로 조회
+	GetByStudentCode(studentCode int64) (*models.User, *models.AppError)
 	Create(user models.User) (*models.User, *models.AppError)
 	GetAllManagingClass(username string) ([]*models.Class, *models.AppError)
 	GetAllEnrolledClass(username string) ([]*models.Class, *models.AppError)
@@ -19,6 +21,15 @@ type SqlUserRepository struct {
 func (u *SqlUserRepository) GetByUserName(username string) (*models.User, *models.AppError) {
 	var result *models.User
 	err := u.Master.SelectOne(&result, "SELECT * FROM user WHERE username=?", username)
+	if err != nil {
+		return nil, models.NewDatabaseAppError(err, "user is not found", "user_repository.go")
+	}
+	return result, nil
+}
+
+func (u *SqlUserRepository) GetByStudentCode(studentCode int64) (*models.User, *models.AppError) {
+	var result *models.User
+	err := u.Master.SelectOne(&result, "SELECT * FROM user WHERE student_code=?", studentCode)
 	if err != nil {
 		return nil, models.NewDatabaseAppError(err, "user is not found", "user_repository.go")
 	}
