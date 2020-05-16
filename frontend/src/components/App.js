@@ -13,7 +13,7 @@ const App = () => {
   const [user, setUser] = useState(null);
   const authenticated = user != null;
 
-  const logIn = ({username, password}) =>login({username, password});
+  const logIn = ({username, password}) =>setUser("user");
   const logOut = () =>setUser(null);
   const register = ({username, password}) => registerTo({username, password});
 

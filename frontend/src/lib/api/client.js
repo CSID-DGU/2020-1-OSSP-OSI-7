@@ -8,6 +8,7 @@ client.defaults.headers.common['Authorization'] = 'Bearer asdfasdf';
 
 axios.interceptors.response.use(
     response => {
+        console.log(response);
         return response;
     },
     error => {
