@@ -47,7 +47,6 @@ const App = () => {
       </Nav>
     </Navbar>
       <Route path="/" component={Home} exact/>
-      <Route path="/quiz" component={Quiz}/> 
       <Route path="/login"
             render={props => (
               <Login authenticated={authenticated} handleSubmit={logIn} {...props} />
