@@ -32,9 +32,9 @@ const AuthForm = ({authenticated, type, handleSubmit, location})=>{
     if (authenticated) return <Redirect to={from} />
 
     const handleClick = () =>{
-        if(type === "Login") {
+        if(type === "login") {
             handleSignIn();
-        }else if (type ==="Register"){
+        }else if (type ==="register"){
             handleSignUp();
         }
     }
@@ -63,30 +63,30 @@ const AuthForm = ({authenticated, type, handleSubmit, location})=>{
     return (
         <AuthFormBlock>
             <Form>
-                <h2>{type}</h2>
-                {type === 'Register' ?
+                <h2>{type.charAt(0).toUpperCase() + type.slice(1)}</h2>
+                {type === 'register' ?
                 (<p>Please fill in this form to create an account!</p>)
                 :(<p>Pease fill your Email and password</p>)
                 }
                 <hr/>
-                <FieldForm placeholder={"E-MAIL"} icon={<FaPaperPlane/>} onChange={setEmail} type={"email"}/>
-                {type === 'Register' && 
+                <FieldForm placeholder={"USERNAME"} icon={<FaUser/>} onChange={setUsername} type={"text"}/>
+                {type === 'register' && 
                 <Fragment>
-                    <FieldForm placeholder={"USERNAME"} icon={<FaUser/>} onChange={setUsername} type={"text"}/>
+                    <FieldForm placeholder={"E-MAIL"} icon={<FaPaperPlane/>} onChange={setEmail} type={"email"}/>
                     <hr/>
                     </Fragment>
                 }
                 <FieldForm placeholder={"PASSWORD"} icon={<FaLock/>} onChange={setPassword} type={"password"}/>
                 
-                {type === 'Register' && 
+                {type === 'register' && 
                     <FieldForm placeholder={"PASSWORD CHECK"} icon={<FaUnlockAlt/>}  onChange={setPasswordCheck} type={"password"}/>
                 }
 
                 <Form.Group>
-                <Button as={Col} md={12} variant="info" type="submit" onClick={()=>handleClick()}>SIGN UP</Button>
+                <Button as={Col} md={12} variant="info" type="submit" onClick={()=>handleClick()}>{type === "register" ? "SIGN UP" : "LOGIN"}</Button>
                 </Form.Group>
             </Form>
-            {type === 'Register' ?( 
+            {type === 'register' ?( 
                 <div>Already have an account?  <Link to='/login'>Login Here</Link></div>
             ) : (
                 <div><Link to='/register'>Register Here</Link></div>

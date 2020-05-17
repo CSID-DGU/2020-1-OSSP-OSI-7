@@ -1,6 +1,6 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import styled from 'styled-components';
-import {Form,Container,Col, Row} from 'react-bootstrap';
+import {Container,Col, Row} from 'react-bootstrap';
 
 const AuthBaseBlock = styled.div`
     margin-top: 3rem;

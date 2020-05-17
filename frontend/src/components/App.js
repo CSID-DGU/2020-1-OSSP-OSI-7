@@ -1,19 +1,22 @@
 import React,{useState, Fragment} from 'react';
-import { Route, Link } from 'react-router-dom';
+import { Route, Link, Switch} from 'react-router-dom';
 import {Navbar, Nav} from 'react-bootstrap';
-import Quiz from './Quiz';
+import Quiz from './quiz/Quiz';
+import QuizSetList from './quiz/QuizSetList';
 import Home from './Home';
 import Login from './auth/Login';
 import Register from './auth/Register';
 import AuthRoute from './auth/AuthRoute';
-import {login, registerTo} from '../lib/api/auth';
+import NotFound from './NotFound';
+import {login, registerTo} from '../lib/api/fakeAuth';
 
 
 const App = () => {
   const [user, setUser] = useState(null);
   const authenticated = user != null;
 
-  const logIn = ({username, password}) =>setUser("user");
+  // const logIn = ({username, password}) =>setUser("user");
+  const logIn = ({username, password}) => (setUser(login({username,password}).user));
   const logOut = () =>setUser(null);
   const register = ({username, password}) => registerTo({username, password});
 
@@ -46,20 +49,28 @@ const App = () => {
       }
       </Nav>
     </Navbar>
+    <Switch>
       <Route path="/" component={Home} exact/>
+      <AuthRoute authenticated={authenticated} path="/quiz" component={QuizSetList} exact/>
+      
       <Route path="/login"
-            render={props => (
-              <Login authenticated={authenticated} handleSubmit={logIn} {...props} />
-            )}
-          />
+        render={props => (
+          <Login authenticated={authenticated} handleSubmit={logIn} {...props} />
+        )}
+      />
+      
       <Route path="/register"
-            render={props => (
-              <Register authenticated={authenticated} handleSubmit={register} {...props} />
-            )}
-          />
-      <AuthRoute authenticated={authenticated} path="/quiz"
+        render={props => (
+          <Register authenticated={authenticated} handleSubmit={register} {...props} />
+          )}
+      />
+      
+      <AuthRoute authenticated={authenticated} path="/quiz/write"
         render={props => <Quiz {...props} />}
       />
+      
+      <Route component={NotFound} />
+        </Switch>
     </>
   );
 }
