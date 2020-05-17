@@ -13,7 +13,13 @@ const lastQuiz = () => {
         <a> 지난 퀴즈 불러오기 </a>
       </header>
       <body>
-        
+        render();
+        <div>
+            <Quiz title = {this.PaymentResponse.title} />
+            <Quiz description = {this.PaymentResponse.description} />
+            <Quiz subject = {this.PaymentResponse.subject} />
+            <Quiz quiz = {this.PaymentResponse.quiz} />
+        </div>
       </body>
     </div>
   );
