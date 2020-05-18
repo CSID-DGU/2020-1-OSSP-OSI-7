@@ -1,18 +1,19 @@
 import React,{useState, Fragment} from 'react';
 import { Route, Link, Switch} from 'react-router-dom';
 import {Navbar, Nav} from 'react-bootstrap';
-import Quiz from './quiz/Quiz';
+import QuizTemplate from './quiz/QuizTemplate';
 import QuizSetList from './quiz/QuizSetList';
 import Home from './Home';
 import Login from './auth/Login';
 import Register from './auth/Register';
 import AuthRoute from './auth/AuthRoute';
 import NotFound from './NotFound';
+import QuizSet from './quiz/QuizSet';
 import {login, registerTo} from '../lib/api/fakeAuth';
 
 
 const App = () => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState("null");
   const authenticated = user != null;
 
   // const logIn = ({username, password}) =>setUser("user");
@@ -53,20 +54,18 @@ const App = () => {
       <Route path="/" component={Home} exact/>
       <AuthRoute authenticated={authenticated} path="/quiz" component={QuizSetList} exact/>
       
-      <Route path="/login"
-        render={props => (
+      <Route path="/login" render={props => (
           <Login authenticated={authenticated} handleSubmit={logIn} {...props} />
-        )}
-      />
+        )}/>
       
-      <Route path="/register"
-        render={props => (
+      <Route path="/register" render={props => (
           <Register authenticated={authenticated} handleSubmit={register} {...props} />
-          )}
-      />
+          )}/>
       
-      <AuthRoute authenticated={authenticated} path="/quiz/write"
-        render={props => <Quiz {...props} />}
+      <AuthRoute authenticated={authenticated} path="/create"
+        render={props => <QuizTemplate {...props} />}
+      />
+      <AuthRoute authenticated={authenticated} path="/quiz/:quizSetId" component={QuizSet}/>}
       />
       
       <Route component={NotFound} />

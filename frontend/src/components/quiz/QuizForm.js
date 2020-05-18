@@ -2,6 +2,12 @@ import React from 'react';
 import {Button, Form, Dropdown, Container, Row, Col} from 'react-bootstrap';
 
 
+// <Form.Group as={Row}>
+//     <Form.Label  column sm="2">DESCRIPTION</Form.Label>
+//     <Col sm="10">
+//         <Form.Control as="textarea" name="description" quizId={id} value={quiz.content.description} onChange={(e)=>{onChange(e)}}></Form.Control>
+//     </Col>
+// </Form.Group>
 
 
 const QuizForm = (props)=>{
@@ -42,12 +48,6 @@ const QuizForm = (props)=>{
             <Form.Label  column sm="2">QUESTION</Form.Label>
             <Col sm="10">
             <Form.Control  as="textarea" name="question" quizId={id} value={quiz.question} onChange={(e)=>{onChange(e)}}></Form.Control>
-            </Col>
-        </Form.Group>
-        <Form.Group as={Row}>
-            <Form.Label  column sm="2">DESCRIPTION</Form.Label>
-            <Col sm="10">
-                <Form.Control as="textarea" name="description" quizId={id} value={quiz.content.description} onChange={(e)=>{onChange(e)}}></Form.Control>
             </Col>
         </Form.Group>
         <Form.Group as={Row}>

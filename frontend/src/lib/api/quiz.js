@@ -4,9 +4,9 @@ export const quizSubmit = ({quizset}) =>
     client.post('/quizset/', quizset);
 
 export const quizList = () =>
-    client.get('/quizzes/');
+    client.get('/quizset/');
 
-export const quizDetail = ({quizId}) =>
-    client.get(`/quizzes/${quizId}/`);
+export const quizDetail = ({quizSetId}) =>
+    client.get(`/quizset/${quizSetId}/`);
 
 export const 

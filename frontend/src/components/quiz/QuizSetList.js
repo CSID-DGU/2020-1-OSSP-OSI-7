@@ -40,7 +40,8 @@ const QuizSetList = () =>{
     return (
         <Container className="quiz__container">
             {QuizSets}
-            <Link to="/quiz/write"><Button>WRITE</Button></Link>
+            <Link to="/create/"><Button>WRITE</Button></Link>
+            <Link to="/quiz/1"><Button>quiz gogo</Button></Link>
         </Container>
     )
 }

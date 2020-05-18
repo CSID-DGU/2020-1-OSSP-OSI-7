@@ -2,7 +2,7 @@ import React, { useState, useEffect} from "react";
 import { Button, Container, ButtonToolbar, ButtonGroup,Form, Row,Col } from "react-bootstrap";
 import QuizList from "./QuizList";
 
-const Quiz = () => {
+const QuizTemplate = () => {
     const [count, setCount] = useState(0);
     const [quizSetName, setQuizSetName] = useState("");
     const [classId, setClassId] = useState("");
@@ -175,4 +175,4 @@ const Quiz = () => {
     );
 };
 
-export default Quiz;
+export default QuizTemplate;
