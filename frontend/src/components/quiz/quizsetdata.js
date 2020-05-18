@@ -24,7 +24,11 @@ export const quizsetdata = {
                     },
                     {
                        "id":3,
-                       "choice":""
+                       "choice":"sdfaefawefawef"
+                    },
+                    {
+                       "id":4,
+                       "choice":"sdfaefawefawef"
                     }
                  ]
               }
@@ -55,6 +59,15 @@ export const quizsetdata = {
               "content":{
                  "description":""
               }
-           }
+           },
+           {
+            "id":4,
+            "type":"essay",
+            "question":"ㅁ재댜러ㅐㅑ",
+            "answer":"ㅐㅑ더랴ㅐ머쟈ㅐ러ㅑㅐㅈㅇㄹ",
+            "content":{
+               "description":""
+            }
+         }
         ]
      }

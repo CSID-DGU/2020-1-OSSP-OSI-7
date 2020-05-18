@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Container, Row,Col, ProgressBar, Button} from 'react-bootstrap';
 import QuizSetForm from './QuizSetForm';
+import QuizSetChoice from './QuizSetChoice';
 
 import {quizsetdata} from './quizsetdata';
 
@@ -13,6 +14,7 @@ const QuizSet = ({match}) => {
     const {quizSetId} = match.params;
 
     const isLast = current === total;
+    const currentQuiz = quizset.quizzes[current-1]
 
     return (
         <Container className="quiz__container">
@@ -31,8 +33,22 @@ const QuizSet = ({match}) => {
                     <ProgressBar variant="success" animated  now={currentPercent}/>
                 </Col>
             </Container>
+
             <Col md={{span:10, offset:1}} className="quiz__container">
-                <QuizSetForm quiz={quizset.quizzes[current-1]}/>
+                <QuizSetForm quiz={currentQuiz}/>
+                <Container>
+                {currentQuiz.type ==="mul_choices" ? 
+                    (
+                        currentQuiz.content.choices.map((c)=>
+                        <QuizSetChoice choice = {c}/>)
+                    ) :
+                    (
+                        <div>
+                            hello
+                        </div>
+                    )
+                }
+                </Container>
             </Col>
             <Button className="mr-auto" onClick={()=>{isLast ? setCurrent(1):setCurrent(current+1) }}>Next</Button>
         </Container>
