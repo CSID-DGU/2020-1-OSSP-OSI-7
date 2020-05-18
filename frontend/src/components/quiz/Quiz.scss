@@ -27,6 +27,9 @@
     background-color: #66bb6a !important;
     color: #fff !important;
     opacity: 0.7;
+    &::placeholder{
+        color: #fff !important;
+    }
 }
 
 .align-text {
