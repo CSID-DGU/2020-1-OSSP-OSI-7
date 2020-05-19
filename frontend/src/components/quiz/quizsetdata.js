@@ -9,6 +9,10 @@ export const quizsetdata = {
               "answer":"0,3",
               "content":{
                  "description":"",
+                 "images":[
+                  "https://placekitten.com/300/300",
+                  "https://placekitten.com/300/301",
+                 ],
                  "choices":[
                     {
                        "id":0,
@@ -36,10 +40,13 @@ export const quizsetdata = {
            {
               "id":1,
               "type":"essay",
-              "question":"문제 2",
+              "question":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam",
               "answer":"ㅁ재ㅑ더럄ㄹ재ㅑ",
               "content":{
-                 "description":""
+                 "description":"",
+                 "images":[
+                  "https://placekitten.com/300/400",
+                 ],
               }
            },
            {

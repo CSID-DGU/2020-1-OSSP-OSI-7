@@ -1,16 +1,18 @@
 import React, {useState} from 'react';
-import {Container, Row,Col, ProgressBar, Button} from 'react-bootstrap';
-import QuizSetForm from './QuizSetForm';
-import QuizSetChoice from './QuizSetChoice';
+import {Container, Row,Col, ProgressBar, Button, Form} from 'react-bootstrap';
+import TestQuizHeader from './TestQuizHeader';
+import TestQuizChoice from './TestQuizChoice';
 
 import {quizsetdata} from './quizsetdata';
 
 
-const QuizSet = ({match}) => {
+const TestQuiz = ({match}) => {
     const [current,setCurrent] = useState(1);
+    const [answers, setAnswers] = useState([]);
+
     const quizset = quizsetdata;
     const total = quizset.quizzes.length;
-    const currentPercent = Math.round((current/total) * 100);
+    const currentPercent = Math.round((current / total) * 100);
     const {quizSetId} = match.params;
 
     const isLast = current === total;
@@ -35,25 +37,30 @@ const QuizSet = ({match}) => {
             </Container>
 
             <Col md={{span:10, offset:1}} className="quiz__container">
-                <QuizSetForm quiz={currentQuiz}/>
+                <TestQuizHeader quiz={currentQuiz}/>
                 <Container>
                 {currentQuiz.type ==="mul_choices" ? 
                     (
                         currentQuiz.content.choices.map((c)=>
-                        <QuizSetChoice choice = {c}/>)
+                        <TestQuizChoice choice = {c}/>)
                     ) :
                     (
-                        <div>
-                            hello
-                        </div>
+                        <Form>
+                            <Form.Group>
+                            <Form.Control>
+                            </Form.Control>
+                            </Form.Group>
+                        </Form>
+
+
                     )
                 }
+                <Button block onClick={()=>{isLast ? setCurrent(1):setCurrent(current+1) }}>Next</Button>
                 </Container>
             </Col>
-            <Button className="mr-auto" onClick={()=>{isLast ? setCurrent(1):setCurrent(current+1) }}>Next</Button>
         </Container>
     )
 
 }
 
-export default QuizSet;
+export default TestQuiz;

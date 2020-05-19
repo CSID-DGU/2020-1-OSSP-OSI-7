@@ -28,7 +28,7 @@ const ChoiceItem = styled.div`
 `;
 
 
-const QuizSetChoice = ({choice}) => {
+const TestQuizChoice = ({choice}) => {
 
     return (
         <ChoiceItem as={Col} md={12}>
@@ -37,4 +37,4 @@ const QuizSetChoice = ({choice}) => {
     )
 }
 
-export default QuizSetChoice;
+export default TestQuizChoice;

@@ -8,7 +8,7 @@ import Login from './auth/Login';
 import Register from './auth/Register';
 import AuthRoute from './auth/AuthRoute';
 import NotFound from './NotFound';
-import QuizSet from './quiz/QuizSet';
+import TestQuiz from './quiz/TestQuiz';
 import {login, registerTo} from '../lib/api/fakeAuth';
 
 
@@ -50,6 +50,8 @@ const App = () => {
       }
       </Nav>
     </Navbar>
+
+
     <Switch>
       <Route path="/" component={Home} exact/>
       <AuthRoute authenticated={authenticated} path="/quiz" component={QuizSetList} exact/>
@@ -65,7 +67,7 @@ const App = () => {
       <AuthRoute authenticated={authenticated} path="/create"
         render={props => <QuizTemplate {...props} />}
       />
-      <AuthRoute authenticated={authenticated} path="/quiz/:quizSetId" component={QuizSet}/>}
+      <AuthRoute authenticated={authenticated} path="/quiz/:quizSetId" component={TestQuiz}/>}
       />
       
       <Route component={NotFound} />
