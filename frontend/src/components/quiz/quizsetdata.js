@@ -39,7 +39,7 @@ export const quizsetdata = {
            },
            {
               "id":1,
-              "type":"essay",
+              "type":"mul_choices",
               "question":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam",
               "answer":"ㅁ재ㅑ더럄ㄹ재ㅑ",
               "content":{
@@ -47,6 +47,28 @@ export const quizsetdata = {
                  "images":[
                   "https://placekitten.com/300/400",
                  ],
+                 "choices":[
+                  {
+                     "id":0,
+                     "choice":"선택지 1"
+                  },
+                  {
+                     "id":1,
+                     "choice":"선택지 2"
+                  },
+                  {
+                     "id":2,
+                     "choice":"ㅁㄷㄹㄷㅈ"
+                  },
+                  {
+                     "id":3,
+                     "choice":"sdfaefawefawef"
+                  },
+                  {
+                     "id":4,
+                     "choice":"sdfaefawefawef"
+                  }
+               ]
               }
            },
            {

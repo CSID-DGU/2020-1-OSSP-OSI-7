@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {Button,Col} from 'react-bootstrap';
 import styled from 'styled-components';
 
@@ -28,10 +28,16 @@ const ChoiceItem = styled.div`
 `;
 
 
-const TestQuizChoice = ({choice}) => {
+const TestQuizChoice = ({choice, onClick}) => {
+    const [select, setSelect] = useState(false);
+
+    const handleClick = () => {
+        onClick(choice.id, select);
+        select ? setSelect(false):setSelect(true);
+    }
 
     return (
-        <ChoiceItem as={Col} md={12}>
+        <ChoiceItem as={Col} md={12} onClick={()=>handleClick()} className={select && "button__select"}>
             {choice.choice}
         </ChoiceItem>
     )
