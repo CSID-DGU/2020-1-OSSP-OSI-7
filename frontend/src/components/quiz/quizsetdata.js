@@ -58,15 +58,15 @@ export const quizsetdata = {
                   },
                   {
                      "id":2,
-                     "choice":"ㅁㄷㄹㄷㅈ"
+                     "choice":"ㅁoaopㄷㅈ"
                   },
                   {
                      "id":3,
-                     "choice":"sdfaefawefawef"
+                     "choice":"9238fijiefawef"
                   },
                   {
                      "id":4,
-                     "choice":"sdfaefawefawef"
+                     "choice":"sdaewffawef"
                   }
                ]
               }
