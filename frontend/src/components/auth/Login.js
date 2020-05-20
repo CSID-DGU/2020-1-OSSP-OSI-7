@@ -5,7 +5,7 @@ import AuthForm from './AuthForm';
 const Login = (props) =>{
     return (
         <AuthBase>
-            <AuthForm type='Login' {...props}/>
+            <AuthForm type='login' {...props}/>
         </AuthBase>
     );
 }
