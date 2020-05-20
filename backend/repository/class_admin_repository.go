@@ -5,7 +5,7 @@ import "oss/models"
 type ClassAdminRepository interface {
 	Create(userId int64, classId int64) (*models.AppError)
 	GetByClass(class *models.Class) ([]*models.ClassAdmin, *models.AppError)
-//	GetByAdmin(username string) (*models.ClassAdmin, *models.AppError)
+	GetByAdmin(username string) (*models.ClassAdmin, *models.AppError)
 }
 type SqlClassAdminRepository struct {
 	*Repository
@@ -41,3 +41,15 @@ func (c *SqlClassAdminRepository) GetByClass(class *models.Class) ([]*models.Cla
 	return datas, nil
 }
 
+func (c *SqlClassAdminRepository) GetByAdmin(username string) (*models.ClassAdmin, *models.AppError) {
+	result, err := c.Master.Exec(
+		`
+			SELECT 1 FROM class_admin ca 
+			WHERE ca.user_id = (SELECT user_id FROM user u
+			WHERE u.username = ?`, username)
+
+	if err != nil {
+		return nil, models.NewDatabaseAppError(err, "NO SUCH ADMIN", "class_admin_repository.go")
+	}
+	return result, nil
+}

@@ -143,4 +143,7 @@ func InitRouters(context *web.Context) {
 	auth.GET("/classes/enrolled/", service.GetAllEnrolledClass(context))
 	auth.GET("/classes/managing/", service.GetAllManagingClass(context))
 
+	quiz := r.Group("/quiz")
+	quiz.Use(authMiddleware.MiddlewareFunc())
+	quiz.POST("/quiz")
 }

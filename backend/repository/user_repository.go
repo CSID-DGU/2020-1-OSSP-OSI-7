@@ -41,13 +41,11 @@ func (u *SqlUserRepository) GetByUserId() (*models.User, *models.AppError) {
 }
 
 func (u *SqlUserRepository) Create(user models.User) (*models.User, *models.AppError) {
-
 	err := u.Master.Insert(&user)
 
 	if	err != nil {
 		return nil, &models.AppError{Message: err.Error()}
 	}
-
 	return nil, nil
 }
 
