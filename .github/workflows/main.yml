@@ -2,7 +2,7 @@ name: React build test
 on:
   push:
     branches:
-      - dev-frontend-auth                        
+      - dev-frontend                      
 
 jobs:                                 
   build:                              

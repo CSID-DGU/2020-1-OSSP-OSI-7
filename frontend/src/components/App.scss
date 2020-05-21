@@ -8,6 +8,20 @@ $main_color : #edf2f9;
     src: url("../fonts/NanumSquareRoundOTFEB.otf") format('opentype');
 }
 
+@font-face{
+    font-family: "Anton";
+    src: url("../fonts/Anton-Regular.ttf") format('opentype');
+}
+
+@font-face{
+    font-family: "Monoton";
+    src: url("../fonts/Monoton-Regular.ttf") format('opentype');
+}
+
+@font-face{
+    font-family: "Helvetica";
+    src: url("../fonts/Helvetica/Helvetica Bold.ttf") format('truetype');
+}
 
 * {
     font-family: "TestFont" !important;
