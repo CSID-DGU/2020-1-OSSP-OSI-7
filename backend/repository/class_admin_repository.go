@@ -42,7 +42,7 @@ func (c *SqlClassAdminRepository) GetByClass(class *models.Class) ([]*models.Cla
 }
 
 func (c *SqlClassAdminRepository) GetByAdmin(username string) (*models.ClassAdmin, *models.AppError) {
-	result, err := c.Master.Exec(
+	_, err := c.Master.Exec(
 		`
 			SELECT 1 FROM class_admin ca 
 			WHERE ca.user_id = (SELECT user_id FROM user u
@@ -51,5 +51,5 @@ func (c *SqlClassAdminRepository) GetByAdmin(username string) (*models.ClassAdmi
 	if err != nil {
 		return nil, models.NewDatabaseAppError(err, "NO SUCH ADMIN", "class_admin_repository.go")
 	}
-	return result, nil
+	return nil, nil
 }

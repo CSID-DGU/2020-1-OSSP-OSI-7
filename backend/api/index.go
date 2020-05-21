@@ -119,7 +119,7 @@ func InitRouters(context *web.Context) {
 	})
 
 
-	r.POST("/login", authMiddleware.LoginHandler)
+	r.POST("/login", service.Login(context, authMiddleware))
 
 	r.NoRoute(authMiddleware.MiddlewareFunc(), func(c *gin.Context) {
 		claims := jwt.ExtractClaims(c)
@@ -139,11 +139,23 @@ func InitRouters(context *web.Context) {
 	auth := r.Group("/user")
 	auth.GET("/refresh_token", authMiddleware.RefreshHandler)
 	auth.Use(authMiddleware.MiddlewareFunc())
-	auth.GET("/users/:name", service.GetUserByUserName(context))
-	auth.GET("/classes/enrolled/", service.GetAllEnrolledClass(context))
-	auth.GET("/classes/managing/", service.GetAllManagingClass(context))
+	auth.GET("/register", service.Register(context))
+	auth.GET("/classes/enrolled/:username", service.GetAllEnrolledClass(context))
+	auth.GET("/classes/managing/:username", service.GetAllManagingClass(context))
+	auth.GET("/quizset/:username", service.GetUserQuizSet(context))
+
+	r.GET("/users/:name", service.GetUserByUserName(context))
+	quizset := r.Group("/quizset")
+	quizset.Use(authMiddleware.MiddlewareFunc())
+	quizset.POST("/", service.CreateQuizSet(context))
+	quizset.DELETE("/:quizsetId", service.DeleteQuizSet(context))
+	quizset.POST("/:quizsetId/quiz/", service.AddQuiz(context))
+	quizset.DELETE("/:quizsetId/quiz/:quizId", service.DeleteQuizFromQuizSet(context))
+	quizset.POST("/:quizsetId/class/:classCode", service.LoadQuizSetToClass(context))
+	quizset.DELETE("/:quizsetId/class/:classCode", service.DeleteQuizSetFromClass(context))
 
 	quiz := r.Group("/quiz")
 	quiz.Use(authMiddleware.MiddlewareFunc())
-	quiz.POST("/quiz")
+	quiz.POST("/", service.CreateQuizSet(context))
+	quiz.DELETE("/", service.DeleteQuizSet(context))
 }

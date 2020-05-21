@@ -1,0 +1,458 @@
+definitions:
+  dto.Class:
+    properties:
+      class_code:
+        example: 형식언어
+        type: string
+      class_name:
+        example: CSE-1234
+        type: string
+    type: object
+  dto.Login:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  dto.QuizCreateForm:
+    properties:
+      quiz_answer:
+        example: 퀴즈 정답
+        type: string
+      quiz_content:
+        example: 퀴즈 렌더링 정보
+        type: string
+      quiz_title:
+        example: 퀴즈 문제
+        type: string
+      quiz_type:
+        example: 퀴즈 타입(객관식, 주관식)
+        type: string
+    type: object
+  dto.QuizGetForm:
+    properties:
+      quiz_answer:
+        example: 퀴즈 정답
+        type: string
+      quiz_content:
+        example: 퀴즈 렌더링 정보
+        type: string
+      quiz_id:
+        example: 1234
+        type: integer
+      quiz_title:
+        example: 퀴즈 문제
+        type: string
+      quiz_type:
+        example: 퀴즈 타입(객관식, 주관식)
+        type: string
+    type: object
+  dto.QuizSetCreateForm:
+    properties:
+      quiz_set_author_name:
+        example: 퀴즈셋 생성자 로그인 아이디
+        type: string
+      quiz_set_name:
+        example: 퀴즈셋 이름
+        type: string
+      quizes:
+        items:
+          $ref: '#/definitions/dto.QuizCreateForm'
+        type: array
+      total_score:
+        example: 100
+        type: integer
+    type: object
+  dto.QuizSetGetForm:
+    properties:
+      quiz_set_author_name:
+        example: 퀴즈셋 생성자 로그인 아이디
+        type: string
+      quiz_set_id:
+        example: 1234
+        type: integer
+      quiz_set_name:
+        example: 퀴즈셋 이름
+        type: string
+      quizzes:
+        items:
+          $ref: '#/definitions/dto.QuizGetForm'
+        type: array
+      total_score:
+        example: 100
+        type: integer
+    type: object
+  dto.User:
+    properties:
+      email:
+        example: donggukmail@dgu.ac.kr
+        type: string
+      nickname:
+        example: my nickname
+        type: string
+      student_code:
+        example: 2015123456
+        type: integer
+      username:
+        example: pigeon1234
+        type: string
+    type: object
+info:
+  contact: {}
+  license: {}
+paths:
+  /class:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 강의정보
+        in: body
+        name: JSON
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Class'
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: 강의 생성에 실패 했습니다.
+          schema:
+            type: json
+      summary: 강의개설
+      tags:
+      - Class
+  /class/enroll/{classCode}:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 학수번호
+        in: path
+        name: classCode
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: 학수번호가 유효하지 않습니다.
+          schema:
+            type: string
+        "404":
+          description: 강의가 존재하지 않습니다..
+          schema:
+            type: string
+      summary: 수강신청
+      tags:
+      - Class
+  /quizset:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 퀴즈셋 정보
+        in: body
+        name: JSON
+        required: true
+        schema:
+          $ref: '#/definitions/dto.QuizSetCreateForm'
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: 퀴즈셋을 생성한다
+      tags:
+      - Quiz set
+  /quizset/{quizSetId}/class/{classCode}:
+    delete:
+      consumes:
+      - application/json
+      description: |-
+        퀴즈 셋 고유 아이디와 학수번호를 이용해서 클래스에서 퀴즈셋을 삭제한다.
+        원본 퀴즈 셋은 삭제되지 않는다.
+      parameters:
+      - description: 강의 에서 삭제 하려는 퀴즈셋의 아이디
+        in: path
+        name: quizSetId
+        required: true
+        type: string
+      - description: 강의의 학수번호
+        in: path
+        name: classCode
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: CLASS_QUIZ_SET_NOT_EXISTS
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: 클래스에 있는 퀴즈셋을 삭제한다
+      tags:
+      - Quiz set
+    post:
+      consumes:
+      - application/json
+      description: 퀴즈 셋 고유 아이디와 학수번호를 받아서 클래스의 퀴즈셋 목록에 추가한다.
+      parameters:
+      - description: 클래스에 불러오려는 퀴즈셋의 아이디
+        in: path
+        name: quizSetId
+        required: true
+        type: string
+      - description: 퀴즈를 추가하려는 강의의 학수번호
+        in: path
+        name: classCode
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: CLASS_QUIZ_SET_ALREADY_EXISTS
+          schema:
+            type: string
+      summary: 유저의 퀴즈셋에 있는 퀴즈를 강의의 퀴즈셋으로 가져온다
+      tags:
+      - Quiz set
+  /quizset/{quizSetId}/quiz/{quizId}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 퀴즈를 삭제 하려는 퀴즈셋의 아이디
+        in: path
+        name: quizSetId
+        required: true
+        type: string
+      - description: 삭제 하려는 퀴즈의 아이디
+        in: path
+        name: quizId
+        required: true
+        type: string
+      responses:
+        "200":
+          description: 성공
+          schema:
+            type: string
+        "400":
+          description: 요청이 올바르지 않습니다.
+          schema:
+            type: string
+      summary: 퀴즈셋에 있는 퀴즈를 삭제한다
+      tags:
+      - Quiz set
+  /quizset/{quizsetId}:
+    delete:
+      consumes:
+      - application/json
+      parameters:
+      - description: 퀴즈 셋 고유 아이디
+        in: path
+        name: quizsetId
+        required: true
+        type: string
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: INVALID_PATH_PARAMETER
+          schema:
+            type: string
+      summary: 퀴즈셋을 삭제한다
+      tags:
+      - Quiz set
+  /quizset/{quizsetId}/quiz:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 퀴즈를 추가하려는 퀴즈셋의 아이디
+        in: path
+        name: quizSetId
+        required: true
+        type: string
+      - description: 퀴즈 정보
+        in: body
+        name: JSON
+        required: true
+        schema:
+          $ref: '#/definitions/dto.QuizCreateForm'
+      responses:
+        "200":
+          description: 성공
+          schema:
+            type: string
+        "400":
+          description: 요청이 올바르지 않습니다.
+          schema:
+            type: string
+      summary: 퀴즈셋에 퀴즈를 추가한다.
+      tags:
+      - Quiz set
+  /user/classes/enrolled/{userName}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 유저 아이디
+        in: path
+        name: username
+        required: true
+        type: string
+      responses:
+        "200":
+          description: 강의목록(배열)
+          schema:
+            items:
+              $ref: '#/definitions/dto.Class'
+            type: array
+        "400":
+          description: bad request
+          schema:
+            type: json
+      summary: 수강하고 있는 강의목록 조회
+      tags:
+      - User
+  /user/classes/managing/{userName}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 유저 아이디
+        in: path
+        name: userName
+        required: true
+        type: string
+      responses:
+        "200":
+          description: 강의목록(배열)
+          schema:
+            items:
+              $ref: '#/definitions/dto.Class'
+            type: array
+        "400":
+          description: 학수번호가 유효하지 않습니다.
+          schema:
+            type: string
+        "404":
+          description: 강의가 존재하지 않습니다..
+          schema:
+            type: string
+      summary: 유저가 관리하고 있는 모든 강의들을 가져온다
+      tags:
+      - Class
+  /user/login:
+    post:
+      parameters:
+      - description: 로그인 정보
+        in: body
+        name: JSON
+        required: true
+        schema:
+          $ref: '#/definitions/dto.Login'
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "404":
+          description: USER_NOT_EXIST
+          schema:
+            type: string
+      summary: 로그인
+      tags:
+      - User
+  /user/quizset/{username}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 유저 로그인 아이디
+        in: path
+        name: username
+        required: true
+        type: string
+      responses:
+        "200":
+          description: 퀴즈셋목록(배열)
+          schema:
+            items:
+              $ref: '#/definitions/dto.QuizSetGetForm'
+            type: array
+        "400":
+          description: bad request
+          schema:
+            type: string
+      summary: 유저가 만든 모든 퀴즈셋 조회
+      tags:
+      - User
+  /user/register:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 유저정보
+        in: body
+        name: JSON
+        required: true
+        schema:
+          $ref: '#/definitions/dto.User'
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: bad request
+          schema:
+            type: json
+      summary: 회원가입
+      tags:
+      - User
+  /users/{username}:
+    get:
+      parameters:
+      - description: 확인 하려는  로그인 아이디
+        in: path
+        name: username
+        required: true
+        type: string
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "404":
+          description: USER_NOT_EXIST
+          schema:
+            type: string
+      summary: 유저 로그인 아이디 중복 확인
+      tags:
+      - Users
+swagger: "2.0"
