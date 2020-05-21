@@ -10,6 +10,7 @@ type QuizSetRepository interface {
 	GetManagers (quizSetId int64) ([]*models.User, *models.AppError)
 	GetQuizSetsById (quizSetId int64) (*models.QuizSet, *models.AppError)
 	GetQuizSetsByUserName (username string) ([]models.QuizSet, *models.AppError)
+	GetQuizSetsByClassCode (classCode string) ([]models.QuizSet, *models.AppError)
 }
 
 type SqlQuizSetRepository struct {
@@ -81,6 +82,20 @@ func (q *SqlQuizSetRepository) GetQuizSetsByUserName (username string) ([]models
 	_, err := q.Master.Select(&quizsets,
 		`SELECT * FROM quiz_set qs 
 			   WHERE qs.user_id = (SELECT u.user_id FROM user u WHERE u.username = ?)`, username)
+
+	if err != nil {
+		return nil, models.NewDatabaseAppError(err, "FAILED TO FETCH QUIZ SET BY USER NAME", "quiz_set_repository.go")
+	}
+	return quizsets, nil
+}
+
+func (q *SqlQuizSetRepository) GetQuizSetsByClassCode (classCode string) ([]models.QuizSet, *models.AppError) {
+	var quizsets []models.QuizSet
+
+	_, err := q.Master.Select(&quizsets,
+		`SELECT cqs.quiz_set_id, q.user_id, q.quiz_set_name, q.total_score FROM
+			   class_quiz_set cqs INNER JOIN quiz_set q ON q.quiz_set_id = cqs.quiz_set_id
+			   INNER JOIN class c ON c.class_code = ?`, classCode)
 
 	if err != nil {
 		return nil, models.NewDatabaseAppError(err, "FAILED TO FETCH QUIZ SET BY USER NAME", "quiz_set_repository.go")

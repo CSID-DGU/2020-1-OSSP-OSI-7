@@ -154,7 +154,32 @@ paths:
       summary: 수강신청
       tags:
       - Class
-  /quizset:
+  /quizsets/classes/{classCode}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 퀴즈 셋을 조회할 강의의 학수 번호
+        in: body
+        name: JSON
+        required: true
+        schema:
+          $ref: '#/definitions/dto.QuizCreateForm'
+      responses:
+        "200":
+          description: 퀴즈 셋 배열
+          schema:
+            items:
+              $ref: '#/definitions/dto.QuizSetGetForm'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+      summary: 해당 강의가 가지고 있는 모든 퀴즈 셋을 반환한다
+      tags:
+      - Quiz set
+  /quizsets/quizset:
     post:
       consumes:
       - application/json
@@ -177,7 +202,7 @@ paths:
       summary: 퀴즈셋을 생성한다
       tags:
       - Quiz set
-  /quizset/{quizSetId}/class/{classCode}:
+  /quizsets/quizset/{quizSetId}/class/{classCode}:
     delete:
       consumes:
       - application/json
@@ -238,7 +263,7 @@ paths:
       summary: 유저의 퀴즈셋에 있는 퀴즈를 강의의 퀴즈셋으로 가져온다
       tags:
       - Quiz set
-  /quizset/{quizSetId}/quiz/{quizId}:
+  /quizsets/quizset/{quizSetId}/quiz/{quizId}:
     delete:
       consumes:
       - application/json
@@ -265,7 +290,7 @@ paths:
       summary: 퀴즈셋에 있는 퀴즈를 삭제한다
       tags:
       - Quiz set
-  /quizset/{quizsetId}:
+  /quizsets/quizset/{quizsetId}:
     delete:
       consumes:
       - application/json
@@ -287,7 +312,7 @@ paths:
       summary: 퀴즈셋을 삭제한다
       tags:
       - Quiz set
-  /quizset/{quizsetId}/quiz:
+  /quizsets/quizset/{quizsetId}/quiz:
     post:
       consumes:
       - application/json
@@ -313,6 +338,30 @@ paths:
           schema:
             type: string
       summary: 퀴즈셋에 퀴즈를 추가한다.
+      tags:
+      - Quiz set
+  /quizsets/users/{username}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 유저 로그인 아이디
+        in: path
+        name: username
+        required: true
+        type: string
+      responses:
+        "200":
+          description: 퀴즈셋목록(배열)
+          schema:
+            items:
+              $ref: '#/definitions/dto.QuizSetGetForm'
+            type: array
+        "400":
+          description: bad request
+          schema:
+            type: string
+      summary: 유저가 만든 모든 퀴즈셋 조회
       tags:
       - Quiz set
   /user/classes/enrolled/{userName}:
@@ -386,30 +435,6 @@ paths:
           schema:
             type: string
       summary: 로그인
-      tags:
-      - User
-  /user/quizset/{username}:
-    get:
-      consumes:
-      - application/json
-      parameters:
-      - description: 유저 로그인 아이디
-        in: path
-        name: username
-        required: true
-        type: string
-      responses:
-        "200":
-          description: 퀴즈셋목록(배열)
-          schema:
-            items:
-              $ref: '#/definitions/dto.QuizSetGetForm'
-            type: array
-        "400":
-          description: bad request
-          schema:
-            type: string
-      summary: 유저가 만든 모든 퀴즈셋 조회
       tags:
       - User
   /user/register:

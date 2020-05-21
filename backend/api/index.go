@@ -12,6 +12,15 @@ import (
 	"strings"
 )
 
+const (
+	UNAUTHORIZED = "UNAUTHORIZED"
+	INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR"
+	INVALID_REQUEST_HEADER = "INVALID_REQUEST_HEADER"
+	INVALID_PATH_PARAMETER = "INVALID_PATH_PARAMETER"
+	INVALID_REQUEST_BODY = "INVALID_PATH_PARAMETER"
+	RETRY = "RETRY"
+)
+
 var (
 	USER = false
 	ADMIN = true
@@ -142,17 +151,18 @@ func InitRouters(context *web.Context) {
 	auth.GET("/register", service.Register(context))
 	auth.GET("/classes/enrolled/:username", service.GetAllEnrolledClass(context))
 	auth.GET("/classes/managing/:username", service.GetAllManagingClass(context))
-	auth.GET("/quizset/:username", service.GetUserQuizSet(context))
 
 	r.GET("/users/:name", service.GetUserByUserName(context))
-	quizset := r.Group("/quizset")
+	quizset := r.Group("/quizsets")
 	quizset.Use(authMiddleware.MiddlewareFunc())
-	quizset.POST("/", service.CreateQuizSet(context))
-	quizset.DELETE("/:quizsetId", service.DeleteQuizSet(context))
-	quizset.POST("/:quizsetId/quiz/", service.AddQuiz(context))
-	quizset.DELETE("/:quizsetId/quiz/:quizId", service.DeleteQuizFromQuizSet(context))
-	quizset.POST("/:quizsetId/class/:classCode", service.LoadQuizSetToClass(context))
-	quizset.DELETE("/:quizsetId/class/:classCode", service.DeleteQuizSetFromClass(context))
+	quizset.POST("/quizset", service.CreateQuizSet(context))
+	quizset.DELETE("quizset/:quizsetId", service.DeleteQuizSet(context))
+	quizset.POST("quizset/:quizsetId/quiz/", AddQuiz(context))
+	quizset.DELETE("/quizset/:quizsetId/quiz/:quizId", DeleteQuizFromQuizSet(context))
+	quizset.POST("/quizset/:quizsetId/class/:classCode", LoadQuizSetToClass(context))
+	quizset.DELETE("/quizset/:quizsetId/class/:classCode", DeleteQuizSetFromClass(context))
+	quizset.POST("/classes/:classCode", service.GetQuizSetsOfClass(context))
+	quizset.GET("/users/:username", service.GetUserQuizSet(context))
 
 	quiz := r.Group("/quiz")
 	quiz.Use(authMiddleware.MiddlewareFunc())

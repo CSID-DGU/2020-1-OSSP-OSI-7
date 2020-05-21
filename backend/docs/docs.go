@@ -101,7 +101,46 @@ var doc = `{
                 }
             }
         },
-        "/quizset": {
+        "/quizsets/classes/{classCode}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quiz set"
+                ],
+                "summary": "해당 강의가 가지고 있는 모든 퀴즈 셋을 반환한다",
+                "parameters": [
+                    {
+                        "description": "퀴즈 셋을 조회할 강의의 학수 번호",
+                        "name": "JSON",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.QuizCreateForm"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "퀴즈 셋 배열",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.QuizSetGetForm"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/quizsets/quizset": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -137,7 +176,7 @@ var doc = `{
                 }
             }
         },
-        "/quizset/{quizSetId}/class/{classCode}": {
+        "/quizsets/quizset/{quizSetId}/class/{classCode}": {
             "post": {
                 "description": "퀴즈 셋 고유 아이디와 학수번호를 받아서 클래스의 퀴즈셋 목록에 추가한다.",
                 "consumes": [
@@ -225,7 +264,7 @@ var doc = `{
                 }
             }
         },
-        "/quizset/{quizSetId}/quiz/{quizId}": {
+        "/quizsets/quizset/{quizSetId}/quiz/{quizId}": {
             "delete": {
                 "consumes": [
                     "application/json"
@@ -266,7 +305,7 @@ var doc = `{
                 }
             }
         },
-        "/quizset/{quizsetId}": {
+        "/quizsets/quizset/{quizsetId}": {
             "delete": {
                 "consumes": [
                     "application/json"
@@ -300,7 +339,7 @@ var doc = `{
                 }
             }
         },
-        "/quizset/{quizsetId}/quiz": {
+        "/quizsets/quizset/{quizsetId}/quiz": {
             "post": {
                 "consumes": [
                     "application/json"
@@ -336,6 +375,43 @@ var doc = `{
                     },
                     "400": {
                         "description": "요청이 올바르지 않습니다.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
+        "/quizsets/users/{username}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quiz set"
+                ],
+                "summary": "유저가 만든 모든 퀴즈셋 조회",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "유저 로그인 아이디",
+                        "name": "username",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "퀴즈셋목록(배열)",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.QuizSetGetForm"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "bad request",
                         "schema": {
                             "type": "string"
                         }
@@ -449,43 +525,6 @@ var doc = `{
                     },
                     "404": {
                         "description": "USER_NOT_EXIST",
-                        "schema": {
-                            "type": "string"
-                        }
-                    }
-                }
-            }
-        },
-        "/user/quizset/{username}": {
-            "get": {
-                "consumes": [
-                    "application/json"
-                ],
-                "tags": [
-                    "User"
-                ],
-                "summary": "유저가 만든 모든 퀴즈셋 조회",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "유저 로그인 아이디",
-                        "name": "username",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "퀴즈셋목록(배열)",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/dto.QuizSetGetForm"
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "bad request",
                         "schema": {
                             "type": "string"
                         }
