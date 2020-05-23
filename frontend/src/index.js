@@ -4,12 +4,15 @@ import { BrowserRouter } from "react-router-dom";
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 import './components/App.scss';
+import {RecoilRoot} from 'recoil'; 
 
 
 ReactDOM.render(
   <React.StrictMode>
   <BrowserRouter>
+  <RecoilRoot>
     <App/>
+    </RecoilRoot>
   </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')

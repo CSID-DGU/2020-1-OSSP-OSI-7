@@ -23,7 +23,7 @@ const AnswerForm = (props) =>{
         <Fragment>
             <Form.Label  column sm="2">ANSWER</Form.Label>
             <Col sm="10" className="quizitem__last__row">
-            <Form.Control name="answer" quizId={quiz.id} value={quiz.answer} onChange={(e)=>onChange(e)}></Form.Control>
+            <Form.Control required name="answer" quizId={quiz.id} value={quiz.answer} onChange={(e)=>onChange(e)}></Form.Control>
             </Col>
         </Fragment>
     )

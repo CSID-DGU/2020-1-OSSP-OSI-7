@@ -1,4 +1,4 @@
-name: React build test
+name: React deploy
 on:
   push:
     branches:
@@ -6,7 +6,7 @@ on:
 
 jobs:                                 
   build:                              
-    name: hello github action         
+    name: deploy to s3         
     runs-on: ubuntu-latest           
     steps:                            
       - name: Checkout source code.   # 레포지토리 체크아웃

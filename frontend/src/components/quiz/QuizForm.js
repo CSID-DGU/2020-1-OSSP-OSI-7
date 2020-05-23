@@ -47,7 +47,7 @@ const QuizForm = (props)=>{
         <Form.Group as={Row}>
             <Form.Label  column sm="2">QUESTION</Form.Label>
             <Col sm="10">
-            <Form.Control  as="textarea" name="question" quizId={id} value={quiz.question} onChange={(e)=>{onChange(e)}}></Form.Control>
+            <Form.Control required as="textarea" name="question" quizId={id} value={quiz.question} onChange={(e)=>{onChange(e)}}></Form.Control>
             </Col>
         </Form.Group>
         <Form.Group as={Row}>

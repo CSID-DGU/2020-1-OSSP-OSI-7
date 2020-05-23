@@ -50,7 +50,7 @@ const ChoicesItem = (props) =>{
                 value={choice.choice} choiceId={choice.id} 
                 onChange={(e)=>onChange(e)}
                 className={inputBackground()}
-                isAnswer={isAnswer}
+                isAnswer={isAnswer} required
                 ></Form.Control>
             {focus && (
                 <Fragment>

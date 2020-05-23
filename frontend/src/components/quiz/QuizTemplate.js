@@ -1,12 +1,17 @@
 import React, { useState, useEffect} from "react";
 import { Button, Container, ButtonToolbar, ButtonGroup,Form, Row,Col } from "react-bootstrap";
 import QuizList from "./QuizList";
+import {useRecoilValue} from 'recoil';
+import {currentUser} from '../atoms';
+
 
 const QuizTemplate = () => {
     const [count, setCount] = useState(0);
     const [quizSetName, setQuizSetName] = useState("");
     const [classId, setClassId] = useState("");
     const [quizzes, setQuizzes] = useState([]);
+
+    const user = useRecoilValue(currentUser);
     
     const koreanDict = {"mul_choices":"객관식", "essay":"주관식", "short_answer":"단답형","binary":"OX형"};
 
@@ -122,6 +127,7 @@ const QuizTemplate = () => {
 
     const onSubmit = ()=>{
         const quizSet = {
+            user: user,
             quizset_name: quizSetName,
             class_id: classId,
             quizzes:quizzes
@@ -137,24 +143,25 @@ const QuizTemplate = () => {
 
 
     return (
-        <Container className="quiz__container">
+        <Container  className="quiz__container">
+        <Form>
             <Container>
                 <h1>QUIZ 만들기</h1>
                 <h3>TOTAL : {count}</h3>
-                <Form>
+                <Container>
                     <Form.Group as={Row}>
                         <Form.Label column sm="2">NAME</Form.Label>
                         <Col sm="4">
-                            <Form.Control value={quizSetName} name="quizSetName" onChange={(e)=>onChange(e)}></Form.Control>
+                            <Form.Control value={quizSetName} required name="quizSetName" onChange={(e)=>onChange(e)}></Form.Control>
                         </Col>
                     </Form.Group>
                     <Form.Group as={Row}>
                         <Form.Label column sm="2">CLASS_ID</Form.Label>
                         <Col sm="4">
-                            <Form.Control value={classId} name="classId" onChange={(e)=>onChange(e)} ></Form.Control>
+                            <Form.Control value={classId} name="classId" required onChange={(e)=>onChange(e)} ></Form.Control>
                         </Col>
                     </Form.Group>
-                </Form>
+                </Container>
             </Container>
             <QuizList quizzes={quizzes} onRemove={onRemove} 
             onTypeChange={onTypeChange} addChoices={addChoices} 
@@ -167,10 +174,11 @@ const QuizTemplate = () => {
                     <QuizBtn quizType="short_answer" />
                     <QuizBtn quizType="binary" />
                     <ButtonGroup >
-                        <Button onClick={() => onSubmit()} variant="success">저장</Button>
+                        <Button onClick={(e) => onSubmit(e)} type="submit" variant="success">저장</Button>
                     </ButtonGroup>
                 </ButtonToolbar>
             </Container>
+        </Form>
         </Container>
     );
 };

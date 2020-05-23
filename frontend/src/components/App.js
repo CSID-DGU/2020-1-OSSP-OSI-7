@@ -10,10 +10,11 @@ import AuthRoute from './auth/AuthRoute';
 import NotFound from './NotFound';
 import TestQuiz from './quiz/TestQuiz';
 import {login, registerTo} from '../lib/api/fakeAuth';
-
+import {useRecoilState} from 'recoil';
+import {currentUser} from './atoms';
 
 const App = () => {
-  const [user, setUser] = useState("null");
+  const [user, setUser] = useRecoilState(currentUser);
   const authenticated = user != null;
 
   // const logIn = ({username, password}) =>setUser("user");
