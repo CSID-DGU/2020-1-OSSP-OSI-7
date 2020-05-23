@@ -27,7 +27,7 @@ const AnswerBtn = styled(InputBtn)`
 
 
 const ChoicesItem = (props) =>{
-    const {choice, onChange, quizId, onRemoveChoice, selectAnswerChoice, isAnswer} = props;
+    const {choice, onChange, quizId, handleBlur, onRemoveChoice, selectAnswerChoice, isAnswer} = props;
     const [focus,setFocus] = useState(false);
     const [btnfocus,setBtnFocus] = useState(false);
 
@@ -50,7 +50,7 @@ const ChoicesItem = (props) =>{
                 value={choice.choice} choiceId={choice.id} 
                 onChange={(e)=>onChange(e)}
                 className={inputBackground()}
-                isAnswer={isAnswer} required
+                isAnswer={isAnswer} onBlur={handleBlur} required
                 ></Form.Control>
             {focus && (
                 <Fragment>
