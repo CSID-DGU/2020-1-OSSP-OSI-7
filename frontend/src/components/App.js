@@ -15,7 +15,7 @@ import {currentUser} from './atoms';
 
 const App = () => {
   const [user, setUser] = useRecoilState(currentUser);
-  const authenticated = user != null;
+  const authenticated = user === null;
 
   // const logIn = ({username, password}) =>setUser("user");
   const logIn = ({username, password}) => (setUser(login({username,password}).user));

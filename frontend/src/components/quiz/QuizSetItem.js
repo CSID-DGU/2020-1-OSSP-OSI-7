@@ -1,11 +1,12 @@
 import React from "react";
+import {Container} from 'react-bootstrap';
 
 const QuizSetItem = ({id, title}) => {
     return (
-    <div>
+    <Container className="quiz__container">
         <h2>{id}</h2>
         <p>{title}</p>
-    </div>
+    </Container>
     )
 }
 

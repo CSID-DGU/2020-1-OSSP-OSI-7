@@ -116,7 +116,6 @@ const QuizTemplate = () => {
         const choices = quizzes.filter((quiz)=>quiz.id === quizId)[0].content.choices;
 
         const isExist = choices.filter((c)=> c.id !== choiceId && value !== "" &&c.choice === value);
-        console.log(isExist.length);
         if (isExist.length){
             alert("already exist choice please change");
             e.target.setCustomValidity("already exist");
