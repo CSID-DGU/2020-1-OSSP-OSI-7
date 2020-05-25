@@ -3,6 +3,7 @@ package repository
 import (
 	"database/sql"
 	"github.com/go-gorp/gorp"
+	_ "github.com/go-sql-driver/mysql"
 	"oss/models"
 )
 
@@ -26,7 +27,7 @@ func initSqlStore() (*sql.DB, *gorp.DbMap) {
 		print(err)
 	}
 
-	dbmap := &gorp.DbMap{Db: db, Dialect: gorp.MySQLDialect{"InnoDB", "UTF8"}}
+	dbmap := &gorp.DbMap{Db: db, Dialect: gorp.MySQLDialect{Engine: "InnoDB", Encoding: "UTF8"}}
 
 	err = dbmap.CreateTablesIfNotExists()
 

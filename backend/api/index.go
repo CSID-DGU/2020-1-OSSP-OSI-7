@@ -7,7 +7,6 @@ import (
 	"google.golang.org/api/chat/v1"
 	"log"
 	"oss/cli"
-	"oss/service"
 	"oss/web"
 	"strings"
 )
@@ -128,7 +127,7 @@ func InitRouters(context *web.Context) {
 	})
 
 
-	r.POST("/login", service.Login(context, authMiddleware))
+	r.POST("/login", Login(context, authMiddleware))
 
 	r.NoRoute(authMiddleware.MiddlewareFunc(), func(c *gin.Context) {
 		claims := jwt.ExtractClaims(c)
@@ -142,30 +141,30 @@ func InitRouters(context *web.Context) {
 
 	class := r.Group("/class")
 	class.Use(classMiddleware.MiddlewareFunc())
-	class.POST("/", service.CreateClass(context))
-	class.POST("/enroll/:classcode", service.JoinClass(context));
+	class.POST("/", CreateClass(context))
+	class.POST("/enroll/:classcode", JoinClass(context));
 
 	auth := r.Group("/user")
 	auth.GET("/refresh_token", authMiddleware.RefreshHandler)
 	auth.Use(authMiddleware.MiddlewareFunc())
-	auth.GET("/register", service.Register(context))
-	auth.GET("/classes/enrolled/:username", service.GetAllEnrolledClass(context))
-	auth.GET("/classes/managing/:username", service.GetAllManagingClass(context))
+	auth.GET("/register", Register(context))
+	auth.GET("/classes/enrolled/:username", GetAllEnrolledClass(context))
+	auth.GET("/classes/managing/:username", GetAllManagingClass(context))
 
-	r.GET("/users/:name", service.GetUserByUserName(context))
+	r.GET("/users/:name", GetUserByUserName(context))
 	quizset := r.Group("/quizsets")
 	quizset.Use(authMiddleware.MiddlewareFunc())
-	quizset.POST("/quizset", service.CreateQuizSet(context))
-	quizset.DELETE("quizset/:quizsetId", service.DeleteQuizSet(context))
+	quizset.POST("/quizset", CreateQuizSet(context))
+	quizset.DELETE("quizset/:quizsetId", DeleteQuizSet(context))
 	quizset.POST("quizset/:quizsetId/quiz/", AddQuiz(context))
 	quizset.DELETE("/quizset/:quizsetId/quiz/:quizId", DeleteQuizFromQuizSet(context))
 	quizset.POST("/quizset/:quizsetId/class/:classCode", LoadQuizSetToClass(context))
 	quizset.DELETE("/quizset/:quizsetId/class/:classCode", DeleteQuizSetFromClass(context))
-	quizset.POST("/classes/:classCode", service.GetQuizSetsOfClass(context))
-	quizset.GET("/users/:username", service.GetUserQuizSet(context))
+	quizset.POST("/classes/:classCode", GetQuizSetsOfClass(context))
+	quizset.GET("/users/:username", GetUserQuizSet(context))
 
 	quiz := r.Group("/quiz")
 	quiz.Use(authMiddleware.MiddlewareFunc())
-	quiz.POST("/", service.CreateQuizSet(context))
-	quiz.DELETE("/", service.DeleteQuizSet(context))
+	quiz.POST("/", CreateQuizSet(context))
+	quiz.DELETE("/", DeleteQuizSet(context))
 }
