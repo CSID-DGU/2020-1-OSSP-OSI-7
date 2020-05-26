@@ -9,18 +9,18 @@ import Register from './auth/Register';
 import AuthRoute from './auth/AuthRoute';
 import NotFound from './NotFound';
 import TestQuiz from './quiz/TestQuiz';
-import {login, registerTo} from '../lib/api/fakeAuth';
+import {login, registerTo} from '../lib/api/auth';
 import {useRecoilState} from 'recoil';
 import {currentUser} from './atoms';
 
 const App = () => {
   const [user, setUser] = useRecoilState(currentUser);
-  const authenticated = user === null;
+  const authenticated = user !== null;
 
   // const logIn = ({username, password}) =>setUser("user");
   const logIn = ({username, password}) => (setUser(login({username,password}).user));
   const logOut = () =>setUser(null);
-  const register = ({username, password}) => registerTo({username, password});
+  const register = ({username,password, nickname, student_code, email}) => registerTo({username,password, nickname, student_code, email});
 
 
   return (

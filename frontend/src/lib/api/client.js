@@ -1,10 +1,12 @@
 import axios from 'axios';
 
-const client = axios.create();
+const client = axios.create({proxy: {
+    host: 'https://34.64.101.170',
+    port: 8000
+  }});
 
 client.defaults.baseURL = 'https://34.64.101.170:8000/'
-
-client.defaults.headers.common['Authorization'] = 'Bearer asdfasdf';
+client.defaults.headers.common['Content-Type'] = 'application/json';
 
 axios.interceptors.response.use(
     response => {
@@ -12,6 +14,7 @@ axios.interceptors.response.use(
         return response;
     },
     error => {
+        console.log(error);
         return Promise.reject(error);
     }
 )

@@ -8,7 +8,6 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 const TestQuizResult = ({total}) =>{
     const [value,setValue] = useState(0);
 
-
     const colorGradiant = (percent) => {
         if(percent <= 30){
             return "red";

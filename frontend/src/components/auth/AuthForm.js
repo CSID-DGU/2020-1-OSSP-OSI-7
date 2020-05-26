@@ -2,7 +2,8 @@ import React, {Fragment, useState} from 'react';
 import { Link,Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import {Form,Col,InputGroup, Button} from 'react-bootstrap';
-import {FaUser, FaPaperPlane, FaLock, FaUnlockAlt} from 'react-icons/fa'
+import {FaUser, FaPaperPlane, FaLock, FaUnlockAlt, FaGrinSquint} from 'react-icons/fa'
+import {IoMdSchool} from 'react-icons/io'
 
 
 const AuthFormBlock = styled.div`
@@ -24,6 +25,8 @@ const FieldForm = ({placeholder, icon, type, onChange}) => (
 
 const AuthForm = ({authenticated, type, handleSubmit, location})=>{
     const [email, setEmail] = useState("");
+    const [nickname, setNickname] = useState("");
+    const [student_code, setStudentCode] = useState("");
     const [username, setUsername] = useState("");
     const [password,setPassword] = useState("");
     const [passwordCheck, setPasswordCheck] = useState("");
@@ -51,10 +54,12 @@ const AuthForm = ({authenticated, type, handleSubmit, location})=>{
 
     const handleSignUp = () =>{
         try{
-            handleSubmit({username,password});
+            handleSubmit({username,password, nickname, student_code, email});
         } catch{
             alert("Failed to Register");
             setEmail("");
+            setNickname("");
+            setStudentCode("");
             setPassword("");
             setUsername("");
         }
@@ -73,8 +78,10 @@ const AuthForm = ({authenticated, type, handleSubmit, location})=>{
                 {type === 'register' && 
                 <Fragment>
                     <FieldForm placeholder={"E-MAIL"} icon={<FaPaperPlane/>} onChange={setEmail} type={"email"}/>
+                    <FieldForm placeholder={"NICKNAME"} icon={<FaGrinSquint/>} onChange={setNickname} type={"nickname"}/>
+                    <FieldForm placeholder={"STUDENT_CODE"} icon={<IoMdSchool/>} onChange={setStudentCode} type={"studentCode"}/>
                     <hr/>
-                    </Fragment>
+                </Fragment>
                 }
                 <FieldForm placeholder={"PASSWORD"} icon={<FaLock/>} onChange={setPassword} type={"password"}/>
                 
