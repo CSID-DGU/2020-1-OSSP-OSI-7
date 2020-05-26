@@ -98,6 +98,7 @@ func InitRouters(context *web.Context) {
 	classMiddleware, err := getClassAuthMiddleware()
 
 	r := context.Engine
+	r.Use(CORSMiddleWare())
 
 	if err != nil {
 		log.Fatal("JWT Error:" + err.Error())
@@ -126,21 +127,14 @@ func InitRouters(context *web.Context) {
 		c.JSON(200, response)
 	})
 
-
-
 	r.NoRoute(authMiddleware.MiddlewareFunc(), func(c *gin.Context) {
 		claims := jwt.ExtractClaims(c)
 		log.Printf("NoRoute claims: %#v\n", claims)
 		c.JSON(404, gin.H{"code": "PAGE_NOT_FOUND", "message": "Page not found"})
 	})
 
-	r.POST("/foo", func(c *gin.Context) {
-
-	})
-
 	r.POST("/login", Login(context, authMiddleware))
 	r.POST("/register", Register(context))
-	r.Use(CORSMiddleWare())
 
 	class := r.Group("/class")
 	class.Use(CORSMiddleWare())
