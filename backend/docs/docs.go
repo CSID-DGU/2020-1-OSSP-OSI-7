@@ -501,9 +501,6 @@ var doc = `{
         },
         "/user/login": {
             "post": {
-                "tags": [
-                    "User"
-                ],
                 "summary": "로그인",
                 "parameters": [
                     {
@@ -536,9 +533,6 @@ var doc = `{
             "post": {
                 "consumes": [
                     "application/json"
-                ],
-                "tags": [
-                    "User"
                 ],
                 "summary": "회원가입",
                 "parameters": [
@@ -735,6 +729,9 @@ var doc = `{
                 "nickname": {
                     "type": "string",
                     "example": "my nickname"
+                },
+                "password": {
+                    "type": "string"
                 },
                 "student_code": {
                     "type": "integer",

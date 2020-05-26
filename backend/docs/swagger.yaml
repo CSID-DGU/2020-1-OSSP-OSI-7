@@ -94,6 +94,8 @@ definitions:
       nickname:
         example: my nickname
         type: string
+      password:
+        type: string
       student_code:
         example: 2015123456
         type: integer
@@ -435,8 +437,6 @@ paths:
           schema:
             type: string
       summary: 로그인
-      tags:
-      - User
   /user/register:
     post:
       consumes:
@@ -458,8 +458,6 @@ paths:
           schema:
             type: json
       summary: 회원가입
-      tags:
-      - User
   /users/{username}:
     get:
       parameters:

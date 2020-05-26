@@ -127,7 +127,6 @@ func InitRouters(context *web.Context) {
 	})
 
 
-	r.POST("/login", Login(context, authMiddleware))
 
 	r.NoRoute(authMiddleware.MiddlewareFunc(), func(c *gin.Context) {
 		claims := jwt.ExtractClaims(c)
@@ -139,6 +138,9 @@ func InitRouters(context *web.Context) {
 
 	})
 
+	r.POST("/login", Login(context, authMiddleware))
+	r.POST("/register", Register(context))
+
 	class := r.Group("/class")
 	class.Use(classMiddleware.MiddlewareFunc())
 	class.POST("/", CreateClass(context))
@@ -147,7 +149,7 @@ func InitRouters(context *web.Context) {
 	auth := r.Group("/user")
 	auth.GET("/refresh_token", authMiddleware.RefreshHandler)
 	auth.Use(authMiddleware.MiddlewareFunc())
-	auth.GET("/register", Register(context))
+
 	auth.GET("/classes/enrolled/:username", GetAllEnrolledClass(context))
 	auth.GET("/classes/managing/:username", GetAllManagingClass(context))
 

@@ -481,9 +481,6 @@
         },
         "/user/login": {
             "post": {
-                "tags": [
-                    "User"
-                ],
                 "summary": "로그인",
                 "parameters": [
                     {
@@ -516,9 +513,6 @@
             "post": {
                 "consumes": [
                     "application/json"
-                ],
-                "tags": [
-                    "User"
                 ],
                 "summary": "회원가입",
                 "parameters": [
@@ -715,6 +709,9 @@
                 "nickname": {
                     "type": "string",
                     "example": "my nickname"
+                },
+                "password": {
+                    "type": "string"
                 },
                 "student_code": {
                     "type": "integer",

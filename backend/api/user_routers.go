@@ -8,7 +8,6 @@ import (
 	"oss/web"
 )
 
-// @tags User
 // @Summary 로그인
 // @Description
 // @name get-string-by-int
@@ -20,7 +19,6 @@ func Login (context *web.Context, middleware *jwt.GinJWTMiddleware )  gin.Handle
 	return middleware.LoginHandler
 }
 
-// @tags User
 // @Summary 회원가입
 // @Description
 // @name get-string-by-int
