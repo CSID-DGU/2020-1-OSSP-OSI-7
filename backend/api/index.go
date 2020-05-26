@@ -140,13 +140,16 @@ func InitRouters(context *web.Context) {
 
 	r.POST("/login", Login(context, authMiddleware))
 	r.POST("/register", Register(context))
+	r.Use(CORSMiddleWare())
 
 	class := r.Group("/class")
+	class.Use(CORSMiddleWare())
 	class.Use(classMiddleware.MiddlewareFunc())
 	class.POST("/", CreateClass(context))
 	class.POST("/enroll/:classcode", JoinClass(context));
 
 	auth := r.Group("/user")
+	auth.Use(CORSMiddleWare())
 	auth.GET("/refresh_token", authMiddleware.RefreshHandler)
 	auth.Use(authMiddleware.MiddlewareFunc())
 
@@ -155,6 +158,7 @@ func InitRouters(context *web.Context) {
 
 	r.GET("/users/:name", GetUserByUserName(context))
 	quizset := r.Group("/quizsets")
+	quizset.Use(CORSMiddleWare())
 	quizset.Use(authMiddleware.MiddlewareFunc())
 	quizset.POST("/quizset", CreateQuizSet(context))
 	quizset.DELETE("quizset/:quizsetId", DeleteQuizSet(context))
@@ -166,6 +170,7 @@ func InitRouters(context *web.Context) {
 	quizset.GET("/users/:username", GetUserQuizSet(context))
 
 	quiz := r.Group("/quiz")
+	quiz.Use(CORSMiddleWare())
 	quiz.Use(authMiddleware.MiddlewareFunc())
 	quiz.POST("/", CreateQuizSet(context))
 	quiz.DELETE("/", DeleteQuizSet(context))
