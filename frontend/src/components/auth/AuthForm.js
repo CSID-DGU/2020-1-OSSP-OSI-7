@@ -38,12 +38,14 @@ const AuthForm = ({authenticated, type, handleSubmit, location})=>{
 
 
     useEffect(()=>{
+        if(type === "register"){
         const formReference = document.getElementById('USERNAME');
         if(isUsername){
             formReference.setCustomValidity("user Already Exist");
         }   else {
             formReference.setCustomValidity("");
         }
+    }
     }, [isUsername]);
 
     useEffect(()=>{

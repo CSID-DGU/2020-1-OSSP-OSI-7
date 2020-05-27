@@ -1,5 +1,5 @@
-import React,{useState, Fragment} from 'react';
-import { Route, Link, Switch} from 'react-router-dom';
+import React,{useState, useEffect,Fragment} from 'react';
+import { Route, Link, Switch, useHistory} from 'react-router-dom';
 import {Navbar, Nav} from 'react-bootstrap';
 import QuizTemplate from './quiz/QuizTemplate';
 import QuizSetList from './quiz/QuizSetList';
@@ -15,11 +15,31 @@ import {currentUser} from './atoms';
 
 const App = () => {
   const [user, setUser] = useRecoilState(currentUser);
-  const authenticated = user !== null;
+  const [authenticated, setAuth] = useState(false);
+  let history = useHistory();
+  // const authenticated = user !== null;
+
+  useEffect (()=>{
+      const local = localStorage.getItem("user_info");
+      if(local){
+        setAuth(true);
+      }  else {
+        setAuth(false);
+      }
+      // setUser(local.user);
+  }, [user])
+  // }
 
   // const logIn = ({username, password}) =>setUser("user");
-  const logIn = ({username, password}) => (setUser(login({username,password}).user));
-  const logOut = () =>setUser(null);
+  const logIn = ({username, password}) => {
+    login({username,password});
+    setAuth(true);
+  };
+  const logOut = () =>{
+    setUser(null);
+    setAuth(false);
+    localStorage.removeItem("user_info");
+  };
   const register = ({username,password, nickname, student_code, email}) => registerTo({username,password, nickname, student_code, email});
 
 
