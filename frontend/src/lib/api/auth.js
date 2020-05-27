@@ -11,4 +11,4 @@ export const registerTo = ({username,password, nickname, student_code, email}) =
             (err) => console.log(err)
         );
 }
-export const check = () => client.get('/check');
+export const check = (username) => client.get(`/users/${username}`);

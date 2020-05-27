@@ -1,23 +1,26 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 import { Link,Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import {Form,Col,InputGroup, Button} from 'react-bootstrap';
 import {FaUser, FaPaperPlane, FaLock, FaUnlockAlt, FaGrinSquint} from 'react-icons/fa'
 import {IoMdSchool} from 'react-icons/io'
-
+import {check} from '../../lib/api/auth'
 
 const AuthFormBlock = styled.div`
 
 `;
 
 
-const FieldForm = ({placeholder, icon, type, onChange}) => (
+
+
+const FieldForm = ({placeholder, icon, type, onChange, handleBlur, feedback, authType}) => (
     <Form.Group className="authform_group">
         <InputGroup>
             <InputGroup.Prepend>
             <InputGroup.Text>{icon}</InputGroup.Text>
             </InputGroup.Prepend>
-            <Form.Control type={type} placeholder={placeholder} required  onChange={(e)=>onChange(e.target.value)}/>
+            <Form.Control type={type} id={placeholder} placeholder={placeholder} required onBlur={authType === "register" && handleBlur} onChange={(e)=>onChange(e.target.value)}/>
+            <Form.Control.Feedback type="invalid">{feedback}</Form.Control.Feedback>
         </InputGroup>
     </Form.Group>
 );
@@ -30,16 +33,52 @@ const AuthForm = ({authenticated, type, handleSubmit, location})=>{
     const [username, setUsername] = useState("");
     const [password,setPassword] = useState("");
     const [passwordCheck, setPasswordCheck] = useState("");
+    const [validated, setValid] = useState(false); 
+    const [isUsername,setCheck] = useState(false);
+
+
+    useEffect(()=>{
+        const formReference = document.getElementById('USERNAME');
+        if(isUsername){
+            formReference.setCustomValidity("user Already Exist");
+        }   else {
+            formReference.setCustomValidity("");
+        }
+    }, [isUsername]);
+
+    useEffect(()=>{
+        if(type === "register"){
+        const pwCheckReference = document.getElementById('PASSWORD CHECK');
+        const pwReference = document.getElementById('PASSWORD');
+        if (password !== passwordCheck) {
+            setValid(true);
+            pwReference.setCustomValidity("not smae");
+            pwCheckReference.setCustomValidity("not smae");
+        }else {
+            pwReference.setCustomValidity("");
+            pwCheckReference.setCustomValidity("");
+        }
+    }
+        
+    },[password,passwordCheck]);
+
 
     const { from } = location.state || { from: { pathname: "/" } }
     if (authenticated) return <Redirect to={from} />
 
     const handleClick = () =>{
-        if(type === "login") {
-            handleSignIn();
-        }else if (type ==="register"){
-            handleSignUp();
+        const formReference = document.getElementById('authForm');
+        if (formReference.checkValidity() === false){
+            console.log("stay");
+        }else{
+            console.log(formReference);
+            if(type === "login") {
+                handleSignIn();
+            }else if (type ==="register"){
+                handleSignUp();
+            }
         }
+        setValid(true);
     }
 
     const handleSignIn = () =>{
@@ -65,32 +104,39 @@ const AuthForm = ({authenticated, type, handleSubmit, location})=>{
         }
     }
 
+    const handleBlur = (e)=>{
+        const value = e.target.value;
+        console.log(value);
+        check(value).then((res)=>setCheck(true)).catch(()=>setCheck(false));
+        setValid(true);
+    }
+
     return (
         <AuthFormBlock>
-            <Form>
+            <Form noValidate validated={validated} id="authForm">
                 <h2>{type.charAt(0).toUpperCase() + type.slice(1)}</h2>
                 {type === 'register' ?
                 (<p>Please fill in this form to create an account!</p>)
                 :(<p>Pease fill your Email and password</p>)
                 }
                 <hr/>
-                <FieldForm placeholder={"USERNAME"} icon={<FaUser/>} onChange={setUsername} type={"text"}/>
+                <FieldForm authType={type} feedback={"already exist username"} placeholder={"USERNAME"} icon={<FaUser/>} onChange={setUsername} handleBlur={handleBlur} type={"username"}/>
                 {type === 'register' && 
                 <Fragment>
-                    <FieldForm placeholder={"E-MAIL"} icon={<FaPaperPlane/>} onChange={setEmail} type={"email"}/>
-                    <FieldForm placeholder={"NICKNAME"} icon={<FaGrinSquint/>} onChange={setNickname} type={"nickname"}/>
-                    <FieldForm placeholder={"STUDENT_CODE"} icon={<IoMdSchool/>} onChange={setStudentCode} type={"studentCode"}/>
+                    <FieldForm authType={type} placeholder={"E-MAIL"} icon={<FaPaperPlane/>} onChange={setEmail} type={"email"}/>
+                    <FieldForm authType={type} placeholder={"NICKNAME"} icon={<FaGrinSquint/>} onChange={setNickname} type={"nickname"}/>
+                    <FieldForm authType={type} placeholder={"STUDENT_CODE"} icon={<IoMdSchool/>} onChange={setStudentCode} type={"studentCode"}/>
                     <hr/>
                 </Fragment>
                 }
-                <FieldForm placeholder={"PASSWORD"} icon={<FaLock/>} onChange={setPassword} type={"password"}/>
+                <FieldForm authType={type} placeholder={"PASSWORD"} icon={<FaLock/>} onChange={setPassword} type={"password"}/>
                 
                 {type === 'register' && 
-                    <FieldForm placeholder={"PASSWORD CHECK"} icon={<FaUnlockAlt/>}  onChange={setPasswordCheck} type={"password"}/>
+                    <FieldForm authType={type} feedback={"password is not same"} placeholder={"PASSWORD CHECK"} icon={<FaUnlockAlt/>}  onChange={setPasswordCheck} type={"password"}/>
                 }
 
                 <Form.Group>
-                <Button as={Col} md={12} variant="info" type="submit" onClick={()=>handleClick()}>{type === "register" ? "SIGN UP" : "LOGIN"}</Button>
+                <Button as={Col} md={12} variant="info" type="submit"  onClick={()=>handleClick()}>{type === "register" ? "SIGN UP" : "LOGIN"}</Button>
                 </Form.Group>
             </Form>
             {type === 'register' ?( 
