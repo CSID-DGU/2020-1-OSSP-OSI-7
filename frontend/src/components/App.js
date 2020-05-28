@@ -9,6 +9,7 @@ import Register from './auth/Register';
 import AuthRoute from './auth/AuthRoute';
 import NotFound from './NotFound';
 import TestQuiz from './quiz/TestQuiz';
+import Mypage from './mypage/Mypage';
 import {login, registerTo} from '../lib/api/auth';
 import {useRecoilState} from 'recoil';
 import {currentUser} from './atoms';
@@ -20,8 +21,9 @@ const App = () => {
   // const authenticated = user !== null;
 
   useEffect (()=>{
-      const local = localStorage.getItem("user_info");
+      const local = JSON.parse(localStorage.getItem("user_info"));
       if(local){
+        setUser(local.user);
         setAuth(true);
       }  else {
         setAuth(false);
@@ -32,7 +34,7 @@ const App = () => {
 
   // const logIn = ({username, password}) =>setUser("user");
   const logIn = ({username, password}) => {
-    login({username,password});
+    login({username,password}).then((res)=>setUser(res));
     setAuth(true);
   };
   const logOut = () =>{
@@ -65,7 +67,7 @@ const App = () => {
       : (
         <Fragment>
           <Nav.Link onClick={()=>logOut()}>LOGOUT</Nav.Link>
-          <Nav.Link>USER</Nav.Link>
+          <Nav.Link><Link to="/mypage">{user}</Link></Nav.Link>
         </Fragment>
         )
       }
@@ -89,6 +91,8 @@ const App = () => {
         render={props => <QuizTemplate {...props} />}
       />
       <AuthRoute authenticated={authenticated} path="/quiz/:quizSetId" component={TestQuiz}/>}
+      />
+      <AuthRoute authenticated={authenticated} path="/mypage" component={Mypage}/>}
       />
       
       <Route component={NotFound} />

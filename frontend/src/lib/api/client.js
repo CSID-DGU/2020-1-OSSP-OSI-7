@@ -14,13 +14,13 @@ client.interceptors.response.use(
         if(response.data.token){
             const token = response.data.token;
             const decoded = jwt_decode(token);
-            console.log(decoded);
             localStorage.setItem(
                 "user_info",
                 JSON.stringify({
-                    "user":decoded.UserName,
-                  "token": token}));
+                    user:decoded.UserName,
+                  token: token}));
             client.defaults.headers.common['Authorization'] = "Bearer " + token;
+            return decoded.UserName;
         }
         return response;
     },
