@@ -1,4 +1,5 @@
 import React from 'react';
+import {Container, Col,Row} from 'react-bootstrap';
 import {useRecoilValue} from 'recoil';
 import {currentUser} from '../atoms';
 
@@ -6,9 +7,9 @@ import {currentUser} from '../atoms';
 const Mypage = () =>{
     const user = useRecoilValue(currentUser);
     return (
-        <div>
+        <Container className="quiz__container">
             {user}
-        </div>
+        </Container>
     )
 }
 

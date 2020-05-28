@@ -12,11 +12,11 @@ import TestQuiz from './quiz/TestQuiz';
 import Mypage from './mypage/Mypage';
 import {login, registerTo} from '../lib/api/auth';
 import {useRecoilState} from 'recoil';
-import {currentUser} from './atoms';
+import {currentUser, isAuthenticated} from './atoms';
 
 const App = () => {
   const [user, setUser] = useRecoilState(currentUser);
-  const [authenticated, setAuth] = useState(false);
+  const [authenticated, setAuth] = useRecoilState(isAuthenticated);
   let history = useHistory();
   // const authenticated = user !== null;
 
@@ -34,15 +34,18 @@ const App = () => {
 
   // const logIn = ({username, password}) =>setUser("user");
   const logIn = ({username, password}) => {
-    login({username,password}).then((res)=>setUser(res));
-    setAuth(true);
+    login({username,password}).then((res)=>{
+      setUser(res);
+      setAuth(true);
+    }).catch(()=>alert("login fail"));
   };
   const logOut = () =>{
     setUser(null);
     setAuth(false);
     localStorage.removeItem("user_info");
   };
-  const register = ({username,password, nickname, student_code, email}) => registerTo({username,password, nickname, student_code, email});
+  const register = ({username,password, nickname, student_code, email}) => {
+    registerTo({username,password, nickname, student_code, email})};
 
 
   return (

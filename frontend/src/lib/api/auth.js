@@ -6,9 +6,5 @@ export const login = ({username, password}) =>
 
 export const registerTo = ({username,password, nickname, student_code, email}) =>{
     student_code = Number(student_code);
-    client.post('/register', {username,password, nickname, student_code, email}
-        ).then((response) => console.log(response)).catch(
-            (err) => console.log(err)
-        );
-}
+    client.post('/register', {username,password, nickname, student_code, email})}
 export const check = (username) => client.get(`/users/${username}`);

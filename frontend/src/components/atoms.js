@@ -1,7 +1,7 @@
 import {atom} from 'recoil'
 
-const authenticated = atom({
-    key:'authenticated',
+const isAuthenticated = atom({
+    key:'isAuthenticated',
     default: false
 })
 
@@ -10,4 +10,4 @@ const currentUser = atom({
     default: null
 })
 
-export {authenticated, currentUser}
+export {isAuthenticated, currentUser}
