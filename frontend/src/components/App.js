@@ -45,7 +45,9 @@ const App = () => {
     localStorage.removeItem("user_info");
   };
   const register = ({username,password, nickname, student_code, email}) => {
-    registerTo({username,password, nickname, student_code, email})};
+    registerTo({username,password, nickname, student_code, email});
+    history.push('/login');
+  };
 
 
   return (
