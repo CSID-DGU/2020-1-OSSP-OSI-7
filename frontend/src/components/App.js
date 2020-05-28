@@ -14,7 +14,18 @@ import {login, registerTo} from '../lib/api/auth';
 import {useRecoilState} from 'recoil';
 import {currentUser, isAuthenticated} from './atoms';
 
+const useTitle = (initialTitle)=>{
+  const[title,setTitle] = useState(initialTitle);
+  const updateTitle = () =>{
+    const htmlTitle = document.querySelector("title");
+    htmlTitle.innerText = title;
+  };
+  useEffect(updateTitle, [title]);
+  return setTitle;
+} 
+
 const App = () => {
+  const titleUpdator = useTitle("DQUIZ");
   const [user, setUser] = useRecoilState(currentUser);
   const [authenticated, setAuth] = useRecoilState(isAuthenticated);
   let history = useHistory();
