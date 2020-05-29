@@ -2,7 +2,7 @@ import React,{useState, useEffect,Fragment} from 'react';
 import { Route, Link, Switch, useHistory} from 'react-router-dom';
 import {Navbar, Nav, Image, Container} from 'react-bootstrap';
 import QuizTemplate from './quiz/QuizTemplate';
-import QuizSetList from './quiz/QuizSetList';
+import QuizSetListContainer from './quiz/QuizSetListContainer';
 import Home from './Home';
 import Login from './auth/Login';
 import Register from './auth/Register';
@@ -102,7 +102,7 @@ const App = () => {
 
     <Switch>
       <Route path="/" component={Home} exact/>
-      <AuthRoute authenticated={authenticated} path="/quiz" component={QuizSetList} exact/>
+      <AuthRoute authenticated={authenticated} path="/quiz" component={QuizSetListContainer} exact/>
       
       <Route path="/login" render={props => (
           <Login authenticated={authenticated} handleSubmit={logIn} {...props} />

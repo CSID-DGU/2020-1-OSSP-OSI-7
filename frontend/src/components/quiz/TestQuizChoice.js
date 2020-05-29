@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {Button,Col} from 'react-bootstrap';
+import React, {useState} from 'react';
+import {Col} from 'react-bootstrap';
 import styled from 'styled-components';
 
 const ChoiceItem = styled.div`

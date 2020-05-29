@@ -1,6 +1,4 @@
-import React from "react";
-import {Button, Container} from "react-bootstrap";
-import {Link} from "react-router-dom";
+import React, { Fragment, useState } from "react";
 import QuizSetItem from './QuizSetItem';
 
 const quizsetdata = {quizsets:
@@ -32,17 +30,14 @@ const quizsetdata = {quizsets:
     ]
 }
 
-const QuizSets = quizsetdata.quizsets.map((quiz,index)=>
-    <QuizSetItem id={quiz.id} title={quiz.title} />);
 
+const QuizSetList = ({itemStyle}) =>{
+    const [quizset, setQuizSet] = useState(quizsetdata);
 
-const QuizSetList = () =>{
     return (
-        <Container className="quiz__container">
-            {QuizSets}
-            <Link to="/create/"><Button>WRITE</Button></Link>
-            <Link to="/quiz/1"><Button>quiz gogo</Button></Link>
-        </Container>
+        <Fragment>
+        {quizset.quizsets.map((quiz,index)=> <QuizSetItem id={quiz.id} title={quiz.title} itemStyle={itemStyle} />)}
+        </Fragment>
     )
 }
 

@@ -1,8 +1,7 @@
-import React,{useState, useEffect} from 'react';
-import {Container, Col,Row, Image} from 'react-bootstrap';
+import React from 'react';
+import {Container, Col,Row} from 'react-bootstrap';
 import {useRecoilValue} from 'recoil';
 import {currentUser} from '../atoms';
-import {getAvatar} from '../../lib/api/mypage';
 import {userAvatar} from '../atoms';
 import MypageRight from './MypageRight';
 import MypageLeft from './MypageLeft';
