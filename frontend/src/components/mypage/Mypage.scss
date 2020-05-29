@@ -11,6 +11,21 @@
     color: var(--gray-dark);
 }
 
+.profile__auth{
+    color: var(--gray-dark) !important;
+    font-size: 1.25rem !important;
+    margin-bottom: .5rem !important;
+    font-weight: 500 !important;
+    line-height: 1.2 !important;
+    .text-transition_inner{
+        display: flex;
+        justify-content: flex-end !important;
+    }
+}
+
+
+
+
 .profile__class__hr{
     margin-top: 0.25rem;
     margin-bottom: 0.5rem;
