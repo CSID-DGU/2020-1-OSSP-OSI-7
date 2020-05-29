@@ -1,6 +1,6 @@
 import React,{useState, useEffect,Fragment} from 'react';
 import { Route, Link, Switch, useHistory} from 'react-router-dom';
-import {Navbar, Nav, Image, Container} from 'react-bootstrap';
+import {Navbar, Nav, Image, Container, NavDropdown} from 'react-bootstrap';
 import QuizTemplate from './quiz/QuizTemplate';
 import QuizSetListContainer from './quiz/QuizSetListContainer';
 import Home from './Home';
@@ -73,11 +73,25 @@ const App = () => {
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
       crossorigin="anonymous"/>
 
-    <Navbar bg="dark" sticky="top" className="nav_bar">
-      <Nav className="mr-auto">
-        <Nav.Link><Link to="/">HOME</Link></Nav.Link>
+    <Navbar collapseOnSelect expand="sm" bg="dark" sticky="top" className="nav__bar" variant="dark">
+      <Link to="/">
+        <Navbar.Brand className="nav__bar">
+        <img
+          alt=""
+          src="/logoEmoji.png"
+          className="d-inline-block align-top nav__img"
+        />{' '}
+        DQUIZ
+      </Navbar.Brand>
+      </Link>
+      <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+
+      <Navbar.Collapse>
+
+      <Nav  className="mr-auto">
         <Nav.Link><Link to="/quiz">QUIZ</Link></Nav.Link>
       </Nav>
+      
       <Nav>
       { !authenticated ?
         (<Fragment>      
@@ -86,17 +100,33 @@ const App = () => {
         </Fragment>)
       : (
         <Fragment>
-          <Nav.Link onClick={()=>logOut()}>LOGOUT</Nav.Link>
-          <Container>
-            <Image roundedCircle src={avatar} className="nav__height"/>
-            <Nav.Link>
-              <Link to="/mypage">{user}</Link>
-            </Nav.Link>
-          </Container>
+
+        
+        <Link to="/mypage">
+        <Navbar.Brand className="nav__bar">
+        <img
+        alt=""
+        src={avatar}
+        className="d-inline-block align-top nav__img profile__thumb"
+        />{' '}
+        {user}
+        </Navbar.Brand>
+        </Link>
+        
+        <NavDropdown title=""  alignRight id="collasible-nav-dropdown">
+        <NavDropdown.Item className="nav__dropdown" onClick={()=>logOut()}>LOGOUT</NavDropdown.Item>
+        <NavDropdown.Divider />
+        <NavDropdown.Item className="nav__dropdown">not yet</NavDropdown.Item>
+        </NavDropdown>
+
+
+
         </Fragment>
         )
       }
       </Nav>
+      </Navbar.Collapse>
+
     </Navbar>
 
 

@@ -35,14 +35,26 @@ body {
     }
 }
 
-.nav_bar {
+.nav__bar {
     color: white !important;
+    font-size: 1.25rem;
     a {
         color: white !important;
     }
+    .nav__dropdown {
+        color: black !important;
+    }
 }
 
-.nav__height {
-    height: 2rem !important;
-    width: 2rem !important;
+.nav__img {
+    height:30px !important;
+    width:30px !important;
+    border-radius: 30px !important;
+}
+.profile__thumb{
+    margin-right: 0.5rem !important;
+}
+
+#collasible-nav-dropdown{
+    height: 30px;
 }
