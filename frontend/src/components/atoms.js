@@ -10,4 +10,9 @@ const currentUser = atom({
     default: null
 })
 
-export {isAuthenticated, currentUser}
+const userAvatar = atom({
+    key:'userAvatar',
+    default: "https://avatars0.githubusercontent.com/u/5909549?v=4"
+})
+
+export {isAuthenticated, currentUser, userAvatar}

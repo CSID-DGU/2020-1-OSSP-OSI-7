@@ -1,6 +1,6 @@
 import React,{useState, useEffect,Fragment} from 'react';
 import { Route, Link, Switch, useHistory} from 'react-router-dom';
-import {Navbar, Nav} from 'react-bootstrap';
+import {Navbar, Nav, Image, Container} from 'react-bootstrap';
 import QuizTemplate from './quiz/QuizTemplate';
 import QuizSetList from './quiz/QuizSetList';
 import Home from './Home';
@@ -11,8 +11,9 @@ import NotFound from './NotFound';
 import TestQuiz from './quiz/TestQuiz';
 import Mypage from './mypage/Mypage';
 import {login, registerTo} from '../lib/api/auth';
+import {getAvatar} from '../lib/api/mypage';
 import {useRecoilState} from 'recoil';
-import {currentUser, isAuthenticated} from './atoms';
+import {currentUser, isAuthenticated, userAvatar} from './atoms';
 
 const useTitle = (initialTitle)=>{
   const[title,setTitle] = useState(initialTitle);
@@ -25,6 +26,7 @@ const useTitle = (initialTitle)=>{
 } 
 
 const App = () => {
+  const [avatar, setAvatar] = useRecoilState(userAvatar);
   const titleUpdator = useTitle("DQUIZ");
   const [user, setUser] = useRecoilState(currentUser);
   const [authenticated, setAuth] = useRecoilState(isAuthenticated);
@@ -39,8 +41,10 @@ const App = () => {
       }  else {
         setAuth(false);
       }
+      getAvatar(user).then((res)=>setAvatar(res.data.avatar_url));
       // setUser(local.user);
-  }, [user])
+    }, [user])
+    
   // }
 
   // const logIn = ({username, password}) =>setUser("user");
@@ -69,7 +73,7 @@ const App = () => {
       integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
       crossorigin="anonymous"/>
 
-    <Navbar bg="dark" sticky="top">
+    <Navbar bg="dark" sticky="top" className="nav_bar">
       <Nav className="mr-auto">
         <Nav.Link><Link to="/">HOME</Link></Nav.Link>
         <Nav.Link><Link to="/quiz">QUIZ</Link></Nav.Link>
@@ -83,7 +87,12 @@ const App = () => {
       : (
         <Fragment>
           <Nav.Link onClick={()=>logOut()}>LOGOUT</Nav.Link>
-          <Nav.Link><Link to="/mypage">{user}</Link></Nav.Link>
+          <Container>
+            <Image roundedCircle src={avatar} className="nav__height"/>
+            <Nav.Link>
+              <Link to="/mypage">{user}</Link>
+            </Nav.Link>
+          </Container>
         </Fragment>
         )
       }
