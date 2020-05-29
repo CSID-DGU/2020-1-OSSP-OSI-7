@@ -1,14 +1,11 @@
 import React from 'react';
+import UserClassItem from './UserClassItem';
 
-const UserClassList = () =>{
+const UserClassList = ({classes}) =>{
     return (
         <div>
             <h3>강의 목록</h3>
-            <ul>
-                <li>awefawe</li>
-                <li>fawei ofj</li>
-                <li>eeo jeof</li>
-            </ul>
+            {classes.map((c)=><UserClassItem classInfo={c} />)}
         </div>
     )
 }

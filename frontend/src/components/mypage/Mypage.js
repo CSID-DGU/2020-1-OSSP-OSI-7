@@ -20,7 +20,7 @@ const Mypage = () =>{
         <Container className="quiz__container">
             <Row>
                 <Col sm={4}>
-                <MypageLeft avatar={avatar}/>
+                <MypageLeft avatar={avatar} user={user}/>
                 </Col>
                 <Col sm={8}>
                 <MypageRight/>
