@@ -17,10 +17,10 @@ const UserClassItem = (props) =>{
     return (
         <Fragment>
         <Row>
-            <Col xs={5}>
+            <Col xs={6}>
             {className}
             </Col>
-            <Col xs={5}>
+            <Col xs={4}>
             {classCode}
             </Col>
             <Col xs={2}>
