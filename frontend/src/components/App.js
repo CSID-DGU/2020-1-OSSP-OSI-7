@@ -10,6 +10,7 @@ import AuthRoute from './auth/AuthRoute';
 import NotFound from './NotFound';
 import TestQuiz from './quiz/TestQuiz';
 import Mypage from './mypage/Mypage';
+import ClassRoom from './class/ClassRoom';
 import {login, registerTo} from '../lib/api/auth';
 import {getAvatar} from '../lib/api/mypage';
 import {useRecoilState} from 'recoil';
@@ -148,6 +149,8 @@ const App = () => {
       <AuthRoute authenticated={authenticated} path="/quiz/:quizSetId" component={TestQuiz}/>}
       />
       <AuthRoute authenticated={authenticated} path="/mypage" component={Mypage}/>}
+      />
+      <AuthRoute authenticated={authenticated} path="/class/:classId" component={ClassRoom}/>}
       />
       
       <Route component={NotFound} />
