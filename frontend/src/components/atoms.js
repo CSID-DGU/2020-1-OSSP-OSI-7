@@ -15,4 +15,9 @@ const userAvatar = atom({
     default: "https://avatars0.githubusercontent.com/u/5909549?v=4"
 })
 
-export {isAuthenticated, currentUser, userAvatar}
+const userAuth = atom({
+    key:'userAuth',
+    default: false
+})
+
+export {isAuthenticated, currentUser, userAvatar, userAuth}

@@ -17,13 +17,13 @@ const UserClassItem = (props) =>{
     return (
         <Fragment>
         <Row>
-            <Col xs={6}>
+            <Col md={12} xs={5} lg={5}>
             {className}
             </Col>
-            <Col xs={4}>
+            <Col md={12} xs={5} lg={5}>
             {classCode}
             </Col>
-            <Col xs={2}>
+            <Col md={12} xs={2} lg={2}>
             🏫
             </Col>
         </Row>

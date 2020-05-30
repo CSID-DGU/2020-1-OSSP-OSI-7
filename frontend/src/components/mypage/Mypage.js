@@ -1,8 +1,7 @@
-import React from 'react';
+import React,{Fragment} from 'react';
 import {Container, Col,Row} from 'react-bootstrap';
 import {useRecoilValue} from 'recoil';
-import {currentUser} from '../atoms';
-import {userAvatar} from '../atoms';
+import {currentUser,userAvatar,userAuth} from '../atoms';
 import MypageRight from './MypageRight';
 import MypageLeft from './MypageLeft';
 
@@ -10,19 +9,20 @@ import MypageLeft from './MypageLeft';
 const Mypage = () =>{
     const avatar = useRecoilValue(userAvatar);
     const user = useRecoilValue(currentUser);
+    const auth = useRecoilValue(userAuth);
     
     // useEffect(()=>{
         // getAvatar(user).then((res)=>setAvatar(res.data.avatar_url));
     // }, [user])
 
     return (
-        <Container className="quiz__container">
+        <Container className="quiz__container__no_border" as={Col} md={{ span: 10, offset: 1 }}>
             <Row>
-                <Col sm={4}>
+                <Col md={3}>
                 <MypageLeft avatar={avatar} user={user}/>
                 </Col>
-                <Col sm={8}>
-                <MypageRight/>
+                <Col md={9}>
+                <MypageRight auth={auth}/>
                 </Col>
             </Row>
         </Container>

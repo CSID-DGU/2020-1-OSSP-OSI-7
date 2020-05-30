@@ -1,15 +1,18 @@
-import React,{Fragment} from 'react';
-import EnrollForm from './EnrollForm';
-import SolvedQuizList from './SolvedQuizList';
+import React, { Fragment } from "react";
+import EnrollForm from "./EnrollForm";
+import SolvedQuizList from "./SolvedQuizList";
+import ClassCreateForm from "./ClassCreateForm";
 
-const MypageRight = (props)=>{
+const MypageRight = ({ auth }) => {
     return (
         <Fragment>
-            <EnrollForm/>
-            <hr/>
-            <SolvedQuizList/>
+            {auth? 
+                <ClassCreateForm />:
+                <EnrollForm />} 
+            <hr />
+            <SolvedQuizList />
         </Fragment>
     );
-}
+};
 
 export default MypageRight;
