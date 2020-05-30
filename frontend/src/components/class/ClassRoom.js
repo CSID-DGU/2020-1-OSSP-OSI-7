@@ -1,6 +1,6 @@
 import React from 'react';
 import QuizSetList from '../quiz/QuizSetList';
-import {Container,Row,Col, Image} from 'react-bootstrap';
+import {Container,Row,Col, Image, Form} from 'react-bootstrap';
 
 const ClassRoom = ({classId}) =>{
 
@@ -18,6 +18,11 @@ const ClassRoom = ({classId}) =>{
             </Col>
         </Row>
         <hr className="profile__class__hr"/>
+        <Form>
+            <Form.Group>
+                <Form.Control placeholder="search class"></Form.Control>
+            </Form.Group>
+        </Form>
         <Row>
         <Col>
         <h3>퀴즈 목록</h3>

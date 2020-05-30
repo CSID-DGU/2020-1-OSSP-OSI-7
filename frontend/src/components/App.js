@@ -10,7 +10,7 @@ import AuthRoute from './auth/AuthRoute';
 import NotFound from './NotFound';
 import TestQuiz from './quiz/TestQuiz';
 import Mypage from './mypage/Mypage';
-import ClassRoom from './class/ClassRoom';
+import ClassRoom from './class/ClassRoom'
 import {login, registerTo} from '../lib/api/auth';
 import {getAvatar} from '../lib/api/mypage';
 import {useRecoilState} from 'recoil';
