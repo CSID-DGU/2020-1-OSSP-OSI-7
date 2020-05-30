@@ -3,6 +3,8 @@ package repository
 import "oss/models"
 
 type UserRepository interface {
+	// 로그인 하는 계정으로 유저 아이디를 받는다
+	GetUserIdByUserName(userName string) (int64, *models.AppError)
 	// 로그인 하는 계정으로 조회
 	GetByUserName(username string) (*models.User, *models.AppError)
 	// Primary key 로 조회
@@ -43,6 +45,15 @@ func (u *SqlUserRepository) GetByUserId(userId int64) (*models.User, *models.App
 		return nil, models.NewDatabaseAppError(err, "user is not found", "user_repository.go")
 	}
 	return result, nil
+}
+
+func (u *SqlUserRepository) GetUserIdByUserName(userName string) (int64, *models.AppError) {
+	var userId int64
+	err := u.Master.SelectOne(&userId, `SELECT u.user_id FROM user u WHERE username = ?`, userName)
+	if err != nil {
+		return -1, models.NewDatabaseAppError(err, "user is not found", "user_repository.go")
+	}
+	return userId, nil
 }
 
 func (u *SqlUserRepository) Create(user models.User) (*models.User, *models.AppError) {

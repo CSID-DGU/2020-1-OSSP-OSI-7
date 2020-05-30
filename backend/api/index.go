@@ -7,6 +7,7 @@ import (
 	"google.golang.org/api/chat/v1"
 	"log"
 	"oss/cli"
+	"oss/service"
 	"oss/web"
 	"strings"
 )
@@ -107,16 +108,29 @@ func InitRouters(context *web.Context) {
 		c.JSON(200,"why???")
 	})
 
+	schdch := make(chan service.SubmittedQuiz)
+	go service.ScheduleQuizSetScoring(web.Context0.Redis, schdch)
 	r.POST("/", func (c *gin.Context) {
 		str = strings.Replace(str, "\n", "", -1)
-		println(str)
+		//println(str)
 		var obj chat.DeprecatedEvent
 		err := json.Unmarshal([]byte(str), &obj)
 		s := strings.Fields(obj.Message.Text)
-		for i :=0; i < len(s); i++ {
-			println(s[i])
-		}
 
+		for i :=0; i < len(s); i++ {
+		//	println(s[i])
+		}
+		schdch<- service.SubmittedQuiz{
+			ScoringQueueIdent : &service.ScoringQueueIdent {
+				ClassQuizSetId: 4444,
+				Email: "4whomtbts@gmail.com",
+			},
+			QuizForScoring : &service.QuizForScoring {
+				QuizId: 1,
+				QuizType: "multi",
+				QuizAnswer: "답",
+			},
+		}
 		response, commandErr := StartTestCommand.ProcessCommand(s)
 
 		if err != nil {

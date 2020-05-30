@@ -48,7 +48,7 @@ func Register (context *web.Context) gin.HandlerFunc {
 		_, creatErr := context.Repositories.UserRepository().Create(user)
 
 		if creatErr != nil {
-			println("error !", creatErr.Message)
+			println("cerror !", creatErr.Message)
 		}
 	}
 }

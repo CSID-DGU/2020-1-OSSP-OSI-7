@@ -49,12 +49,14 @@ func classAuthenticator (c *gin.Context) (interface{}, error) {
 }
 
 func classAuthorizator (data interface{}, c *gin.Context) bool {
-	if _, ok := data.(*dto.User); ok {
+	if user, ok := data.(*dto.User); ok {
+		rootPath := "/class/"
+		method := c.Request.Method
+		path := c.FullPath()
+		path = path[len(rootPath):]
+		if user != nil {}
 
-//		result, err := App.Repositories.UserRepository().GetByUserName(user.UserName)
-
-
-
+		if method != "" {}
 		return true
 	}
 	return false

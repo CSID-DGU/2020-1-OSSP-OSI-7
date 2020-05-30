@@ -14,3 +14,8 @@ type QuizGetForm struct {
 	QuizAnswer string `json:"quiz_answer" example:"퀴즈 정답"`
 	QuizType string `json:"quiz_type" example:"퀴즈 타입(객관식, 주관식)"`
 }
+
+type QuizAnswerWithScore struct {
+	QuizAnswer string `json:"quiz_answer"`
+	QuizScore uint64 `json:"quiz_score"`
+}

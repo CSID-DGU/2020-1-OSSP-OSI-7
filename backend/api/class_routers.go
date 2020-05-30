@@ -39,7 +39,7 @@ func CreateClass (context *web.Context) gin.HandlerFunc {
 		new_class, _ := context.Repositories.ClassRepository().GetByClassCode(class.ClassCode)
 
 		if creatErr != nil {
-			println("error !", creatErr.Message)
+			println("cerror !", creatErr.Message)
 		}
 
 		context.Repositories.ClassAdminRepository().Create(user.UserId, new_class.ClassId)

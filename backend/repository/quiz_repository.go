@@ -1,11 +1,14 @@
 package repository
 
 import (
+	"oss/dto"
 	"oss/models"
 )
 
 type QuizRepository interface {
+	GetQuizByQuizId(quizId int64) (string, *models.AppError)
 	GetQuizzesByQuizSetId(quizSetId int64) ([]models.Quiz, *models.AppError)
+	GetQuizAnswerWithScoreByQuizId(quizId int64) (*dto.QuizAnswerWithScore, *models.AppError)
 	Create(quiz *models.Quiz) (*models.AppError)
 	Delete(quizId int64) (*models.AppError)
 	Edit(quiz *models.Quiz) (*models.AppError)
@@ -13,6 +16,22 @@ type QuizRepository interface {
 
 type SqlQuizRepository struct {
 	*Repository
+}
+
+func (q *SqlQuizRepository) GetQuizAnswerWithScoreByQuizId(quizId int64) (*dto.QuizAnswerWithScore, *models.AppError) {
+	var quiz *models.Quiz
+	var quizAnswerWithScore *dto.QuizAnswerWithScore
+	_, err := q.Master.Select(&quiz,
+		`SELECT * FROM quiz q WHERE q.quiz_id = ?`,quizId)
+
+	if err != nil {
+		return "", models.NewDatabaseAppError(err, "FAILED TO GET QUIZ", "quiz_repository.go")
+	}
+	quizAnswerWithScore = &dto.QuizAnswerWithScore {
+		QuizAnswer: quiz.QuizAnswer,
+		QuizScore: quiz.QuizScore,
+	}
+	return quizAnswerWithScore, nil
 }
 
 func (q *SqlQuizRepository) GetQuizzesByQuizSetId(quizSetId int64) ([]models.Quiz, *models.AppError) {

@@ -9,6 +9,7 @@ type Repositories interface {
 	QuizRepository() QuizRepository
 	QuizSetRepository() QuizSetRepository
 	QuizResultRepository() QuizResultRepository
+	QuizSetResultRepository() QuizSetResultRepository
 }
 
 type SqlRepositories struct {

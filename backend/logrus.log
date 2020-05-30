@@ -1,0 +1,42 @@
+time="2020-05-29T05:04:19+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-29T05:05:19+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-29T05:07:54+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-29T05:08:20+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-29T05:09:02+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-29T05:09:02+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-29T05:09:06+09:00" level=error msg="Failed to marshaling QuizForScoring to json" func=oss/service.ScheduleQuizSetScoring file="/home/hj/Desktop/workspace/oss/backend/service/quiz_scoring.go:56" quiz="{ 4whomtbts@gmail.com 1 multi 답}"
+time="2020-05-29T05:45:26+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-29T05:45:28+09:00" level=fatal msg="Failed LPUSH to Redis" func=oss/service.setScoringSet file="/home/hj/Desktop/workspace/oss/backend/service/quiz_scoring.go:45" classQuizSetId=7777
+time="2020-05-29T05:45:48+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-29T05:45:49+09:00" level=fatal msg="Failed LPUSH to Redis" func=oss/service.setScoringSet file="/home/hj/Desktop/workspace/oss/backend/service/quiz_scoring.go:45" classQuizSetId=7777
+time="2020-05-29T05:46:03+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-29T05:46:07+09:00" level=fatal msg="Failed LPUSH to Redis" func=oss/service.setScoringSet file="/home/hj/Desktop/workspace/oss/backend/service/quiz_scoring.go:45" classQuizSetId=7777
+time="2020-05-29T05:48:18+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-29T05:49:04+09:00" level=fatal msg="Failed to set scoring set Redis" func=oss/service.setScoringSet file="/home/hj/Desktop/workspace/oss/backend/service/quiz_scoring.go:46" classQuizSetId=7777 error="ERR wrong number of arguments for 'set' command"
+time="2020-05-29T05:49:20+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-29T05:50:53+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-29T05:57:39+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-29T05:57:41+09:00" level=fatal msg="Failed to set scoring set Redis" func=oss/service.pushScoringSet file="/home/hj/Desktop/workspace/oss/backend/service/quiz_scoring.go:47" classQuizSetId=7777 error="redigo: unexpected type for String, got type int64"
+time="2020-05-29T05:57:50+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-29T05:57:51+09:00" level=fatal msg="Failed to set scoring set Redis" func=oss/service.pushScoringSet file="/home/hj/Desktop/workspace/oss/backend/service/quiz_scoring.go:47" classQuizSetId=7777 error="redigo: unexpected type for String, got type int64"
+time="2020-05-29T05:58:02+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-29T05:58:10+09:00" level=fatal msg="Failed to set scoring set Redis" func=oss/service.pushScoringSet file="/home/hj/Desktop/workspace/oss/backend/service/quiz_scoring.go:47" classQuizSetId=7777 error="redigo: unexpected type for String, got type int64"
+time="2020-05-29T05:58:28+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-29T05:59:42+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-29T06:05:31+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-29T06:06:27+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-29T06:07:04+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-29T06:07:25+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-29T06:34:01+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-29T06:34:23+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-29T06:42:07+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-30T14:37:24+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-30T14:38:49+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-30T14:39:55+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-30T15:00:03+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-30T15:13:33+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-30T15:22:32+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-30T15:22:50+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-30T15:39:41+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-30T15:41:41+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-05-30T15:44:04+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss/backend/main.go:32" event=event
