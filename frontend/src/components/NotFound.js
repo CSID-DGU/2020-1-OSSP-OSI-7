@@ -49,12 +49,12 @@ const NotFound = () =>{
 
     return (
         <ErrorHeader>
-            <ErrorH5>Oops!</ErrorH5>
-            <ErrorH6>404</ErrorH6>
-            <ErrorH2>page not found</ErrorH2>
-            <ErrorH2>press button 5 times</ErrorH2>
+            <ErrorH5 className={(btnCount >1) && `btn_count_over${btnCount}`}>Oops!</ErrorH5>
+            <ErrorH6 className={(btnCount >1) && `btn_count_over${btnCount}`}>404</ErrorH6>
+            <ErrorH2 className={(btnCount >1) && `btn_count_over${btnCount}`}>page not found</ErrorH2>
+            <ErrorH2 className={(btnCount >1) && `btn_count_over${btnCount}`}>press button 5 times</ErrorH2>
             <BigRedBtn onClick={handleClick}/>
-            <ChangeBackground btnCount={btnCount} />
+            <ChangeBackground btnCount={btnCount}/>
         </ErrorHeader>
     )
 }
