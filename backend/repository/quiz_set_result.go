@@ -16,8 +16,8 @@ type SqlQuizSetResultRepository struct {
 func (q *SqlQuizSetResultRepository) Get(classQuizSetResultId int64, userName string) (*models.QuizSetResult, *models.AppError) {
 	var quizSetResult *models.QuizSetResult
 	err := q.Master.SelectOne(&quizSetResult,
-		`SELECT * FROM quiz_set_result WHERE class_quiz_set_id = ?,
-				user_id = (SELECT u.user_id FROM user u WHERE u.username = ?)`,classQuizSetResultId, userName)
+		`SELECT * FROM quiz_set_result qsr WHERE qsr.class_quiz_set_id = ? AND
+				qsr.user_id = (SELECT u.user_id FROM user u WHERE u.username = ?)`,classQuizSetResultId, userName)
 
 	if err != nil {
 		return nil, models.NewDatabaseAppError(err, "FAILED TO GET QUIZ SET RESULT", "quiz_set_result_repository.go")
@@ -26,7 +26,7 @@ func (q *SqlQuizSetResultRepository) Get(classQuizSetResultId int64, userName st
 }
 
 func (q *SqlQuizSetResultRepository) Create(quizSetResult *models.QuizSetResult) (*models.AppError) {
-	err := q.Master.Insert(&quizSetResult)
+	err := q.Master.Insert(quizSetResult)
 
 	if err != nil {
 		return models.NewDatabaseAppError(err, "FAILED TO CREATE QUIZ SET RESULT", "quiz_set_result_repository.go")
@@ -48,8 +48,11 @@ func (q *SqlQuizSetResultRepository) Delete(quizSetResultId int64) (*models.AppE
 }
 
 func (q *SqlQuizSetResultRepository) Update(quizSet *models.QuizSetResult) (*models.AppError) {
-	_, err := q.Master.Update(&quizSet)
-
+	//_, err := q.Master.Update(quizSet)
+	_, err := q.Master.Exec(`UPDATE quiz_set_result 
+								SET total_score = ?
+								WHERE quiz_set_result_id = ?`,
+								quizSet.TotalScore, quizSet.QuizSetResultId)
 	if err != nil {
 		return models.NewDatabaseAppError(err, "FAILED TO UPDATE QUIZ SET RESULT", "quiz_set_result_repository.go")
 	}

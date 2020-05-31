@@ -93,7 +93,7 @@ func (q *SqlQuizSetRepository) GetQuizSetsByClassCode (classCode string) ([]mode
 	var quizsets []models.QuizSet
 
 	_, err := q.Master.Select(&quizsets,
-		`SELECT cqs.quiz_set_id, q.user_id, q.quiz_set_name, q.total_score FROM
+		`SELECT cqs.class_quiz_set_id, cqs.quiz_set_id, q.user_id, q.quiz_set_name, q.total_score FROM
 			   class_quiz_set cqs INNER JOIN quiz_set q ON q.quiz_set_id = cqs.quiz_set_id
 			   INNER JOIN class c ON c.class_code = ?`, classCode)
 

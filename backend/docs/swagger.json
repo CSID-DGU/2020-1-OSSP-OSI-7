@@ -81,6 +81,40 @@
                 }
             }
         },
+        "/quizsets/class/{classQuizSetId}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quiz set"
+                ],
+                "summary": "ClassQuizSetId에 해당하는 Quiz set 을 가져온다.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "불러오려는 QuizSetId",
+                        "name": "classQuizSetId",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "퀴즈 셋",
+                        "schema": {
+                            "$ref": "#/definitions/dto.ClassQuizSetGetForm"
+                        }
+                    },
+                    "400": {
+                        "description": "INVALID_PATH_PARAMETER",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/quizsets/classes/{classCode}": {
             "get": {
                 "consumes": [
@@ -362,6 +396,42 @@
                 }
             }
         },
+        "/quizsets/score": {
+            "post": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quiz set"
+                ],
+                "summary": "Quiz set 을 채점한다.",
+                "parameters": [
+                    {
+                        "description": "채점 하려는 퀴즈 셋",
+                        "name": "JSON",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/dto.QuizSetForScoring"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "ok",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "400": {
+                        "description": "INVALID_PATH_PARAMETER",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/quizsets/users/{username}": {
             "get": {
                 "consumes": [
@@ -588,6 +658,33 @@
                 }
             }
         },
+        "dto.ClassQuizSetGetForm": {
+            "type": "object",
+            "properties": {
+                "class_quiz_set_id": {
+                    "type": "integer",
+                    "example": 1234
+                },
+                "quiz_set_author_name": {
+                    "type": "string",
+                    "example": "퀴즈셋 생성자 로그인 아이디"
+                },
+                "quiz_set_name": {
+                    "type": "string",
+                    "example": "퀴즈셋 이름"
+                },
+                "quizzes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.QuizGetForm"
+                    }
+                },
+                "total_score": {
+                    "type": "integer",
+                    "example": 100
+                }
+            }
+        },
         "dto.Login": {
             "type": "object",
             "required": [
@@ -621,6 +718,20 @@
                 "quiz_type": {
                     "type": "string",
                     "example": "퀴즈 타입(객관식, 주관식)"
+                }
+            }
+        },
+        "dto.QuizForScoring": {
+            "type": "object",
+            "properties": {
+                "quiz_answer": {
+                    "type": "string"
+                },
+                "quiz_id": {
+                    "type": "integer"
+                },
+                "quiz_type": {
+                    "type": "string"
                 }
             }
         },
@@ -669,6 +780,24 @@
                 "total_score": {
                     "type": "integer",
                     "example": 100
+                }
+            }
+        },
+        "dto.QuizSetForScoring": {
+            "type": "object",
+            "properties": {
+                "class_quiz_set_id": {
+                    "type": "integer"
+                },
+                "quiz_for_scorings": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.QuizForScoring"
+                    }
+                },
+                "username": {
+                    "description": "email 과 같음",
+                    "type": "string"
                 }
             }
         },

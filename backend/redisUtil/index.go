@@ -17,7 +17,7 @@ func RedisGet(conn *redis.Conn, key string) (string, *models.AppError) {
 	if err != nil {
 		web.Logger.WithFields(logrus.Fields{
 			"err" : err,
-		}).Fatal(cerror.DQUIZ_REDIS_OP_FAIL)
+		}).Info(cerror.DQUIZ_REDIS_OP_FAIL)
 		return "", models.NewAppError(err, cerror.BuildRedisGetFailMsg(key), models.GetFuncName())
 	}
 	return result, nil
@@ -28,7 +28,7 @@ func RedisSet(conn *redis.Conn, key string, val string, lifeTime int) *models.Ap
 	if err != nil {
 		web.Logger.WithFields(logrus.Fields{
 			"err" : err,
-		}).Fatal(cerror.DQUIZ_REDIS_OP_FAIL)
+		}).Error(cerror.DQUIZ_REDIS_OP_FAIL)
 		return models.NewAppError(err, cerror.DQUIZ_REDIS_OP_FAIL, models.GetFuncName())
 	}
 
@@ -38,7 +38,7 @@ func RedisSet(conn *redis.Conn, key string, val string, lifeTime int) *models.Ap
 			web.Logger.WithFields(logrus.Fields{
 				"key" : key,
 				"life_time": lifeTime,
-			}).Fatal(cerror.DQUIZ_REDIS_OP_FAIL)
+			}).Error(cerror.DQUIZ_REDIS_OP_FAIL)
 		}
 		return models.NewAppError(err, cerror.DQUIZ_REDIS_OP_FAIL, models.GetFuncName())
 	}

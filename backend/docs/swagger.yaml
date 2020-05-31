@@ -8,6 +8,25 @@ definitions:
         example: CSE-1234
         type: string
     type: object
+  dto.ClassQuizSetGetForm:
+    properties:
+      class_quiz_set_id:
+        example: 1234
+        type: integer
+      quiz_set_author_name:
+        example: 퀴즈셋 생성자 로그인 아이디
+        type: string
+      quiz_set_name:
+        example: 퀴즈셋 이름
+        type: string
+      quizzes:
+        items:
+          $ref: '#/definitions/dto.QuizGetForm'
+        type: array
+      total_score:
+        example: 100
+        type: integer
+    type: object
   dto.Login:
     properties:
       password:
@@ -31,6 +50,15 @@ definitions:
         type: string
       quiz_type:
         example: 퀴즈 타입(객관식, 주관식)
+        type: string
+    type: object
+  dto.QuizForScoring:
+    properties:
+      quiz_answer:
+        type: string
+      quiz_id:
+        type: integer
+      quiz_type:
         type: string
     type: object
   dto.QuizGetForm:
@@ -66,6 +94,18 @@ definitions:
       total_score:
         example: 100
         type: integer
+    type: object
+  dto.QuizSetForScoring:
+    properties:
+      class_quiz_set_id:
+        type: integer
+      quiz_for_scorings:
+        items:
+          $ref: '#/definitions/dto.QuizForScoring'
+        type: array
+      username:
+        description: email 과 같음
+        type: string
     type: object
   dto.QuizSetGetForm:
     properties:
@@ -156,6 +196,28 @@ paths:
       summary: 수강신청
       tags:
       - Class
+  /quizsets/class/{classQuizSetId}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 불러오려는 QuizSetId
+        in: path
+        name: classQuizSetId
+        required: true
+        type: string
+      responses:
+        "200":
+          description: 퀴즈 셋
+          schema:
+            $ref: '#/definitions/dto.ClassQuizSetGetForm'
+        "400":
+          description: INVALID_PATH_PARAMETER
+          schema:
+            type: string
+      summary: ClassQuizSetId에 해당하는 Quiz set 을 가져온다.
+      tags:
+      - Quiz set
   /quizsets/classes/{classCode}:
     get:
       consumes:
@@ -340,6 +402,29 @@ paths:
           schema:
             type: string
       summary: 퀴즈셋에 퀴즈를 추가한다.
+      tags:
+      - Quiz set
+  /quizsets/score:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: 채점 하려는 퀴즈 셋
+        in: body
+        name: JSON
+        required: true
+        schema:
+          $ref: '#/definitions/dto.QuizSetForScoring'
+      responses:
+        "200":
+          description: ok
+          schema:
+            type: string
+        "400":
+          description: INVALID_PATH_PARAMETER
+          schema:
+            type: string
+      summary: Quiz set 을 채점한다.
       tags:
       - Quiz set
   /quizsets/users/{username}:

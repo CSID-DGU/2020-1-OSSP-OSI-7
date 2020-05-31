@@ -11,6 +11,7 @@ import (
 	"oss/test/utils"
 	"oss/web"
 	"strconv"
+	"strings"
 	"time"
 )
 
@@ -20,7 +21,7 @@ import (
  퀴즈 타입에 따라 가져온 answer 이용해서 채점하기
  */
 const (
-	SCORE_BATCH_SIZE = 100
+	SCORE_BATCH_SIZE = 3
 	SCORING_QUEUE = "SCORING_QUEUE"
 	CLASS_QUIZ_SET_QUEUE = "CLASS_QUIZ_SET_QUEUE"
 	QUEUE = "QUEUE"
@@ -36,32 +37,11 @@ type ScoringQueueIdent struct {
 
 type SubmittedQuiz struct {
 	*ScoringQueueIdent
-	*QuizForScoring
+	*dto.QuizForScoring
 }
 
-type QuizForScoring struct {
-	QuizId int64 `redis:"qid" json:"qid"`
-	QuizType string `redis:"qtype" json:"qtype"`
-	QuizAnswer string `redis:"qans" json:"qnas"`
-}
-
-type QuizSetForScoring struct {
-	ClassQuizSetId int64
-	UserId int64
-	QuizForScorings []QuizForScoring
-}
-
-type QuizForScoringStore struct {
-	QuizForScorings []QuizForScoring
-}
-
-func unMarshalQuizForScoring(quizForScoringJson string) (*QuizForScoring, error){
-	var quizForScoring *QuizForScoring
-	err := json.Unmarshal([]byte(quizForScoringJson), &quizForScoring)
-	if err != nil {
-		return nil, err
-	}
-	return quizForScoring, nil
+func getClassQuizSetQueueName (classQuizSetId string) string {
+	return classQuizSetId + "-" + "QUEUE"
 }
 
 func getUserQuizQueueName (classQuizSetId int64, email string) string {
@@ -69,28 +49,66 @@ func getUserQuizQueueName (classQuizSetId int64, email string) string {
 	return strClassQuizSetId + "-" + email
 }
 
-func deleteQueue (pool *redis.Pool, key string) {
-	conn := pool.Get()
-	defer utils.CloseRedisConnection(&conn)
-	_, err := conn.Do("DEL", key)
+func unMarshalQuizForScoring (quizForScoringJson string) (*dto.QuizForScoring, error){
+	var quizForScoring *dto.QuizForScoring
+	err := json.Unmarshal([]byte(quizForScoringJson), &quizForScoring)
 	if err != nil {
-		web.Logger.WithFields(logrus.Fields{
-			"list_name" : key,
-		}).Error("Failed to delete List")
+		return nil, err
 	}
+	return quizForScoring, nil
 }
 
-func fetchAllUserQuizFromQueue (pool *redis.Pool, classQuizSetId int64, userEmail string) []*QuizForScoring {
-	conn := pool.Get()
-	defer utils.CloseRedisConnection(&conn)
-	var quizForScorings []*QuizForScoring
-	queueName := getUserQuizQueueName(classQuizSetId, userEmail)
-	result, err := redis.Strings(conn.Do("LRANGE", queueName, 0, -1))
+func deleteQueue (conn *redis.Conn, key string) *models.AppError {
+	_, err := (*conn).Do("DEL", key)
+	if err != nil {
+		message := "Failed to delete List"
+		web.Logger.WithFields(logrus.Fields{
+			"list_name" : key,
+		}).Error(message)
+		return models.NewRedisError(err, message, models.GetFuncName())
+	}
+	return nil
+}
+
+// Scoring Queue 에서 모든 데이터를 가져온 다음에 모두 삭제 한다.
+func fetchAllFromScoringQueue (conn *redis.Conn) ([]string, *models.AppError) {
+	result, err := redis.Strings((*conn).Do("LRANGE", SCORING_QUEUE, 0, -1))
+	if err != nil {
+		message := "Failed to delete element from ScoringQueue"
+		web.Logger.Error(message)
+		return nil, models.NewAppError(err, message, models.GetFuncName())
+	}
+
+	if result == nil {
+		return nil, nil
+	}
+
+	del_err := deleteQueue(conn, SCORING_QUEUE)
+	if del_err != nil {
+		web.Logger.Error(del_err.DetailedError)
+		return nil, del_err
+	}
+	return result, nil
+}
+
+func fetchAllUserQuizQueueFromQueue (conn *redis.Conn, queueName string) ([]string, *models.AppError) {
+	result, err := redis.Strings((*conn).Do("LRANGE", queueName, 0, -1))
+	if err != nil {
+		web.Logger.WithFields(logrus.Fields{
+			"queue_name": queueName,
+		}).Error("Failed to retrieve quizzes from Redis")
+		return nil, models.NewRedisError(err, "", models.GetFuncName())
+	}
+	return result, nil
+}
+
+func fetchAllUserQuizFromQueue (conn *redis.Conn, queueName string) []*dto.QuizForScoring {
+	var quizForScorings []*dto.QuizForScoring
+	result, err := redis.Strings((*conn).Do("LRANGE", queueName, 0, -1))
 
 	if err != nil {
 		web.Logger.WithFields(logrus.Fields{
-			"quiz_set_id" : classQuizSetId,
-			"user_email" : userEmail,
+			"queue_name" : queueName,
 		}).Error("Failed to retrieve quizzes from Redis")
 	} else {
 		for _, rst := range result {
@@ -103,13 +121,35 @@ func fetchAllUserQuizFromQueue (pool *redis.Pool, classQuizSetId int64, userEmai
 			quizForScorings = append(quizForScorings, quizForScoring)
 		}
 	}
-	go deleteQueue(pool, queueName)
+	go deleteQueue(conn, queueName)
 	return quizForScorings
+}
+
+// Scoring 관련 Redis Queue 중 가장 넓은 범위의 Queue
+// 채점해야 할 QuizSet 들을 원소로 가진다.
+func pushKeyToScoringQueue (conn *redis.Conn, queueName, key string) *models.AppError {
+	_, err := (*conn).Do("LREM", queueName, 0, key)
+	if err != nil {
+		message := "Failed to delete element from ScoringQueue"
+		web.Logger.WithFields(logrus.Fields{
+			"list_name" : key,
+		}).Error(message)
+		return models.NewAppError(err, message, models.GetFuncName())
+	}
+	_, err = (*conn).Do("RPUSH", queueName, key)
+	if err != nil {
+		message := "Failed to RPUSH element into ScoringQueue"
+		web.Logger.WithFields(logrus.Fields{
+			"list_name" : key,
+		}).Error(message)
+		return models.NewAppError(err, message, models.GetFuncName())
+	}
+	return nil
 }
 
 func pushQuizToUserQuizQueue(pool *redis.Pool, quiz *SubmittedQuiz) {
 	conn := pool.Get()
-	utils.CloseRedisConnection(&conn)
+	defer utils.CloseRedisConnection(&conn)
 	queueName := getUserQuizQueueName(quiz.ClassQuizSetId, quiz.Email)
 
 	// TODO 예외 처리 및 validation
@@ -120,7 +160,7 @@ func pushQuizToUserQuizQueue(pool *redis.Pool, quiz *SubmittedQuiz) {
 		web.Logger.WithFields(logrus.Fields{
 			"queue_name" : queueName,
 			"cerror" : err.Error(),
-		}).Fatal("Failed to push quiz to user quiz queue")
+		}).Error("Failed to push quiz to user quiz queue")
 		return
 	}
 
@@ -133,16 +173,16 @@ func pushQuizToUserQuizQueue(pool *redis.Pool, quiz *SubmittedQuiz) {
 		web.Logger.WithFields(logrus.Fields{
 			"queue_name" : queueName,
 			"cerror" : err.Error(),
-		}).Fatal("Failed to set scoring set Redis")
+		}).Error("Failed to set scoring set Redis")
 	}
 }
 
 // Redis 에 classQuizSet 의 응시생에 대한 key 값을 추가
 func pushClassQuizSetQueue(pool *redis.Pool, classQuizSetId int64, email string) {
 	conn := pool.Get()
-	utils.CloseRedisConnection(&conn)
+	defer utils.CloseRedisConnection(&conn)
 	strClassQuizSetId := strconv.FormatInt(classQuizSetId, 10)
-	key := strClassQuizSetId + "-" + QUEUE
+	key := getClassQuizSetQueueName(strClassQuizSetId)
 	elem := strClassQuizSetId + "-" + email
 	_, err := conn.Do("LREM", key, 1, elem)
 	if err != nil {
@@ -153,7 +193,7 @@ func pushClassQuizSetQueue(pool *redis.Pool, classQuizSetId int64, email string)
 		web.Logger.WithFields(logrus.Fields{
 			"classQuizSetId" : classQuizSetId,
 			"cerror" : err.Error(),
-		}).Fatal("Failed to set scoring set Redis")
+		}).Error("Failed to set scoring set Redis")
 	}
 }
 
@@ -167,7 +207,7 @@ func pushScoringSet(conn redis.Conn, classQuizSetId int64) (int64, error) {
 		web.Logger.WithFields(logrus.Fields{
 			"classQuizSetId" : classQuizSetId,
 			"cerror" : err.Error(),
-		}).Fatal("Failed to set scoring set Redis")
+		}).Error("Failed to set scoring set Redis")
 		return -1, err
 	}
 	return result.(int64), nil
@@ -178,21 +218,21 @@ func scoringSetExists (conn redis.Conn, classQuizSetId int64) (bool, error) {
 	if err != nil {
 		web.Logger.WithFields(logrus.Fields{
 			"classQuizSetId" : classQuizSetId,
-		}).Fatal("Failed LPUSH to Redis")
+		}).Error("Failed LPUSH to Redis")
 		return false, err
 	}
 	return result, nil
 }
 
-func scoreMultiSelectQuiz (quizForScoring *QuizForScoring, answer string) bool {
+func scoreMultiSelectQuiz (quizForScoring *dto.QuizForScoring, answer string) bool {
 	return quizForScoring.QuizAnswer == answer
 }
 
-func scoreSimpleQuiz (quizForScoring *QuizForScoring, answer string) bool {
+func scoreSimpleQuiz (quizForScoring *dto.QuizForScoring, answer string) bool {
 	return true
 }
 
-func scoreQuiz (quizForScoring *QuizForScoring, answer string) bool {
+func scoreQuiz (quizForScoring *dto.QuizForScoring, answer string) bool {
 	switch quizForScoring.QuizType {
 		case models.QUIZ_TYPE_MULTI:
 			return scoreMultiSelectQuiz(quizForScoring, answer)
@@ -219,22 +259,22 @@ func updateQuizSetResult (context *web.Context, quizSetResult *models.QuizSetRes
 	}
 }
 
-func ScoreQuizzes (context *web.Context, ident ScoringQueueIdent, quizScorings []*QuizForScoring) *models.AppError {
+func ScoreQuizzes (context *web.Context, ident ScoringQueueIdent, quizScorings []*dto.QuizForScoring) *models.AppError {
 	// quiz 답을 가져오기 위한 Redis connection
 	conn := context.Redis.Get()
-	utils.CloseRedisConnection(&conn)
+	defer utils.CloseRedisConnection(&conn)
 	if quizScorings == nil || len(quizScorings) == 0 {
 		logMsg := "quizForScoring array which is passed to ScoreQuizzes is null"
-		web.Logger.Fatal(logMsg)
+		web.Logger.Error(logMsg)
 		return models.NewAppError(nil, logMsg, models.GetFuncName())
 	}
 
 	result, err := context.Repositories.QuizSetResultRepository().Get(ident.ClassQuizSetId, ident.Email)
 	if err != nil {
-		logMsg := "failed to create quiz set result"
+		logMsg := "failed to get quiz set result"
 		web.Logger.WithFields(logrus.Fields{
 			"err" : err,
-		}).Fatal(logMsg)
+		}).Error(logMsg)
 	}
 
 	if result == nil {
@@ -255,22 +295,13 @@ func ScoreQuizzes (context *web.Context, ident ScoringQueueIdent, quizScorings [
 	}
 
 	quizResultCompleteChan := make(chan *dto.QuizAnswerWithScore, len(quizScorings))
+	go updateQuizSetResult(context, result, quizResultCompleteChan, len(quizScorings))
 	for _, quiz := range quizScorings {
+		var score uint64
 		answer, err := redisUtil.RedisGet(&conn, string(quiz.QuizId)+"-"+"ans")
 		strScore, err := redisUtil.RedisGet(&conn, string(quiz.QuizId)+"-"+"score")
-		score, parse_err := strconv.ParseUint(strScore, 10, 64)
-		if parse_err != nil {
-			web.Logger.WithFields(logrus.Fields{
-				"quiz_id" : quiz.QuizId,
-				"str_score" : strScore,
-			}).Fatal("failed to parse score retrieved by Redis")
-		}
-
 		if err != nil {
 			// TODO 에러 확인
-		}
-
-		if answer == "" {
 			answerWithScore, db_err := context.Repositories.QuizRepository().GetQuizAnswerWithScoreByQuizId(quiz.QuizId)
 			if db_err != nil || answerWithScore.QuizAnswer == "" {
 				// TODO 현재 퀴즈 채점 하는데 필요한 답을 가져오는데 실패 했으므로 재시도 처리
@@ -278,6 +309,17 @@ func ScoreQuizzes (context *web.Context, ident ScoringQueueIdent, quizScorings [
 			}
 			answer = answerWithScore.QuizAnswer
 			score = answerWithScore.QuizScore
+			redisUtil.RedisSet(&conn, string(quiz.QuizId)+"-"+"ans", answer, 30)
+			redisUtil.RedisSet(&conn, string(quiz.QuizId)+"-"+"score", string(score),30)
+		} else {
+			var parse_err error
+			score, parse_err = strconv.ParseUint(strScore, 10, 64)
+			if parse_err != nil {
+				web.Logger.WithFields(logrus.Fields{
+					"quiz_id" : quiz.QuizId,
+					"str_score" : strScore,
+				}).Error("failed to parse score retrieved by Redis")
+			}
 		}
 
 		scoreResult := scoreQuiz(quiz, answer)
@@ -301,17 +343,17 @@ func ScoreQuizzes (context *web.Context, ident ScoringQueueIdent, quizScorings [
 }
 
 func ScheduleQuizSetScoring (pool *redis.Pool, scoringRequest chan SubmittedQuiz) {
-	var scoreQueue []*QuizForScoring
+	var quizAccCount int64
 	prevTime := time.Now()
 	var threshHold int64 = 10 * 60
 	conn := pool.Get()
-	defer conn.Close()
+	defer utils.CloseRedisConnection(&conn)
 	for {
 		select {
 			case submitted := <- scoringRequest:
+				quizAccCount++
 				currTime := time.Now()
 				diff := currTime.Unix() - prevTime.Unix()
-				scoreQueue = append(scoreQueue, submitted.QuizForScoring)
 				quizSetScoringQueue := strconv.FormatInt(submitted.ClassQuizSetId, 10)+"-"+submitted.Email
 				//quizSetScoringQueue := submitted.ClassQuizSetId+"-"+submitted.Email
 				//_, err := conn.Do("LLEN", quizSetScoringQueue)
@@ -321,6 +363,7 @@ func ScheduleQuizSetScoring (pool *redis.Pool, scoringRequest chan SubmittedQuiz
 						"quiz" : submitted,
 					}).Error("Failed to marshaling QuizForScoring to json")
 				}
+
 				_, err = conn.Do("LPUSH", quizSetScoringQueue, data)
 				if err != nil {
 					web.Logger.WithFields(logrus.Fields{
@@ -334,29 +377,45 @@ func ScheduleQuizSetScoring (pool *redis.Pool, scoringRequest chan SubmittedQuiz
 				} else {
 
 				}
-
+				//pushKeyToScoringQueue(&conn, SCORING_QUEUE, string(submitted.ClassQuizSetId))
 				pushClassQuizSetQueue(pool, submitted.ClassQuizSetId, submitted.Email)
 				pushQuizToUserQuizQueue(pool, &submitted)
-				fetchAllUserQuizFromQueue(pool, submitted.ClassQuizSetId, submitted.Email)
 
-				if diff > threshHold ||  len(scoreQueue) > SCORE_BATCH_SIZE {
-					for i, _ := range scoreQueue {
-						_, err := conn.Do("SET", i, submitted.QuizType)
+				if diff > threshHold ||  quizAccCount > SCORE_BATCH_SIZE {
+					results, err := fetchAllFromScoringQueue(&conn)
+					if err != nil {
+						web.Logger.WithFields(logrus.Fields{
+							"quiz" : submitted,
+						}).Error(err.DetailedError)
+					}
+					for _, quizSetId := range results {
+						userQueueNames, err := fetchAllUserQuizQueueFromQueue(&conn, getClassQuizSetQueueName(quizSetId))
 						if err != nil {
-							v := string(submitted.QuizType)
-							println(v, " is invalid")
+							// TODO 에러 처리
+							web.Logger.WithFields(logrus.Fields{
+								"quiz" : submitted,
+							}).Error(err.DetailedError)
 						}
-						//var data []byte
-						_, err1 := redis.Bytes(conn.Do("GET", i))
-						if err1 != nil {
-							println("get cerror")
-						}
+						for _, userQueueName := range userQueueNames {
+							quizForScorings := fetchAllUserQuizFromQueue(&conn, userQueueName)
+							splitted := strings.Split(userQueueName, "-")
+							classQuizSetId, err := strconv.ParseInt(splitted[0], 10, 64)
+							if err != nil {
+								web.Logger.WithFields(logrus.Fields{
+									"target" : classQuizSetId,
+								}).Error(err.Error())
+								continue
+							}
 
+							ScoreQuizzes(web.Context0,
+								ScoringQueueIdent{classQuizSetId, splitted[1]},
+								quizForScorings)
+							}
+						}
 					}
 				}
 		}
 	}
-}
 
 func QuizSetScoring (pool *redis.Pool, classQuizSetId int64) {
 	// DB 에서 해당 되는 퀴즈 셋과 퀴즈를 모두 읽는다. (답도 포함되어 있어야 함)

@@ -3,8 +3,11 @@ package api
 import (
 	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
+	"github.com/sirupsen/logrus"
+	"oss/cerror"
 	"oss/dto"
 	"oss/models"
+	"oss/service"
 	"oss/web"
 	"strconv"
 )
@@ -18,7 +21,7 @@ import (
 // @Param classCode JSON body dto.QuizCreateForm true "퀴즈 셋을 조회할 강의의 학수 번호"
 // @Router /quizsets/classes/{classCode} [GET]
 // @Success 200 {array} dto.QuizSetGetForm "퀴즈 셋 배열"
-// @Failure 400 {string} string INVALID_PATH_PARAMETER
+// @Failure 400 {string} INVALID_PATH_PARAMETER
 func GetQuizSetsOfClass (context *web.Context) gin.HandlerFunc {
 	return func (c *gin.Context) {
 		classCode := c.Param("classCode")
@@ -34,7 +37,7 @@ func GetQuizSetsOfClass (context *web.Context) gin.HandlerFunc {
 			return
 		}
 
-		var quizSetGetForms []dto.QuizSetGetForm
+		var quizSetGetForms []dto.ClassQuizSetGetForm
 		for _, quizSet := range quizSets {
 			user, err := context.Repositories.UserRepository().GetByUserId(quizSet.UserId)
 			quizzes, err := context.Repositories.QuizRepository().GetQuizzesByQuizSetId(quizSet.QuizSetId)
@@ -54,8 +57,8 @@ func GetQuizSetsOfClass (context *web.Context) gin.HandlerFunc {
 				})
 			}
 
-			quizSetGetForm := dto.QuizSetGetForm {
-				QuizSetId: quizSet.QuizSetId,
+			quizSetGetForm := dto.ClassQuizSetGetForm {
+				ClassQuizSetId: quizSet.ClassQuizSetId,
 				QuizSetName: quizSet.QuizSetName,
 				QuizSetAuthorUserName: user.UserName,
 				Quizzes: quizGetForms,
@@ -63,6 +66,77 @@ func GetQuizSetsOfClass (context *web.Context) gin.HandlerFunc {
 			quizSetGetForms  = append(quizSetGetForms, quizSetGetForm)
 		}
 		c.JSON(200, quizSetGetForms)
+	}
+}
+
+// @tags Quiz set
+// @Summary ClassQuizSetId에 해당하는 Quiz set 을 가져온다.
+// @Description
+// @name get-string-by-int
+// @Accept json
+// @Product json
+// @Param classQuizSetId path string true "불러오려는 QuizSetId"
+// @Router /quizsets/class/{classQuizSetId} [GET]
+// @Success 200 {object} dto.ClassQuizSetGetForm "퀴즈 셋"
+// @Failure 400 {string} string "INVALID_PATH_PARAMETER"
+func GetQuizSetByClassQuizSetId (context *web.Context) gin.HandlerFunc {
+	return func (c *gin.Context) {
+		classQuizSetIdString := c.Param("classQuizSetId")
+		classQuizSetId, err := strconv.ParseInt(classQuizSetIdString, 10, 64)
+		if err != nil {
+			c.JSON(400, INVALID_PATH_PARAMETER + "=> NO quiz set of ClassQuizSetId")
+		}
+		classQuizSetGetForm, db_err := context.Repositories.ClassQuizSetRepository().GetClassQuizSetGetFormByClassQuizSetId(classQuizSetId)
+		if db_err != nil {
+			web.Logger.WithFields(logrus.Fields{
+				"err" : db_err,
+			}).Warning(cerror.DQUIZ_DB_OPERATION_ERROR)
+		}
+
+		quizzes, db_err := context.Repositories.QuizRepository().GetQuizzesByClassQuizSetId(classQuizSetGetForm.ClassQuizSetId)
+		if db_err != nil {
+			web.Logger.WithFields(logrus.Fields{
+				"err" : db_err,
+			}).Warning(cerror.DQUIZ_DB_OPERATION_ERROR)
+		}
+
+		var getFormQuizzes []dto.QuizGetForm
+		for _, quiz := range quizzes {
+			getFormQuizzes = append(getFormQuizzes, dto.QuizGetForm{
+				QuizId: quiz.QuizId,
+				QuizTitle: quiz.QuizTitle,
+				QuizContent: quiz.QuizContent,
+				QuizType: quiz.QuizType,
+			})
+		}
+		classQuizSetGetForm.Quizzes = getFormQuizzes
+
+		c.JSON(200, classQuizSetGetForm)
+	}
+}
+
+// @tags Quiz set
+// @Summary Quiz set 을 채점한다.
+// @Description
+// @name get-string-by-int
+// @Accept json
+// @Product json
+// @Param quizSetForScoring JSON body dto.QuizSetForScoring true "채점 하려는 퀴즈 셋"
+// @Router /quizsets/score [POST]
+// @Success 200 {string} string "ok"
+// @Failure 400 {string} string "INVALID_PATH_PARAMETER"
+func ScoreQuizzes (context *web.Context) gin.HandlerFunc {
+	return func (c *gin.Context) {
+		var quizSetForScoring *dto.QuizSetForScoring
+		err := c.Bind(&quizSetForScoring)
+		if err != nil || quizSetForScoring == nil {
+			c.JSON(400, INVALID_REQUEST_BODY)
+		}
+
+		service.ScoreQuizzes(context, service.ScoringQueueIdent{
+			ClassQuizSetId: quizSetForScoring.ClassQuizSetId,
+			Email: quizSetForScoring.UserName}, quizSetForScoring.QuizForScorings)
+
 	}
 }
 

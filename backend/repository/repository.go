@@ -109,13 +109,14 @@ func initSqlStore() (*sql.DB, *gorp.DbMap) {
     	quiz_type VARCHAR(20),
     	quiz_content VARCHAR(4096), 
     	quiz_answer VARCHAR(1024),
-    	score INT UNSIGNED NOT NULL,
+    	quiz_score INT UNSIGNED NOT NULL,
     	FOREIGN KEY (quiz_set_id) REFERENCES quiz_set(quiz_set_id) ON DELETE CASCADE
 	) DEFAULT CHARSET = UTF8`)
 	if err != nil {
 		//	panic(err)
 	}
-	_, _ = db.Exec(`DROP TABLE quiz_set_result`)
+
+	//_, _ = db.Exec(`DROP TABLE quiz_set_result`)
 	_, err = db.Exec(`CREATE TABLE quiz_set_result (
     	quiz_set_result_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     	class_quiz_set_id BIGINT NOT NULL, 
@@ -125,10 +126,10 @@ func initSqlStore() (*sql.DB, *gorp.DbMap) {
     	FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE 
 	) DEFAULT CHARSET = UTF8`)
 	if err != nil {
-		//panic(err)
+//		panic(err)
 	}
 
-	_, _ = db.Exec(`DROP TABLE quiz_result`)
+	//_, _ = db.Exec(`DROP TABLE quiz_result`)
 	_, err = db.Exec(`CREATE TABLE quiz_result (
     	quiz_result_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     	quiz_set_result_id BIGINT NOT NULL,  
@@ -137,7 +138,7 @@ func initSqlStore() (*sql.DB, *gorp.DbMap) {
     	FOREIGN KEY (quiz_set_result_id) REFERENCES quiz_set_result(quiz_set_result_id) ON DELETE CASCADE
 	) DEFAULT CHARSET = UTF8`)
 	if err != nil {
-		//panic(err)
+//		panic(err)
 	}
 
 	dbmap.AddTableWithName(models.User{}, "user")
@@ -153,4 +154,15 @@ func initSqlStore() (*sql.DB, *gorp.DbMap) {
 	return db, dbmap
 }
 
+/* GENESIS QUERY
 
+insert into quiz VALUES (4444, 1234, "hello", "MULTI", "good", "1", 80);
+insert into quiz VALUES (4445, 1234, "difficult quiz", "MULTI", "hey", "2", 5);
+insert into quiz VALUES (4446, 1234, "easy quiz", "MULTI", "queen", "4", 5);
+insert into quiz VALUES (4447, 1234, "quiiiz", "MULTI", "king", "4", 5);
+insert into class values (1996, "hello classa", "rers");
+insert into class_quiz_set values (4444, 1111, 1996);
+
+
+
+*/

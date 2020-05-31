@@ -7,6 +7,7 @@ import (
 	"google.golang.org/api/chat/v1"
 	"log"
 	"oss/cli"
+	"oss/dto"
 	"oss/service"
 	"oss/web"
 	"strings"
@@ -17,7 +18,7 @@ const (
 	INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR"
 	INVALID_REQUEST_HEADER = "INVALID_REQUEST_HEADER"
 	INVALID_PATH_PARAMETER = "INVALID_PATH_PARAMETER"
-	INVALID_REQUEST_BODY = "INVALID_PATH_PARAMETER"
+	INVALID_REQUEST_BODY = "INVALID_BODY"
 	RETRY = "RETRY"
 )
 
@@ -97,6 +98,7 @@ func InitRouters(context *web.Context) {
 	initPublicRouters(context)
 	authMiddleware, err := getAuthMiddleware()
 	classMiddleware, err := getClassAuthMiddleware()
+	quizsetsMiddleware, err := getQuizsetsAuthMiddleware()
 
 	r := context.Engine
 	r.Use(CORSMiddleWare())
@@ -125,10 +127,10 @@ func InitRouters(context *web.Context) {
 				ClassQuizSetId: 4444,
 				Email: "4whomtbts@gmail.com",
 			},
-			QuizForScoring : &service.QuizForScoring {
-				QuizId: 1,
-				QuizType: "multi",
-				QuizAnswer: "답",
+			QuizForScoring : &dto.QuizForScoring {
+				QuizId: 4444,
+				QuizType: "MULTI",
+				QuizAnswer: "1",
 			},
 		}
 		response, commandErr := StartTestCommand.ProcessCommand(s)
@@ -167,10 +169,13 @@ func InitRouters(context *web.Context) {
 	r.GET("/users/:name", GetUserByUserName(context))
 	quizset := r.Group("/quizsets")
 	quizset.Use(CORSMiddleWare())
-	quizset.Use(authMiddleware.MiddlewareFunc())
+	quizset.Use(quizsetsMiddleware.MiddlewareFunc())
 	quizset.POST("/quizset", CreateQuizSet(context))
-	quizset.DELETE("quizset/:quizsetId", DeleteQuizSet(context))
-	quizset.POST("quizset/:quizsetId/quiz/", AddQuiz(context))
+	// classQuizSetId 에 해당하는 퀴즈 셋을 가져온다
+	quizset.GET("/class/:classQuizSetId", GetQuizSetByClassQuizSetId(context))
+	quizset.POST("/score", ScoreQuizzes(context))
+	quizset.DELETE("/quizset/:quizsetId", DeleteQuizSet(context))
+	quizset.POST("/quizset/:quizsetId/quiz/", AddQuiz(context))
 	quizset.DELETE("/quizset/:quizsetId/quiz/:quizId", DeleteQuizFromQuizSet(context))
 	quizset.POST("/quizset/:quizsetId/class/:classCode", LoadQuizSetToClass(context))
 	quizset.DELETE("/quizset/:quizsetId/class/:classCode", DeleteQuizSetFromClass(context))
@@ -182,4 +187,7 @@ func InitRouters(context *web.Context) {
 	quiz.Use(authMiddleware.MiddlewareFunc())
 	quiz.POST("/", CreateQuizSet(context))
 	quiz.DELETE("/", DeleteQuizSet(context))
+
+	//r.POST("/:", ScoreQuizzes(context))
 }
+
