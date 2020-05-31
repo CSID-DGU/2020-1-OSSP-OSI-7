@@ -153,16 +153,16 @@ func initSqlStore() (*sql.DB, *gorp.DbMap) {
 
 	return db, dbmap
 }
-
 /* GENESIS QUERY
 
 insert into quiz VALUES (4444, 1234, "hello", "MULTI", "good", "1", 80);
 insert into quiz VALUES (4445, 1234, "difficult quiz", "MULTI", "hey", "2", 5);
 insert into quiz VALUES (4446, 1234, "easy quiz", "MULTI", "queen", "4", 5);
 insert into quiz VALUES (4447, 1234, "quiiiz", "MULTI", "king", "4", 5);
+insert into user VALUES (6953, 2015112391, "4whomtbts@gmail.com", "jun", "4whomtbts@gmail.com", "happy12", 1, 1
+insert into quiz_set VALUES (1111, 6953, "egg quiz set", 100);
 insert into class values (1996, "hello classa", "rers");
 insert into class_quiz_set values (4444, 1111, 1996);
 
-
-
 */
+
