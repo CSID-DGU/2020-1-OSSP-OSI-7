@@ -9,6 +9,7 @@ import Register from './auth/Register';
 import AuthRoute from './auth/AuthRoute';
 import NotFound from './NotFound';
 import TestQuiz from './quiz/TestQuiz';
+import TestQuizResult from './quiz/TestQuizResult';
 import Mypage from './mypage/Mypage';
 import ClassRoom from './class/ClassRoom'
 import {login, registerTo} from '../lib/api/auth';
@@ -53,7 +54,7 @@ const App = () => {
     login({username,password}).then((res)=>{
       setUser(res);
       setAuth(true);
-    }).catch(()=>alert("login fail"));
+    }).catch((e)=>alert(e));
   };
   const logOut = () =>{
     setUser(null);
@@ -146,7 +147,9 @@ const App = () => {
       <AuthRoute authenticated={authenticated} path="/create"
         render={props => <QuizTemplate {...props} />}
       />
-      <AuthRoute authenticated={authenticated} path="/quiz/:quizSetId" component={TestQuiz}/>}
+      <AuthRoute authenticated={authenticated} path="/quiz/:quizSetId" component={TestQuiz} exact/>}
+      />
+      <AuthRoute authenticated={authenticated} path="/quiz/:quizSetId/result" component={TestQuizResult} exact/>}
       />
       <AuthRoute authenticated={authenticated} path="/mypage" component={Mypage}/>}
       />

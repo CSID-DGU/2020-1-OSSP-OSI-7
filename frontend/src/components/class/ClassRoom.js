@@ -20,7 +20,7 @@ const ClassRoom = ({classId}) =>{
         <hr className="profile__class__hr"/>
         <Form>
             <Form.Group>
-                <Form.Control placeholder="search class"></Form.Control>
+                <Form.Control placeholder="search quiz"></Form.Control>
             </Form.Group>
         </Form>
         <Row>

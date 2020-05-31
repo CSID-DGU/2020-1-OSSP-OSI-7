@@ -82,3 +82,24 @@
 .mr__mi2{
     z-index: 1 !important;
 }
+
+.checkcircle__inner{
+    color: #fff;
+    font-size: 1.25rem;
+}
+
+.circle__container {
+    width: 12.5rem !important;
+    padding: 0 !important;
+    display:flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.resultCircle__container{
+    display:flex !important;
+    justify-content: center !important;
+    margin-top: 2rem !important;
+}
+
