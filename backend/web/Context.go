@@ -71,9 +71,10 @@ func initContext () *Context {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 	repo := repository.NewRepository()
-	redisHost := os.Getenv("REDIS_HOST")
+	//redisHost := os.Getenv("REDIS_HOST")
+	redisHost := ""
 	if redisHost == "" {
-		redisHost = ":6379"
+		redisHost = "34.64.116.239:6379"
 	}
 	pool := newPool(redisHost)
 	//cleanupHook()
