@@ -5,8 +5,14 @@ import CheckCircle from './CheckCircle';
 const ResultCircle = ({results}) =>{
     const [show, setShow] = useState(false);
 
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const handleClose = () => {
+        setShow(false);
+        document.getElementsByClassName('quiz__container__no_border')[0].classList.remove("modal_blur");
+    };
+    const handleShow = () => {
+        setShow(true);
+        document.getElementsByClassName('quiz__container__no_border')[0].classList.add("modal_blur");
+    };
 
     return (
         <Fragment>
