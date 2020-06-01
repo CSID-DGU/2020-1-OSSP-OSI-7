@@ -101,7 +101,7 @@ func GetAllManagingClass (context *web.Context) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		//claims := jwt.ExtractClaims(c)
 		//userName := claims["UserName"].(string)
-		userName := c.Param("UserName")
+		userName := c.Param("userName")
 		result, err := context.Repositories.UserRepository().GetAllManagingClass(userName)
 
 		if err != nil {

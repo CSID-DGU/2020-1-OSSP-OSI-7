@@ -164,8 +164,7 @@ func InitRouters(context *web.Context) {
 	auth.Use(authMiddleware.MiddlewareFunc())
 
 	auth.GET("/classes/enrolled/:userName", GetAllEnrolledClass(context))
-	auth.GET("/classes/managing/:userName", 
-		GetAllManagingClass(context))
+	auth.GET("/classes/managing/:userName", GetAllManagingClass(context))
 
 	r.GET("/users/:name", GetUserByUserName(context))
 	quizset := r.Group("/quizsets")
