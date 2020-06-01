@@ -65,7 +65,6 @@ func CreateClass (context *web.Context) gin.HandlerFunc {
 // 수강신청 (단 승낙과정 없이 즉시 반영)
 func JoinClass (context *web.Context) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var user models.User
 		claims := jwt.ExtractClaims(c)
 		userName := claims["UserName"].(string)
 		classCode := c.Param("classcode")
@@ -79,13 +78,6 @@ func JoinClass (context *web.Context) gin.HandlerFunc {
 
 		if getClassError != nil {
 			c.JSON(404, "class not exists")
-			return
-		}
-
-		err := c.BindJSON(&user)
-
-		if err != nil {
-			c.JSON(400, "bad request body")
 			return
 		}
 
