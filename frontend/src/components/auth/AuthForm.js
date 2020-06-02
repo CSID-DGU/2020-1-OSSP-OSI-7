@@ -4,7 +4,12 @@ import styled from 'styled-components';
 import {Form,Col,InputGroup, Button} from 'react-bootstrap';
 import {FaUser, FaPaperPlane, FaLock, FaUnlockAlt, FaGrinSquint} from 'react-icons/fa'
 import {IoMdSchool} from 'react-icons/io'
-import {check} from '../../lib/api/auth'
+import {check, login, registerTo} from '../../lib/api/auth'
+import CenteredModal from '../common/CenteredModal';
+import {currentUser, isAuthenticated} from '../atoms';
+
+import {useRecoilState} from 'recoil';
+
 
 const AuthFormBlock = styled.div`
 
@@ -26,7 +31,7 @@ const FieldForm = ({placeholder, icon, type, onChange, handleBlur, feedback, aut
 );
 
 
-const AuthForm = ({authenticated, type, handleSubmit, location})=>{
+const AuthForm = ({type, location})=>{
     const [email, setEmail] = useState("");
     const [nickname, setNickname] = useState("");
     const [student_code, setStudentCode] = useState("");
@@ -35,6 +40,13 @@ const AuthForm = ({authenticated, type, handleSubmit, location})=>{
     const [passwordCheck, setPasswordCheck] = useState("");
     const [validated, setValid] = useState(false); 
     const [isUsername,setCheck] = useState(false);
+
+    const [modalShow, setModalShow] = useState(false);
+
+    const [user, setUser] = useRecoilState(currentUser);
+    const [authenticated, setAuth] = useRecoilState(isAuthenticated);
+
+    
 
 
     useEffect(()=>{
@@ -61,7 +73,6 @@ const AuthForm = ({authenticated, type, handleSubmit, location})=>{
             pwCheckReference.setCustomValidity("");
         }
     }
-        
     },[password,passwordCheck]);
 
 
@@ -84,26 +95,25 @@ const AuthForm = ({authenticated, type, handleSubmit, location})=>{
     }
 
     const handleSignIn = () =>{
-        try{
-            handleSubmit({username, password});
-        } catch{
-            alert("Failed to login");
-            setEmail("");
-            setPassword("");
-        }
+        login({username,password}).then((res)=>{
+            setUser(res);
+            setAuth(true);
+          }).catch((e)=>alert(e));
     }
 
     const handleSignUp = () =>{
-        try{
-            handleSubmit({username,password, nickname, student_code, email});
-        } catch{
-            alert("Failed to Register");
-            setEmail("");
-            setNickname("");
-            setStudentCode("");
-            setPassword("");
-            setUsername("");
-        }
+        registerTo({username,password, nickname, student_code, email}).then((res)=>{
+            console.log("hello" + res);
+            setModalShow(true);
+        }).catch((e)=>{
+                alert("Failed to Register");
+                setEmail("");
+                setNickname("");
+                setStudentCode("");
+                setPassword("");
+                setUsername("");
+        });
+
     }
 
     const handleBlur = (e)=>{
@@ -114,6 +124,7 @@ const AuthForm = ({authenticated, type, handleSubmit, location})=>{
     }
 
     return (
+        <Fragment>
         <AuthFormBlock>
             <Form noValidate validated={validated} id="authForm">
                 <h2>{type.charAt(0).toUpperCase() + type.slice(1)}</h2>
@@ -148,6 +159,10 @@ const AuthForm = ({authenticated, type, handleSubmit, location})=>{
             )
             }
         </AuthFormBlock>
+        <CenteredModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}/>
+        </Fragment>
     );
 };
 

@@ -1,5 +1,4 @@
 import axios from 'axios';
-import jwt_decode from 'jwt-decode';
 
 const client = axios.create({proxy: {
     host: 'https://34.64.101.170',
@@ -9,19 +8,24 @@ const client = axios.create({proxy: {
 client.defaults.baseURL = 'https://34.64.101.170:8000/'
 client.defaults.headers.common['Content-Type'] = 'application/json';
 
+client.interceptors.request.use(async (config) => {
+    try{
+        // In this moment, show the spinner
+        // showLoading();
+        console.log("loading.....");
+    }
+    catch(e)
+    {
+        alert('Error request' + e);
+    }
+
+    return config;
+});
+
+
 client.interceptors.response.use(
     response => {
-        if(response.data.token){
-            const token = response.data.token;
-            const decoded = jwt_decode(token);
-            localStorage.setItem(
-                "user_info",
-                JSON.stringify({
-                    user:decoded.UserName,
-                  token: token}));
-            client.defaults.headers.common['Authorization'] = "Bearer " + token;
-            return decoded.UserName;
-        }
+        console.log("It's response", response);
         return response;
     },
     error => {

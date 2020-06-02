@@ -47,23 +47,13 @@ const App = () => {
       // setUser(local.user);
     }, [user])
     
-  // }
 
-  // const logIn = ({username, password}) =>setUser("user");
-  const logIn = ({username, password}) => {
-    login({username,password}).then((res)=>{
-      setUser(res);
-      setAuth(true);
-    }).catch((e)=>alert(e));
-  };
+
+
   const logOut = () =>{
     setUser(null);
     setAuth(false);
     localStorage.removeItem("user_info");
-  };
-  const register = ({username,password, nickname, student_code, email}) => {
-    registerTo({username,password, nickname, student_code, email});
-    history.push('/login');
   };
 
 
@@ -137,11 +127,11 @@ const App = () => {
       <AuthRoute authenticated={authenticated} path="/quiz" component={QuizSetListContainer} exact/>
       
       <Route path="/login" render={props => (
-          <Login authenticated={authenticated} handleSubmit={logIn} {...props} />
+          <Login authenticated={authenticated} {...props} />
         )}/>
       
       <Route path="/register" render={props => (
-          <Register authenticated={authenticated} handleSubmit={register} {...props} />
+          <Register authenticated={authenticated} {...props} />
           )}/>
       
       <AuthRoute authenticated={authenticated} path="/create"
