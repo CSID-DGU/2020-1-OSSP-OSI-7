@@ -41,9 +41,9 @@ export const login = async ({username, password}) =>
         }
     );
 
-export const registerTo = async ({username,password, nickname, student_code, email}) =>{
+export const registerTo = async ({username,password, nickname, student_code}) =>{
     student_code = Number(student_code);
-    await client.post('/register', {username,password, nickname, student_code, email}).then(
+    await client.post('/register', {username,password, nickname, student_code}).then(
         (response) => {
             console.log("이거지" +response)
             return response;
