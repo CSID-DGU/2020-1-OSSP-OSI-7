@@ -1,8 +1,8 @@
-import React, {Fragment, useState, useEffect, useRef, forwardRef,useMemo } from 'react';
+import React, {Fragment, useState, useRef, forwardRef } from 'react';
 import { Link,Redirect } from 'react-router-dom';
 import styled from 'styled-components';
 import {Form,Col,InputGroup, Button} from 'react-bootstrap';
-import {FaUser, FaPaperPlane, FaLock, FaUnlockAlt, FaGrinSquint} from 'react-icons/fa'
+import {FaUser, FaLock, FaUnlockAlt, FaGrinSquint} from 'react-icons/fa'
 import {IoMdSchool} from 'react-icons/io'
 import {check, login, registerTo} from '../../lib/api/auth'
 import CenteredModal from '../common/CenteredModal';
@@ -16,7 +16,7 @@ import {useRecoilState} from 'recoil';
 const AuthFormBlock = styled.div`
 
 `;
-const FieldForm = forwardRef(({validated, placeholder, icon, type, onChange, onBlur, authType, name, value, error},ref) => (
+const FieldForm = forwardRef(({placeholder, icon, type, onChange, onBlur, name, value, error},ref) => (
     <Form.Group className="authform_group">
         <InputGroup>
             <InputGroup.Prepend>
@@ -24,7 +24,7 @@ const FieldForm = forwardRef(({validated, placeholder, icon, type, onChange, onB
             </InputGroup.Prepend>
             <Form.Control value={value} onChange={(e)=>{onChange(e)}} name={name} ref={ref} type={type} id={placeholder}  placeholder={placeholder} 
                 onBlur={onBlur}
-                className={!error ? "form-control:valid is-valid" : "form-control:invalid is-invalid was-validated"}
+                className={!error ? (value && "form-control:valid is-valid") : "form-control:invalid is-invalid was-validated"}
             />
             <div className="invalid-feedback">{error}</div>
         </InputGroup>
@@ -49,40 +49,7 @@ const AuthForm = ({type, location})=>{
     const [user, setUser] = useRecoilState(currentUser);
     const [authenticated, setAuth] = useRecoilState(isAuthenticated);
 
-    const formReference = useRef();
-
     const {register, handleSubmit, errors, triggerValidation} = useForm();
-
-
-    // useCustomValidity(usernameReference, "hello");
-    // useEffect(()=>{
-    //     if(type === "register"){
-    //         if(isUsername && usernameReference.current){
-    //             // useCustomValidity(usernameReference, "User Already exist");
-    //             usernameReference.current.setCustomValidity("user Already Exist");
-    //         }   else {
-    //             // useCustomValidity(usernameReference);
-    //             usernameReference.current.setCustomValidity("");
-    //         }
-    // }
-    // }, [isUsername]);
-    
-    // useEffect(()=>{
-    //     if(type === "register" && pwReference.current){
-    //         if (password !== passwordCheck) {
-    //             setValid(true);
-    //             // useCustomValidity(pwReference, "not same");
-    //             // useCustomValidity(pwCheckReference, "not same");
-    //             pwReference.current.setCustomValidity("not smae");
-    //             pwCheckReference.current.setCustomValidity("not smae");
-    //         }else {
-    //             // useCustomValidity(pwReference);
-    //             // useCustomValidity(pwCheckReference);
-    //             pwReference.current.setCustomValidity("");
-    //             pwCheckReference.current.setCustomValidity("");
-    //     }
-    // }
-    // },[password,passwordCheck]);
 
 
     const { from } = location.state || { from: { pathname: "/" } }
@@ -115,11 +82,9 @@ const AuthForm = ({type, location})=>{
         return result
     }
 
-    // const isUser = useMemo(handleBlur, [username]);
 
     const onSubmit = (data) => {
         console.log(data);
-        // setValid(true);
         if(type === "login") {
             handleSignIn();
         }else if (type ==="register"){
@@ -127,19 +92,28 @@ const AuthForm = ({type, location})=>{
         }
     };
 
-    const onChange = (e) =>{
+    const onChange = async (e) =>{
         const name = e.target.name;
         const value = e.target.value;
         if(name === "username") {
             setUsername(value);
         } else if (name ==="nickname"){
             setNickname(value);
+            await triggerValidation("nickname");
         } else if (name === "student_code"){
+            // setModalShow(true);
             setStudentCode(value);
+            await triggerValidation("student_code");
         } else if(name==="password"){
-            setPassword(value);
+            await setPassword(value);
+            if(passwordCheck){
+                await triggerValidation("passwordCheck");
+                await triggerValidation("password");
+            }
         } else if(name==="passwordCheck"){
-            setPasswordCheck(value);
+            await setPasswordCheck(value);
+            await triggerValidation("passwordCheck");
+            await triggerValidation("password");
         }
 
     }
@@ -147,7 +121,7 @@ const AuthForm = ({type, location})=>{
     const isPasswordSame = () =>{
         return (
             (!!passwordCheck && !!password) &&
-            password !== passwordCheck ? false: true
+            password === passwordCheck ? true: false
         )
     }
 
@@ -155,7 +129,7 @@ const AuthForm = ({type, location})=>{
     return (
         <Fragment>
         <AuthFormBlock>
-            <Form id="authForm" ref={formReference}>
+            <Form id="authForm">
                 <h2>{type.charAt(0).toUpperCase() + type.slice(1)}</h2>
                 {type === 'register' 
                 ?(
@@ -227,8 +201,9 @@ const AuthForm = ({type, location})=>{
             )}
         </AuthFormBlock>
         <CenteredModal
-        show={modalShow}
-        onHide={() => setModalShow(false)}/>
+            show={modalShow}
+            onHide={() => setModalShow(false)}
+            body="helloworld" />
         </Fragment>
     );
 };
