@@ -1,22 +1,21 @@
 import React, {Fragment, useState, useRef, forwardRef } from 'react';
 import { Link,Redirect } from 'react-router-dom';
 import styled from 'styled-components';
-import {Form,Col,InputGroup, Button} from 'react-bootstrap';
+import {Form,Col,InputGroup, Button, ListGroup} from 'react-bootstrap';
 import {FaUser, FaLock, FaUnlockAlt, FaGrinSquint} from 'react-icons/fa'
 import {IoMdSchool} from 'react-icons/io'
 import {check, login, registerTo} from '../../lib/api/auth'
 import CenteredModal from '../common/CenteredModal';
 import {currentUser, isAuthenticated} from '../atoms';
 import {useForm} from 'react-hook-form';
-
-
+import { useSpring, animated as a } from "react-spring";
 import {useRecoilState} from 'recoil';
 
 
 const AuthFormBlock = styled.div`
 
 `;
-const FieldForm = forwardRef(({placeholder, icon, type, onChange, onBlur, name, value, error},ref) => (
+const FieldForm = forwardRef(({placeholder, icon, type, onChange, onBlur, name, value, error, children},ref) => (
     <Form.Group className="authform_group">
         <InputGroup>
             <InputGroup.Prepend>
@@ -28,9 +27,34 @@ const FieldForm = forwardRef(({placeholder, icon, type, onChange, onBlur, name, 
             />
             <div className="invalid-feedback">{error}</div>
         </InputGroup>
+        {children}
     </Form.Group>
 ));
 
+const selectList = styled.li`
+
+`;
+
+const SelectBtn = ({value, onClick, onFocus}) =>{
+    const mailType = ["dongguk.edu", "dgu.ac.kr", "naver.com", "gmail.com"];
+    const isValid = (value && value.indexOf("@") === -1);
+    const contentProps = useSpring({
+        from:{height:0},
+        to:{height: isValid?200:0} 
+    })
+
+    return (
+        <a.div className="selectList" style={contentProps}>
+        {isValid &&
+        <ListGroup>
+        {
+            mailType.map((m)=>(<ListGroup.Item onClick={async ()=>{onClick("@"+m); await onFocus();}}>{value}@{m}</ListGroup.Item>))
+        }
+        </ListGroup>
+        }
+        </a.div>
+    );
+}
 
 
 const AuthForm = ({type, location})=>{
@@ -45,12 +69,14 @@ const AuthForm = ({type, location})=>{
     const [validated, setValid] = useState(false); 
 
     const [modalShow, setModalShow] = useState(false);
+    const [selectShow, setselectShow] = useState(false);
 
     const [user, setUser] = useRecoilState(currentUser);
     const [authenticated, setAuth] = useRecoilState(isAuthenticated);
 
     const {register, handleSubmit, errors, triggerValidation} = useForm();
 
+    const formReference = useRef();
 
     const { from } = location.state || { from: { pathname: "/" } }
     if (authenticated) return <Redirect to={from} />
@@ -125,6 +151,15 @@ const AuthForm = ({type, location})=>{
         )
     }
 
+    const onFocus = () =>{
+        document.getElementsByName('username')[0].focus();
+    }
+
+    const EmailBtnClick = (value) => {
+        setUsername(username+value);
+    }
+
+
 
     return (
         <Fragment>
@@ -142,16 +177,22 @@ const AuthForm = ({type, location})=>{
                             validate: async value => await handleBlur(value) == true})}
                             error={errors.username && "username is required"}
                             name={"username"} authType={type} placeholder={"E-MAIL"} icon={<FaUser/>} onChange={onChange}
-                            onBlur={async () => await triggerValidation("username")} type={"email"}/>
+                            onBlur={async () => await triggerValidation("username")} type={"email"}>
+                            {
+                                // (username && username.indexOf("@") === -1) && 
+                                <SelectBtn value={username} onClick={EmailBtnClick} onFocus={onFocus}/> 
+                            }
+                            </FieldForm>
                         
+
                         <FieldForm validated={validated} value={nickname}
                             ref={register({required: true, minLength: 6})}
                             error={errors.nickname && errors.nickname.type === "minLength" && ("too short")}
                             name={"nickname"} authType={type} placeholder={"NICKNAME"} icon={<FaGrinSquint/>} onChange={onChange} type={"nickname"}/>
                         
                         <FieldForm validated={validated} value={student_code} 
-                            ref={register({required: true, minLength:9})}
-                            error = {errors.student_code && "student_code is required"}
+                            ref={register({required: true, minLength:10})}
+                            error = {errors.student_code && (errors.student_code.type === "minLength" ? "too short!" : "student_code is required") }
                             name={"student_code"} authType={type} placeholder={"STUDENT_CODE"} icon={<IoMdSchool/>} onChange={onChange} type={"studentCode"}/>
                         <hr/>
                         <FieldForm validated={validated} value={password}
