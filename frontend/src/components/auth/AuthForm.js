@@ -174,8 +174,10 @@ const AuthForm = ({type, location})=>{
                         <hr/>
                         <FieldForm validated={validated} value={username} 
                             ref={register({required: true,
-                            validate: async value => await handleBlur(value) == true})}
-                            error={errors.username && "username is required"}
+                            validate: async value => await handleBlur(value) == true,
+                            pattern:/^[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_\.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,3}$/
+                            })}
+                            error={errors.username && (errors.username.type === "pattern" ? "this is not a email type" : (errors.username.type === "validate" ? "user is already exist":"username is required"))}
                             name={"username"} authType={type} placeholder={"E-MAIL"} icon={<FaUser/>} onChange={onChange}
                             onBlur={async () => await triggerValidation("username")} type={"email"}>
                             {
