@@ -1,5 +1,5 @@
 import React, {Fragment, useState, useRef, forwardRef } from 'react';
-import { Link,Redirect } from 'react-router-dom';
+import { Link,Redirect,useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import {Form,Col,InputGroup, Button, ListGroup} from 'react-bootstrap';
 import {FaUser, FaLock, FaUnlockAlt, FaGrinSquint} from 'react-icons/fa'
@@ -10,7 +10,7 @@ import {currentUser, isAuthenticated} from '../atoms';
 import {useForm} from 'react-hook-form';
 import { useSpring, animated as a } from "react-spring";
 import {useRecoilState} from 'recoil';
-
+import AuthModal from './AuthModal';
 
 const AuthFormBlock = styled.div`
 
@@ -69,15 +69,12 @@ const AuthForm = ({type, location})=>{
     const [validated, setValid] = useState(false); 
 
     const [modalShow, setModalShow] = useState(false);
-    const [selectShow, setselectShow] = useState(false);
 
     const [user, setUser] = useRecoilState(currentUser);
     const [authenticated, setAuth] = useRecoilState(isAuthenticated);
 
     const {register, handleSubmit, errors, triggerValidation} = useForm();
-
-    const formReference = useRef();
-
+    let history = useHistory();
     const { from } = location.state || { from: { pathname: "/" } }
     if (authenticated) return <Redirect to={from} />
 
@@ -90,7 +87,6 @@ const AuthForm = ({type, location})=>{
 
     const handleSignUp = () =>{
         registerTo({username,password, nickname, student_code}).then((res)=>{
-            console.log("hello" + res);
             setModalShow(true);
         }).catch((e)=>{
                 alert("Failed to Register");
@@ -104,13 +100,11 @@ const AuthForm = ({type, location})=>{
 
     const handleBlur = async (value)=>{
         const result = await check(value).then((res)=>{return false}).catch(()=>{return true});
-        console.log(result);
         return result
     }
 
 
     const onSubmit = (data) => {
-        console.log(data);
         if(type === "login") {
             handleSignIn();
         }else if (type ==="register"){
@@ -127,7 +121,7 @@ const AuthForm = ({type, location})=>{
             setNickname(value);
             await triggerValidation("nickname");
         } else if (name === "student_code"){
-            // setModalShow(true);
+            // setModalShow(true); //modal test
             setStudentCode(value);
             await triggerValidation("student_code");
         } else if(name==="password"){
@@ -163,7 +157,7 @@ const AuthForm = ({type, location})=>{
 
     return (
         <Fragment>
-        <AuthFormBlock>
+        <AuthFormBlock className={modalShow && "modal_blur"}>
             <Form id="authForm">
                 <h2>{type.charAt(0).toUpperCase() + type.slice(1)}</h2>
                 {type === 'register' 
@@ -243,10 +237,16 @@ const AuthForm = ({type, location})=>{
                 <div><Link to='/register'>Register Here</Link></div>
             )}
         </AuthFormBlock>
+
+
         <CenteredModal
             show={modalShow}
-            onHide={() => setModalShow(false)}
-            body="helloworld" />
+            onHide={() => history.push('/')}
+            body="helloworld">
+                <AuthModal onClick={() => history.push('/login')} username={username} />
+        </CenteredModal>
+
+
         </Fragment>
     );
 };

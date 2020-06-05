@@ -21,6 +21,11 @@ $main_color : #edf2f9;
 }
 
 @font-face{
+    font-family: "FredokaOne";
+    src: url("../fonts/FredokaOne-Regular.ttf") format('opentype');
+}
+
+@font-face{
     font-family: "Helvetica";
     src: url("../fonts/Helvetica/Helvetica Bold.ttf") format('truetype');
 }

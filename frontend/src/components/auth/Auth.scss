@@ -22,3 +22,24 @@
     right: 0;
     left: 0;
 }
+
+.username {
+    animation: flow 30s ease-in-out infinite !important; 
+    background: linear-gradient(-60deg, #904e95, #904e95, #e73c7e, #ee7752)!important;
+    background-size:300%!important;
+    -webkit-background-clip:text!important;
+    background-clip:text!important;
+    -webkit-text-fill-color: transparent!important;
+}
+
+@keyframes flow {
+    0%{
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
+}
