@@ -29,4 +29,9 @@ const modalShow = atom({
     default: false
 })
 
-export {isAuthenticated, currentUser, userAvatar, userAuth, modalShow, tokenExpiredate}
+const managingClasses = atom({
+    key:'managingClasses',
+    default: []
+})
+
+export {managingClasses, isAuthenticated, currentUser, userAvatar, userAuth, modalShow, tokenExpiredate}

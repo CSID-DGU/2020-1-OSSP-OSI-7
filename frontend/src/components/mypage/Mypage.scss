@@ -43,3 +43,17 @@
 .flex__align__center{
     align-items: center;
 }
+
+.confirma__modal {
+    font-size: 1.5rem;
+}
+
+.modal__circle {
+    margin: 0 0.75rem 0 0 !important;
+}
+
+#contained-modal-title-vcenter {
+    display:flex;
+    flex-direction: row;
+    align-items: baseline;
+}

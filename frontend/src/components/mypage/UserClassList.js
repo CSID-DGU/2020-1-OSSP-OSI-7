@@ -5,7 +5,7 @@ const UserClassList = ({classes}) =>{
     return (
         <div>
             <h3>강의 목록</h3>
-            {classes.map((c)=><UserClassItem classInfo={c} />)}
+            {classes && classes.map((c)=><UserClassItem classInfo={c} />)}
         </div>
     )
 }

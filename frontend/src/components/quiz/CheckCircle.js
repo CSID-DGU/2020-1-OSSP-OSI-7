@@ -22,7 +22,7 @@ const Circle = styled.div`
 const CheckCircle = (props)=>{
     return (
         <Fragment>
-            <Circle wrong = {props.wrong} onClick={()=>props.handleShow()}>
+            <Circle wrong = {props.wrong} onClick={()=>props.handleShow()} className={props.className}>
             {props.wrong ?
                 <FaTimes className="checkcircle__inner"/>:
                 <FaCheck className="checkcircle__inner"/>

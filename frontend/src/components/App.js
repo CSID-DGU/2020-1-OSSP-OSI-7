@@ -45,11 +45,12 @@ const App = () => {
         setExp(local.exp);
       }  else {
         setAuth(false);
+        setUser(null);
       }
-
-
-      getAvatar(user).then((res)=>setAvatar(res.data.avatar_url));
       // setUser(local.user);
+      if(user !== null){
+        getAvatar(user.split("@")[0]).then((res)=>setAvatar(res.data.avatar_url));
+      }
     }, [user])
     
     useEffect (()=>{

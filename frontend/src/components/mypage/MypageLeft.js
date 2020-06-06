@@ -1,18 +1,23 @@
-import React, {Fragment, useState} from 'react';
+import React, {Fragment, useState, useEffect} from 'react';
 import {Image, Row, Col} from 'react-bootstrap';
 import UserClassList from './UserClassList';
 import {useRecoilState} from 'recoil';
 import ToggleSwitch from './ToggleSwitch';
 import ReactTextTransition from 'react-text-transition';
-import {userAuth} from '../atoms';
+import {getManagingClass} from '../../lib/api/class';
+import {userAuth, managingClasses} from '../atoms';
 
 import {classdata} from './classData';
 
 const MypageLeft = (props)=>{
     const {avatar, user} = props;
-    const [classes, setClasses] = useState(classdata);
+    const [classes, setClasses] = useRecoilState(managingClasses);
     const [auth,setAuth] = useRecoilState(userAuth);
 
+
+    useEffect(()=>{
+        getManagingClass(user).then((res)=>setClasses(res.data));
+    }, []);
 
     return (
         <Fragment>
