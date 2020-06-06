@@ -12,13 +12,14 @@ import {Button, Form, Dropdown, Container, Row, Col} from 'react-bootstrap';
 
 const QuizForm = (props)=>{
     const koreanDict = {"mul_choices":"객관식", "essay":"주관식", "short_answer":"단답형","binary":"OX형"};
-    const {onRemove, onTypeChange, AnswerForm, onChange, quiz, addChoices, onRemoveChoice, selectAnswerChoice} = props;
+    const {onRemove, handleBlur, onTypeChange, AnswerForm, onChange, quiz, addChoices, onRemoveChoice, selectAnswerChoice} = props;
     const {id, type} = quiz;
 
 
 
     return(
         <Container className="quiz__container">
+        <Container>
         <Row className="row__mr__bottom">
             <Col xs={"auto"} className="mr-auto">
             <Button variant="secondary">문항 {id+1}</Button>
@@ -41,22 +42,24 @@ const QuizForm = (props)=>{
                 <Button variant="danger" onClick={()=>onRemove(id)}>X</Button>
             </Col>
         </Row>
+        </Container>
 
             
-        <Form>
+        <Container>
         <Form.Group as={Row}>
             <Form.Label  column sm="2">QUESTION</Form.Label>
             <Col sm="10">
-            <Form.Control  as="textarea" name="question" quizId={id} value={quiz.question} onChange={(e)=>{onChange(e)}}></Form.Control>
+            <Form.Control required as="textarea" name="question" quizId={id} value={quiz.question} onChange={(e)=>{onChange(e)}}></Form.Control>
+            <Form.Control.Feedback type="invalid">Please type a question</Form.Control.Feedback>
             </Col>
         </Form.Group>
         <Form.Group as={Row}>
         <AnswerForm  addChoices={addChoices} onChange={onChange}
         quiz={quiz} onRemoveChoice={onRemoveChoice}
-        selectAnswerChoice={selectAnswerChoice}
+        selectAnswerChoice={selectAnswerChoice} handleBlur={handleBlur}
         />
         </Form.Group>
-        </Form>
+        </Container>
         </Container>
         );
 }

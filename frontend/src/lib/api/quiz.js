@@ -8,5 +8,3 @@ export const quizList = () =>
 
 export const quizDetail = ({quizSetId}) =>
     client.get(`/quizset/${quizSetId}/`);
-
-export const 

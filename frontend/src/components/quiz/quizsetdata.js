@@ -8,7 +8,6 @@ export const quizsetdata = {
               "question":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam ",
               "answer":"0,3",
               "content":{
-                 "description":"",
                  "images":[
                   "https://placekitten.com/300/300",
                   "https://placekitten.com/300/301",
@@ -43,7 +42,6 @@ export const quizsetdata = {
               "question":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam",
               "answer":"ㅁ재ㅑ더럄ㄹ재ㅑ",
               "content":{
-                 "description":"",
                  "images":[
                   "https://placekitten.com/300/400",
                  ],
@@ -77,7 +75,6 @@ export const quizsetdata = {
               "question":"ㅁㅈㄹ댜ㅐㅓ",
               "answer":"ㅐㅑㅁ점ㄹㅈ댜ㅓ",
               "content":{
-                 "description":""
               }
            },
            {
@@ -86,7 +83,6 @@ export const quizsetdata = {
               "question":"ㅁ재댜러ㅐㅑ",
               "answer":"ㅐㅑ더랴ㅐ머쟈ㅐ러ㅑㅐㅈㅇㄹ",
               "content":{
-                 "description":""
               }
            },
            {
@@ -95,7 +91,6 @@ export const quizsetdata = {
             "question":"ㅁ재댜러ㅐㅑ",
             "answer":"ㅐㅑ더랴ㅐ머쟈ㅐ러ㅑㅐㅈㅇㄹ",
             "content":{
-               "description":""
             }
          }
         ]

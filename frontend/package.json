@@ -8,14 +8,18 @@
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
+    "jwt-decode": "^2.2.0",
     "node-sass": "^4.14.1",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-circular-progressbar": "^2.0.3",
     "react-dom": "^16.13.1",
+    "react-hook-form": "^5.7.2",
     "react-icons": "^3.10.0",
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
+    "react-spring": "^8.0.27",
+    "react-text-transition": "^1.1.1",
     "styled-components": "^5.1.0"
   },
   "scripts": {
@@ -37,6 +41,7 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
-    ]
+    ],
+    "proxy": "https://34.64.101.170:8000/"
   }
 }

@@ -1,5 +1,5 @@
 import React, {useState, useEffect, Fragment} from 'react';
-import {Container, Row,Col, ProgressBar, Button, Form} from 'react-bootstrap';
+import {Container, Row,Col, ProgressBar, Button} from 'react-bootstrap';
 import TestQuizHeader from './TestQuizHeader';
 import TestQuizChoice from './TestQuizChoice';
 import TestQuizAnswer from './TestQuizAnswer';
@@ -24,8 +24,6 @@ const TestQuiz = ({match}) => {
 
     const isLast = current === total+1;
     const currentQuiz = quizset.quizzes[current-1];
-
-    let choices = [];
 
     useEffect(()=>{
         setTempAnswer(tempChoice.join(","));
@@ -54,13 +52,6 @@ const TestQuiz = ({match}) => {
             setTempChoice(tempChoice.filter((c)=> c !== choiceId));
         }
     }
-
-    const onChange = (value) => {
-        setTempAnswer(value);
-    }
-
-    
-
 
     return (
         <Container className="quiz__container">

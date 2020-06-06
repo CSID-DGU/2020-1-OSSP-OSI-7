@@ -1,5 +1,7 @@
 @import url('./quiz/Quiz.scss');
 @import url('./auth/Auth.scss');
+@import url('./mypage/Mypage.scss');
+@import url('./etc.scss');
 
 $main_color : #edf2f9;
 
@@ -8,6 +10,25 @@ $main_color : #edf2f9;
     src: url("../fonts/NanumSquareRoundOTFEB.otf") format('opentype');
 }
 
+@font-face{
+    font-family: "Anton";
+    src: url("../fonts/Anton-Regular.ttf") format('opentype');
+}
+
+@font-face{
+    font-family: "Monoton";
+    src: url("../fonts/Monoton-Regular.ttf") format('opentype');
+}
+
+@font-face{
+    font-family: "FredokaOne";
+    src: url("../fonts/FredokaOne-Regular.ttf") format('opentype');
+}
+
+@font-face{
+    font-family: "Helvetica";
+    src: url("../fonts/Helvetica/Helvetica Bold.ttf") format('truetype');
+}
 
 * {
     font-family: "TestFont" !important;
@@ -18,4 +39,28 @@ body {
     &::-webkit-scrollbar {
         display:none;
     }
+}
+
+.nav__bar {
+    color: white !important;
+    font-size: 1.25rem;
+    a {
+        color: white !important;
+    }
+    .nav__dropdown {
+        color: black !important;
+    }
+}
+
+.nav__img {
+    height:30px !important;
+    width:30px !important;
+    border-radius: 30px !important;
+}
+.profile__thumb{
+    margin-right: 0.5rem !important;
+}
+
+#collasible-nav-dropdown{
+    height: 30px;
 }
