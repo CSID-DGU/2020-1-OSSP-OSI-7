@@ -53,12 +53,15 @@ const App = () => {
     }, [user])
     
     useEffect (()=>{
-      const local = JSON.parse(localStorage.getItem("user_info"));
-      if( Date.now() > local.exp){
-        console.log("token check expired");
-        logOut();
-      } else{
-        console.log("token is ok");
+      if(localStorage.getItem('user_info')){
+        const local = JSON.parse(localStorage.getItem("user_info"));
+        if( Date.now() > local.exp){
+          console.log("token check expired");
+          logOut();
+        } else{
+          console.log("token is ok");
+        }
+
       }
     }, [location]);
 
