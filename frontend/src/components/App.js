@@ -1,5 +1,5 @@
 import React,{useState, useEffect,Fragment} from 'react';
-import { Route, Link, Switch, useHistory} from 'react-router-dom';
+import { Route, Link, Switch, useHistory, useLocation} from 'react-router-dom';
 import {Navbar, Nav, Image, Container, NavDropdown} from 'react-bootstrap';
 import QuizTemplate from './quiz/QuizTemplate';
 import QuizSetListContainer from './quiz/QuizSetListContainer';
@@ -15,7 +15,7 @@ import ClassRoom from './class/ClassRoom'
 import {login, registerTo} from '../lib/api/auth';
 import {getAvatar} from '../lib/api/mypage';
 import {useRecoilState} from 'recoil';
-import {currentUser, isAuthenticated, userAvatar} from './atoms';
+import {currentUser, isAuthenticated, userAvatar, tokenExpiredate} from './atoms';
 
 const useTitle = (initialTitle)=>{
   const[title,setTitle] = useState(initialTitle);
@@ -32,7 +32,9 @@ const App = () => {
   const titleUpdator = useTitle("DQUIZ");
   const [user, setUser] = useRecoilState(currentUser);
   const [authenticated, setAuth] = useRecoilState(isAuthenticated);
+  const [tokenExp, setExp] = useRecoilState(tokenExpiredate);
   let history = useHistory();
+  const location = useLocation();
   // const authenticated = user !== null;
 
   useEffect (()=>{
@@ -40,14 +42,25 @@ const App = () => {
       if(local){
         setUser(local.user);
         setAuth(true);
+        setExp(local.exp);
       }  else {
         setAuth(false);
       }
+
+
       getAvatar(user).then((res)=>setAvatar(res.data.avatar_url));
       // setUser(local.user);
     }, [user])
     
-
+    useEffect (()=>{
+      const local = JSON.parse(localStorage.getItem("user_info"));
+      if( Date.now() > local.exp){
+        console.log("token check expired");
+        logOut();
+      } else{
+        console.log("token is ok");
+      }
+    }, [location]);
 
 
   const logOut = () =>{
@@ -55,6 +68,8 @@ const App = () => {
     setAuth(false);
     localStorage.removeItem("user_info");
   };
+
+
 
 
   return (

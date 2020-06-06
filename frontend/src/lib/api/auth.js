@@ -1,5 +1,6 @@
 import client from './client';
 import jwt_decode from 'jwt-decode';
+import axios from 'axios';
 
 // const sendRequest = ({requestFunction})=> {
 //     let loading = false;
@@ -34,6 +35,7 @@ export const login = async ({username, password}) =>
                 "user_info",
                 JSON.stringify({
                     user:decoded.UserName,
+                    exp:decoded.exp*1000,
                   token: token}));
             client.defaults.headers.common['Authorization'] = "Bearer " + token;
             return decoded.UserName;
@@ -42,7 +44,7 @@ export const login = async ({username, password}) =>
     );
 
 export const registerTo = async ({username,password, nickname, student_code}) =>{
-    student_code = Number(student_code);
+    student_code = await Number(student_code);
     console.log(username,password, nickname, student_code);
     await client.post('/register', {username,password, nickname, student_code}).then(
         (response) => {

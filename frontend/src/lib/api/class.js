@@ -1,7 +1,9 @@
 import client from './client';
 
-export const createClass = ({class_info}) =>{
-    client.post('/class/', class_info );
+export const createClass = async ({class_code, class_name}) =>{
+    await client.post('/class/', {class_code, class_name}).then(
+        (res)=>{console.log(res);
+             return res}).catch((e)=>console.log(e));
 }
 
 export const enrollClass = ({class_code}) => {

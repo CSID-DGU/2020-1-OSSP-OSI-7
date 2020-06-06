@@ -4,6 +4,10 @@ const isAuthenticated = atom({
     key:'isAuthenticated',
     default: false
 })
+const tokenExpiredate = atom({
+    key:'tokenExpiredate',
+    default: 0
+})
 
 const currentUser = atom({
     key:'currentUser',
@@ -20,4 +24,9 @@ const userAuth = atom({
     default: false
 })
 
-export {isAuthenticated, currentUser, userAvatar, userAuth}
+const modalShow = atom({
+    key: 'modalShow',
+    default: false
+})
+
+export {isAuthenticated, currentUser, userAvatar, userAuth, modalShow, tokenExpiredate}
