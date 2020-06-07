@@ -9,7 +9,7 @@ import EnrollModal from './EnrollModal';
 const EnrollForm = () =>{
   const [class_code, setCode] = useState("");
   const [modalOn, setModalShow] = useRecoilState(modalShow);
-  const [isSuccess, setIsSuccess] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
 
 
   const onChange = (e) =>{
@@ -19,8 +19,8 @@ const EnrollForm = () =>{
   const onSubmit=async ()=>{
     await enrollClass(class_code).then((res)=>{
       setIsSuccess(true);
-      setModalShow(true);
     }).catch((e)=>{console.log(e); setIsSuccess(false)});
+    await setModalShow(true);
   }
 
 
