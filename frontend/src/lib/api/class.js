@@ -7,9 +7,12 @@ export const createClass = async ({class_code, class_name}) =>{
                  return Promise.reject(e)});
 }
 
-export const enrollClass = ({class_code}) => {
-    client.post(`/class/enroll/${class_code}`, class_code);
-}
+export const enrollClass = async (class_code) => 
+    await client.post(`/class/enroll/${class_code}`, class_code);
+
 
 export const getManagingClass = async(username) =>
     await client.get(`/user/classes/managing/${username}`)
+
+export const getEnrolledClass = async(username) =>
+    await client.get(`/user/classes/enrolled/${username}`)

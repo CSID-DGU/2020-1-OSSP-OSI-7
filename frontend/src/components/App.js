@@ -58,6 +58,7 @@ const App = () => {
         const local = JSON.parse(localStorage.getItem("user_info"));
         if( Date.now() > local.exp){
           console.log("token check expired");
+          alert("token is expired");
           logOut();
         } else{
           console.log("token is ok");

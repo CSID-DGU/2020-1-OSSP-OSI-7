@@ -1,10 +1,10 @@
-import React, {Fragment, useState, useEffect} from 'react';
+import React, {Fragment, useState, useEffect, useMemo} from 'react';
 import {Image, Row, Col} from 'react-bootstrap';
 import UserClassList from './UserClassList';
 import {useRecoilState} from 'recoil';
 import ToggleSwitch from './ToggleSwitch';
 import ReactTextTransition from 'react-text-transition';
-import {getManagingClass} from '../../lib/api/class';
+import {getManagingClass, getEnrolledClass} from '../../lib/api/class';
 import {userAuth, managingClasses} from '../atoms';
 
 import {classdata} from './classData';
@@ -14,10 +14,13 @@ const MypageLeft = (props)=>{
     const [classes, setClasses] = useRecoilState(managingClasses);
     const [auth,setAuth] = useRecoilState(userAuth);
 
-
     useEffect(()=>{
-        getManagingClass(user).then((res)=>setClasses(res.data));
-    }, []);
+        if(auth){
+            getManagingClass(user).then((res)=>{setClasses(res.data)});
+        }else {
+            getEnrolledClass(user).then((res)=>{setClasses(res.data)});
+        }
+    }, [auth]);
 
     return (
         <Fragment>
@@ -43,7 +46,7 @@ const MypageLeft = (props)=>{
         </Row>
 
         <hr className="profile__class__hr"/>
-        <UserClassList classes={classes}/>
+            <UserClassList classes={classes}/>
         </Fragment>
     );
 }
