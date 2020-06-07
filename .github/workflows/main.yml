@@ -42,4 +42,4 @@ jobs:
           aws s3 cp \
             --recursive \
             --region ap-northeast-2 \
-            build s3://dquiz-front
+            build s3://dquiz-frontend
