@@ -20,7 +20,6 @@ import (
 // @Product json
 // @Param classCode JSON body dto.QuizCreateForm true "퀴즈 셋을 조회할 강의의 학수 번호"
 // @Router /quizsets/classes/{classCode} [GET]
-// @Success 200 {array} dto.QuizSetGetForm "퀴즈 셋 배열"
 // @Failure 400 {string} INVALID_PATH_PARAMETER
 func GetQuizSetsOfClass (context *web.Context) gin.HandlerFunc {
 	return func (c *gin.Context) {
