@@ -34,9 +34,4 @@ const managingClasses = atom({
     default: []
 })
 
-const enrolledClasses = atom({
-    key:'enrolledClasses',
-    default: []
-})
-
-export {enrolledClasses,managingClasses, isAuthenticated, currentUser, userAvatar, userAuth, modalShow, tokenExpiredate}
+export {managingClasses, isAuthenticated, currentUser, userAvatar, userAuth, modalShow, tokenExpiredate}

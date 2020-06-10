@@ -16,3 +16,6 @@ export const getManagingClass = async(username) =>
 
 export const getEnrolledClass = async(username) =>
     await client.get(`/user/classes/enrolled/${username}`)
+
+export const getClassQuizSet = async (classCode) =>
+    await client.get(`quizsets/classes/${classCode}`)

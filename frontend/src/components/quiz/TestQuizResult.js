@@ -2,9 +2,10 @@ import React, {useState, useEffect} from 'react';
 import {Row,Col } from 'react-bootstrap';
 import SquareContainer from '../SquareContainer';
 import 'react-circular-progressbar/dist/styles.css';
-import ResultCircles from './ResultCircles';
+import ResultCirclesContainer from './ResultCirclesContainer';
 
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+
 
 
 const TestQuizResult = () =>{
@@ -31,6 +32,13 @@ const TestQuizResult = () =>{
 
     return (
         <SquareContainer>
+            <h3>
+                퀴즈 이름
+            </h3>
+            <h5>
+                강의 이름
+            </h5>
+            <hr className="profile__class__hr"/>
             <Row>
                 <Col md={{span: 4, offset:4}}> 
                     <h2 className="align-text">Test Result</h2>
@@ -47,7 +55,7 @@ const TestQuizResult = () =>{
             </Row>
             <Row>
                 <Col xs={12} md={{span:4,offset:4}} className="resultCircle__container">
-                    <ResultCircles results={results} />            
+                    <ResultCirclesContainer results={results} />            
                 </Col>
             </Row>
         </SquareContainer>

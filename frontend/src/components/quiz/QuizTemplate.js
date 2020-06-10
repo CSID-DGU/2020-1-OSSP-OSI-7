@@ -159,8 +159,8 @@ const QuizTemplate = () => {
         } else {
             console.log("hello");
             const quizSet = {
-                user: user,
-                quizset_name: quizSetName,
+                quiz_set_author_name: user,
+                quiz_set_name: quizSetName,
                 class_id: classId,
                 quizzes:quizzes
             }
@@ -168,6 +168,7 @@ const QuizTemplate = () => {
         }
         setValidated(true);
     }
+
 
     const QuizBtn = ({quizType}) => (
         <ButtonGroup className="mr-2">
