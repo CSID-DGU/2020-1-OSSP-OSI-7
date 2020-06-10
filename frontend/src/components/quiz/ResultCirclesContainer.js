@@ -34,7 +34,7 @@ const ResultCirclesContainer = ({results}) =>{
         show={modalOn}
         onHide={handleClose}
         >
-        <ResultCircleModal index={currentIndex} wrong={results[currentIndex]} onClick={handleClick}/>
+        <ResultCircleModal index={currentIndex} wrong={results[currentIndex]} onClick={handleClick} />
         </CenteredModal>
         </Fragment>
     );

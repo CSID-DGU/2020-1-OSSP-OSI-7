@@ -35,7 +35,7 @@ const UserClassItem = (props) =>{
 
     return (
         <Fragment>
-        <Row>
+        <Row >
             <OverlayTrigger
             placement="top"
             delay={{ show: 250, hide: 400 }}
@@ -54,7 +54,7 @@ const UserClassItem = (props) =>{
             {truncatechars(classCode)}
             </Col>
             </OverlayTrigger>
-            <Col md={12} xs={2} lg={2}>
+            <Col md={12} xs={2} lg={2} onClick={props.onClick} className="hover__pointer">
             🏫
             </Col>
         </Row>
