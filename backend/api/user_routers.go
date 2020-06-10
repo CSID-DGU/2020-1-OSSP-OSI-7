@@ -8,6 +8,10 @@ import (
 	"oss/web"
 )
 
+const (
+	USER_NOT_EXISTS = "USER_NOT_EXISTS"
+)
+
 // @Summary 로그인
 // @Description
 // @name get-string-by-int
@@ -50,6 +54,36 @@ func Register (context *web.Context) gin.HandlerFunc {
 		if creatErr != nil {
 			println("cerror !", creatErr.Message)
 		}
+	}
+}
+
+// @tags User
+// @Summary 유저 정보를 반환한다.
+// @Description
+// @name get-string-by-int
+// @Accept json
+// @Product json
+// @Param username path string true "유저 아이디"
+// @Router /user/info/{userName} [GET]
+// @Success 200 {object} dto.UseGetForm "유저 정보"
+// @Failure 404 json string "user not exists "
+func GetUserInfo (context *web.Context) gin.HandlerFunc {
+ 	return func (c *gin.Context) {
+ 		//var user *models.User
+ 		userName := c.Param("userName")
+ 		user, err := context.Repositories.UserRepository().GetByUserName(userName)
+ 		if err != nil {
+ 			c.JSON(404, USER_NOT_EXISTS)
+ 			return;
+		}
+
+		userGetForm := &dto.UserGetForm {
+			UserName: user.UserName,
+			StudentCode: user.StudentCode,
+			Email: user.Email,
+			NickName: user.NickName,
+		}
+		c.JSON(200, userGetForm)
 	}
 }
 

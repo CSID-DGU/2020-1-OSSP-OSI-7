@@ -190,6 +190,7 @@ func InitRouters(context *web.Context) {
 	auth.GET("/refresh_token", authMiddleware.RefreshHandler)
 	auth.Use(authMiddleware.MiddlewareFunc())
 
+	auth.GET("/info/:userName", GetUserInfo(context))
 	auth.GET("/classes/enrolled/:userName", GetAllEnrolledClass(context))
 	auth.GET("/classes/managing/:userName", GetAllManagingClass(context))
 

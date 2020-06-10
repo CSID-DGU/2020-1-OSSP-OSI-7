@@ -1,1 +1,6 @@
 time="2020-06-11T05:58:54+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss-fina/backend/main.go:32" event=event
+time="2020-06-11T06:31:43+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss-fina/backend/main.go:32" event=event
+time="2020-06-11T06:42:04+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss-fina/backend/main.go:32" event=event
+time="2020-06-11T06:43:43+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss-fina/backend/main.go:32" event=event
+time="2020-06-11T06:46:11+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss-fina/backend/main.go:32" event=event
+time="2020-06-11T06:46:58+09:00" level=info msg="Failed to send log" func=main.main file="/home/hj/Desktop/workspace/oss-fina/backend/main.go:32" event=event
