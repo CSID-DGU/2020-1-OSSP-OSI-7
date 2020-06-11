@@ -14,7 +14,7 @@ const Circle = styled.div`
     cursor:pointer;
     background-color: ${props=>props.wrong === true? "#DF3838" : "#33AE40"};
     &:hover {
-        border: 2px solid black;
+        box-shadow: 2px 2px 4px #000000a1;
     }
 `;
 
