@@ -30,7 +30,8 @@ func initSqlStore() (*sql.DB, *gorp.DbMap) {
 		src = `root:root@tcp(localhost:3307)/dquiz_db`
 	}
 	*/
-	src = `root:root@tcp(localhost:3307)/dquiz_db`
+	//src = `root:root@tcp(localhost:3307)/dquiz_db`
+	src = `root:root@tcp(34.64.101.170:3307)/dquiz_db`
 	db, err:= sql.Open("mysql", src)
 	if err != nil {
 		print(err)

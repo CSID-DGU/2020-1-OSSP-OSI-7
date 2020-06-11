@@ -4,6 +4,7 @@ import "oss/models"
 
 type QuizSetResultRepository interface {
 	Get(classQuizSetResultId int64, userName string) (*models.QuizSetResult, *models.AppError)
+	GetUserAllQuizSet(userName string) ([]*models.QuizSetResult, *models.AppError)
 	Create(quizSetResult *models.QuizSetResult) (*models.AppError)
 	Delete(quizSetResultId int64) (*models.AppError)
 	Update(quizSetResult *models.QuizSetResult) (*models.AppError)
@@ -23,6 +24,27 @@ func (q *SqlQuizSetResultRepository) Get(classQuizSetResultId int64, userName st
 		return nil, models.NewDatabaseAppError(err, "FAILED TO GET QUIZ SET RESULT", "quiz_set_result_repository.go")
 	}
 	return quizSetResult, nil
+}
+
+func (q *SqlQuizSetResultRepository) GetUserAllQuizSet(userName string) ([]*models.QuizSetResult, *models.AppError) {
+	var quizSetResults []*models.QuizSetResult
+	results, err := q.Master.Select(
+		`SELECT * FROM quiz_set_result qsr WHERE qsr.user_id = 
+				(SELECT u.user_id FROM user u WHERE u.username = ?`,userName)
+
+	if err != nil {
+		return nil, models.NewDatabaseAppError(err, "FAILED TO GET QUIZ SET RESULT", "quiz_set_result_repository.go")
+	}
+
+	for i := 0; i < len(results); i++ {
+		if data, ok := results[i].(*models.QuizSetResult); ok {
+			quizSetResults = append(quizSetResults, data)
+		} else {
+			return nil, models.NewDatabaseAppError(nil, "failed to convert interface{} to *models.QuizSetResult", "")
+		}
+	}
+
+	return quizSetResults, nil
 }
 
 func (q *SqlQuizSetResultRepository) Create(quizSetResult *models.QuizSetResult) (*models.AppError) {
