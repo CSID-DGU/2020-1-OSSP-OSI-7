@@ -6,6 +6,7 @@ import (
 )
 
 type QuizRepository interface {
+	GetQuizByQuizId(quizId int64) (*models.Quiz, *models.AppError)
 	GetQuizzesByQuizSetId(quizSetId int64) ([]models.Quiz, *models.AppError)
 	GetQuizzesByClassQuizSetId(classQuizSetId int64) ([]models.Quiz, *models.AppError)
 	GetQuizAnswerWithScoreByQuizId(quizId int64) (*dto.QuizAnswerWithScore, *models.AppError)
@@ -16,6 +17,16 @@ type QuizRepository interface {
 
 type SqlQuizRepository struct {
 	*Repository
+}
+
+func (q *SqlQuizRepository) GetQuizByQuizId(quizId int64) (*models.Quiz, *models.AppError) {
+	var quiz *models.Quiz
+	err := q.Master.SelectOne(&quiz,
+		`SELECT * FROM quiz q WHERE q.quiz_id = ?`, quizId)
+	if err != nil {
+		return nil, models.NewDatabaseAppError(err, "FAILED TO GET QUIZ", "quiz_repository.go")
+	}
+	return quiz, nil
 }
 
 func (q *SqlQuizRepository) GetQuizAnswerWithScoreByQuizId(quizId int64) (*dto.QuizAnswerWithScore, *models.AppError) {

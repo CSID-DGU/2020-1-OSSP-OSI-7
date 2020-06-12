@@ -425,6 +425,6 @@ func QuizSetScoring (pool *redis.Pool, classQuizSetId int64) {
 }
 
 // 타입을 기반으로 퀴즈를 채점한다.
-func QuizScoring (c *web.Context) {
+func QuizScoring (c *web.Context, classQuizSetId int64) {
 
 }

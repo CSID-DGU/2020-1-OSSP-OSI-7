@@ -1,13 +1,15 @@
 package service
 
 import (
+	"encoding/json"
 	"fmt"
-	"github.com/go-playground/assert/v2"
 	"github.com/gomodule/redigo/redis"
-	"github.com/rafaeljusto/redigomock"
-	"oss/service"
+	"github.com/stretchr/testify/assert"
+	"oss/chatbot"
+	"oss/dto"
+	"oss/models"
+	"oss/util"
 	"testing"
-	"time"
 )
 
 type Foo struct {
@@ -18,35 +20,10 @@ var foo *Foo = &Foo{
 	ch: make(chan int),
 }
 
-func TestScheduleQuizScoringService(t *testing.T) {
-	//ch := make(chan int)
-	go service.ScheduleQuizSetScoring(foo.ch)
-	for i := 0 ; i < 11; i++ {
-		foo.ch <- i
-	}
-	for  {
-		println("Good")
-		time.Sleep(1000)
-		foo.ch <- 10
-	}
-}
-func TestQuizSetScoring(t *testing.T) {
-	/*
-	quizSetForScoring := &service.QuizSetForScoring {
-		ClassQuizSetId: 1,
-
-	}
-	service.QuizSetScoring()
-
-	 */
-}
-
 type Person struct {
 	Name string `redis:"name"`
 	Age  int    `redis:"age"`
 }
-
-
 
 func RetrievePerson(conn redis.Conn, id string) (Person, error) {
 	var person Person
@@ -60,23 +37,49 @@ func RetrievePerson(conn redis.Conn, id string) (Person, error) {
 	return person, err
 }
 
-func TestQuizScoring(t *testing.T) {
-	conn := redigomock.NewConn()
-	cmd := conn.Command("HGETALL", "person:1").ExpectMap(map[string]string{
-		"name": "Mr. Johson",
-		"age":  "42",
-	})
-	//service.QuizScoring()
-	person, err := RetrievePerson(conn, "1")
+func makeMockQuizWithOnlyQuizId(quizId int64) models.Quiz {
+	return models.Quiz{
+		QuizId:      quizId,
+		QuizSetId:   0,
+		QuizTitle:   "",
+		QuizContent: "",
+		QuizType:    "",
+		QuizScore:   0,
+		QuizAnswer:  "",
+	}
+}
+
+func TestShuffleQuiz(t *testing.T) {
+	quizzes := []models.Quiz{
+		makeMockQuizWithOnlyQuizId(1),
+		makeMockQuizWithOnlyQuizId(2),
+		makeMockQuizWithOnlyQuizId(3),
+		makeMockQuizWithOnlyQuizId(4),
+	}
+	util.ShuffleQuizzes(quizzes)
+	assert.Equal(t, len(quizzes), 5)
+}
+
+func TestMakeQuizCard(t *testing.T) {
+	quiz := makeMockQuizWithOnlyQuizId(1)
+	quiz.QuizType = models.QUIZ_TYPE_MULTI
+	quizContent := &dto.MultiQuizContent{}
+	quizContent.Choices = []*dto.Choice {
+		&dto.Choice{
+			Index:1,
+			Choice: "원흥관",
+		},
+		&dto.Choice{
+			Index:2,
+			Choice: "신공학관",
+		},
+	}
+	result, err := json.Marshal(quizContent)
 	if err != nil {
-		fmt.Println(err)
-		return
-	}
 
-	assert.Equal(t, person.Age, 42)
-
-	if conn.Stats(cmd) != 1 {
-		fmt.Println("Command was not used")
-		return
 	}
+	quiz.QuizContent = string(result)
+	msg := chatbot.MakeQuizCard(&quiz);
+	println(msg)
+
 }

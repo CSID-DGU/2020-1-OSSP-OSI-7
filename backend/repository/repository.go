@@ -5,6 +5,7 @@ import (
 	"github.com/go-gorp/gorp"
 	_ "github.com/go-sql-driver/mysql"
 	"oss/models"
+	"runtime"
 )
 
 type Repository struct {
@@ -21,8 +22,13 @@ func NewRepository() *Repository {
 }
 
 func initSqlStore() (*sql.DB, *gorp.DbMap) {
-	db, err:= sql.Open("mysql",
-		`root:root@tcp(localhost:3307)/dquiz_db`)
+	var src string
+	if runtime.GOOS == "windows" {
+		src = `root:root@tcp(34.64.101.170:3307)/dquiz_db`
+	} else {
+		src = `root:root@tcp(localhost:3307)/dquiz_db`
+	}
+	db, err:= sql.Open("mysql", src)
 	if err != nil {
 		print(err)
 	}

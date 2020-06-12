@@ -19,3 +19,23 @@ type QuizAnswerWithScore struct {
 	QuizAnswer string `db:"quiz_answer" json:"quiz_answer"`
 	QuizScore uint64 `db:"quiz_score" json:"quiz_score"`
 }
+
+/*
+객관식
+quiz_type : MULTI,
+quiz_content : {
+
+}
+
+ */
+type Choice struct {
+	Index int `json:"index"`
+	Choice string `json:"choice"`
+}
+type MultiQuizContent struct {
+	Choices []*Choice `json:"choices"`
+}
+
+type ShortQuizContent struct {
+
+}

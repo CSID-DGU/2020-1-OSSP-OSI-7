@@ -1,32 +1,29 @@
 package api
 
 import (
-	"encoding/json"
 	jwt "github.com/appleboy/gin-jwt/v2"
 	"github.com/gin-gonic/gin"
-	"google.golang.org/api/chat/v1"
 	"log"
-	"oss/cli"
-	"oss/dto"
+	"oss/chatbot"
+	"oss/hangout"
 	"oss/service"
 	"oss/web"
 	"strings"
 )
 
 const (
-	UNAUTHORIZED = "UNAUTHORIZED"
-	INTERNAL_SERVER_ERROR = "INTERNAL_SERVER_ERROR"
+	UNAUTHORIZED           = "UNAUTHORIZED"
+	INTERNAL_SERVER_ERROR  = "INTERNAL_SERVER_ERROR"
 	INVALID_REQUEST_HEADER = "INVALID_REQUEST_HEADER"
 	INVALID_PATH_PARAMETER = "INVALID_PATH_PARAMETER"
-	INVALID_REQUEST_BODY = "INVALID_BODY"
-	RETRY = "RETRY"
+	INVALID_REQUEST_BODY   = "INVALID_BODY"
+	RETRY                  = "RETRY"
 )
 
 var (
-	USER = false
+	USER  = false
 	ADMIN = true
 )
-
 
 var str string = `{
 "type": "MESSAGE",
@@ -76,19 +73,6 @@ WFZ0dY4-gZJz_QYtInoQ5aFEC8iemHkMvLENgYwEcHV6dKncQQQxjUWZ3eZ1z2h3KnWVC-9F3vF6OkmQ
 I7kgQcp8-"
 }`
 
-var StartTestCommand cli.Command = cli.Command{
-	Cmd: "퀴즈응시",
-	MaxParam: 4,
-	MinParam: 2,
-	MustParam: []int{0, 1},
-	Options: map[string]int{
-		"학번" : 0,
-		"과목코드" : 1,
-		"퀴즈코드" : 2,
-	},
-	Entry: cli.StartTestEntry,
-}
-
 var identityKey = "UserName"
 
 var App *web.Context
@@ -106,41 +90,84 @@ func InitRouters(context *web.Context) {
 	if err != nil {
 		log.Fatal("JWT Error:" + err.Error())
 	}
-	r.GET("/", func (c *gin.Context) {
-		c.JSON(200,"why???")
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(200, "why???")
 	})
 
 	schdch := make(chan service.SubmittedQuiz)
 	go service.ScheduleQuizSetScoring(web.Context0.Redis, schdch)
-	r.POST("/", func (c *gin.Context) {
+	r.POST("/", func(c *gin.Context) {
+
 		str = strings.Replace(str, "\n", "", -1)
 		//println(str)
-		var obj chat.DeprecatedEvent
-		err := json.Unmarshal([]byte(str), &obj)
+		var obj hangout.DquizDeprecatedEvent
+		err := c.Bind(&obj)
 		s := strings.Fields(obj.Message.Text)
-
-		for i :=0; i < len(s); i++ {
-		//	println(s[i])
-		}
-		schdch<- service.SubmittedQuiz{
-			ScoringQueueIdent : &service.ScoringQueueIdent {
-				ClassQuizSetId: 4444,
-				Email: "4whomtbts@gmail.com",
-			},
-			QuizForScoring : &dto.QuizForScoring {
-				QuizId: 4444,
-				QuizType: "MULTI",
-				QuizAnswer: "1",
-			},
-		}
-		response, commandErr := StartTestCommand.ProcessCommand(s)
-
 		if err != nil {
-			c.JSON(commandErr.StatusCode, commandErr.DetailedError)
+			c.JSON(400, "bad")
 			return
 		}
 
-		c.JSON(200, response)
+		if obj.Type == "CARD_CLICKED" {
+			c.JSON(200, chatbot.GetNextQuiz(context, obj.User.Email))
+		} else {
+			processedMessage := chatbot.InitialProcess(s)
+			result, process_err := processedMessage.Process(obj.User.Email)
+			if process_err != nil {
+				println(process_err)
+			}
+			if result != nil {
+				c.JSON(200, result)
+			}
+		}
+
+		/*
+			quiz := util.MakeMockQuizWithOnlyQuizId(1)
+			quiz.QuizType = models.QUIZ_TYPE_MULTI
+			quizContent := &dto.MultiQuizContent{}
+			quizContent.Choices = []*dto.Choice {
+				&dto.Choice{
+					Index:1,
+					Choice: "원흥관",
+				},
+				&dto.Choice{
+					Index:2,
+					Choice: "신공학관",
+				},
+			}
+			res, err := json.Marshal(quizContent)
+			if err != nil {
+
+			}
+			quiz.QuizContent = string(res)
+
+
+		/*
+			for i :=0; i < len(s); i++ {
+			//	println(s[i])
+			}
+			schdch<- service.SubmittedQuiz{
+				ScoringQueueIdent : &service.ScoringQueueIdent {
+					ClassQuizSetId: 4444,
+					Email: "4whomtbts@gmail.com",
+				},
+				QuizForScoring : &dto.QuizForScoring {
+					QuizId: 4444,
+					QuizType: "MULTI",
+					QuizAnswer: "1",
+				},
+			}
+			/*
+			response, commandErr := StartTestCommand.Process(s)
+
+			if commandErr != nil {
+				c.JSON(200, commandErr.DetailedError)
+				return
+			}
+
+			c.JSON(200, response)
+			return
+		*/
 	})
 
 	r.NoRoute(authMiddleware.MiddlewareFunc(), func(c *gin.Context) {
@@ -156,7 +183,7 @@ func InitRouters(context *web.Context) {
 	class.Use(CORSMiddleWare())
 	class.Use(classMiddleware.MiddlewareFunc())
 	class.POST("/", CreateClass(context))
-	class.POST("/enroll/:classcode", JoinClass(context));
+	class.POST("/enroll/:classcode", JoinClass(context))
 
 	auth := r.Group("/user")
 	auth.Use(CORSMiddleWare())
@@ -190,4 +217,3 @@ func InitRouters(context *web.Context) {
 
 	//r.POST("/:", ScoreQuizzes(context))
 }
-

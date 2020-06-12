@@ -1,6 +1,7 @@
 package redisUtil
 
 import (
+	"fmt"
 	"github.com/gomodule/redigo/redis"
 	"github.com/sirupsen/logrus"
 	"oss/cerror"
@@ -16,18 +17,18 @@ func RedisGet(conn *redis.Conn, key string) (string, *models.AppError) {
 	result, err := redis.String((*conn).Do("GET", key))
 	if err != nil {
 		web.Logger.WithFields(logrus.Fields{
-			"err" : err,
+			"err": err,
 		}).Info(cerror.DQUIZ_REDIS_OP_FAIL)
 		return "", models.NewAppError(err, cerror.BuildRedisGetFailMsg(key), models.GetFuncName())
 	}
 	return result, nil
 }
 
-func RedisSet(conn *redis.Conn, key string, val string, lifeTime int) *models.AppError {
+func RedisSetByte(conn *redis.Conn, key string, val []byte, lifeTime int) *models.AppError {
 	_, err := (*conn).Do("SET", key, val)
 	if err != nil {
 		web.Logger.WithFields(logrus.Fields{
-			"err" : err,
+			"err": err,
 		}).Error(cerror.DQUIZ_REDIS_OP_FAIL)
 		return models.NewAppError(err, cerror.DQUIZ_REDIS_OP_FAIL, models.GetFuncName())
 	}
@@ -36,11 +37,56 @@ func RedisSet(conn *redis.Conn, key string, val string, lifeTime int) *models.Ap
 		_, err = (*conn).Do("EXPIRE", key, lifeTime)
 		if err != nil {
 			web.Logger.WithFields(logrus.Fields{
-				"key" : key,
+				"key":       key,
 				"life_time": lifeTime,
 			}).Error(cerror.DQUIZ_REDIS_OP_FAIL)
 		}
 		return models.NewAppError(err, cerror.DQUIZ_REDIS_OP_FAIL, models.GetFuncName())
 	}
 	return nil
+}
+
+func RedisSet(conn *redis.Conn, key string, val string, lifeTime int) *models.AppError {
+	_, err := (*conn).Do("SET", key, val)
+	if err != nil {
+		web.Logger.WithFields(logrus.Fields{
+			"err": err,
+		}).Error(cerror.DQUIZ_REDIS_OP_FAIL)
+		return models.NewAppError(err, cerror.DQUIZ_REDIS_OP_FAIL, models.GetFuncName())
+	}
+
+	if lifeTime != 0 {
+		_, err = (*conn).Do("EXPIRE", key, lifeTime)
+		if err != nil {
+			web.Logger.WithFields(logrus.Fields{
+				"key":       key,
+				"life_time": lifeTime,
+			}).Error(cerror.DQUIZ_REDIS_OP_FAIL)
+		}
+		return models.NewAppError(err, cerror.DQUIZ_REDIS_OP_FAIL, models.GetFuncName())
+	}
+	return nil
+}
+
+func RedisCreateQueue(conn *redis.Conn, queueName string, data string) *models.AppError {
+	_, err := (*conn).Do("LREM", queueName, 1, data)
+	if err != nil {
+		fmt.Println(err.Error())
+	}
+	_, err = (*conn).Do("LPUSH", queueName, data)
+	if err != nil {
+		web.Logger.WithFields(logrus.Fields{
+			"queue_name": queueName,
+			"cerror":     err.Error(),
+		}).Error("Failed to push Redis queue")
+	}
+	return models.NewRedisError(err, "failed to push redis queue", "")
+}
+
+func RedisPopFromQueue(conn *redis.Conn, queueName string) (string, *models.AppError) {
+	data, err := redis.String((*conn).Do("LPOP", queueName))
+	if err != nil {
+		return "", models.NewRedisError(err, "failed to pop Redis queue", "")
+	}
+	return data, nil
 }

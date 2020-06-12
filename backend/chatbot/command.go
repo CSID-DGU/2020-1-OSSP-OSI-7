@@ -1,4 +1,4 @@
-package cli
+package chatbot
 
 import "oss/models"
 
@@ -16,45 +16,51 @@ func NewCliAppError(msg string, detail string) (*models.AppError) {
 	return &models.AppError{Message: msg, DetailedError: detail, StatusCode: 400}
 }
 
+
+type CommandMessage struct {
+	*Command
+	tokens []string
+}
+
 type Command struct {
 	Cmd string
 	MaxParam int
 	MinParam int
 	MustParam []int
 	Options map[string]int
-	Entry func(map[int]string) (interface{}, *models.AppError)
+	Entry func(string, map[int]string) (interface{}, *models.AppError)
 }
 
-func (c *Command) ProcessCommand(tokens []string) (interface{}, *models.AppError){
-	var numberOfOptions int = (len(tokens) -1) / 2
-	if len(tokens) == 0 {
+func (c *CommandMessage) Process(email string) (interface{}, *models.AppError){
+	var numberOfOptions int = (len(c.tokens) -1) / 2
+	if len(c.tokens) == 0 {
 		return nil, NewCliAppError(COMMAND_NOT_EXISTS, "명령어를 입력해주세요")
 	}
 
 	if numberOfOptions < c.MinParam {
-		return nil, NewCliAppError(LACK_OF_NECESSARY_TOKEN, "[" + tokens[0] + "] 명령어는 최소 " + string(c.MinParam) + "개의 옵션이 필요합니다")
+		return nil, NewCliAppError(LACK_OF_NECESSARY_TOKEN, "[" + c.tokens[0] + "] 명령어는 최소 " + string(c.MinParam) + "개의 옵션이 필요합니다")
 	}
 
 	if numberOfOptions / 2 > c.MaxParam {
-		return nil, NewCliAppError( TOO_MANY_OPTIONS, "[" + tokens[0] + "] 명령어는 최대 " + string(c.MaxParam) + "개의 옵션만 제공할 수 있습니다.")
+		return nil, NewCliAppError( TOO_MANY_OPTIONS, "[" + c.tokens[0] + "] 명령어는 최대 " + string(c.MaxParam) + "개의 옵션만 제공할 수 있습니다.")
 	}
 
 	extractedOptions := make(map[int]string)
 	shouldOptionValue := false
 	// 토큰 유효성 검사 모듈
-	for i := 1; i < len(tokens); i++ {
+	for i := 1; i < len(c.tokens); i++ {
 		if shouldOptionValue {
-			if tokens[i][0] == '-' {
+			if c.tokens[i][0] == '-' {
 				return nil, NewCliAppError(INVALID_OPTION_PAIR, INVALID_OPTION_PAIR)
 			} else {
 				shouldOptionValue = false
-				extractedOptions[c.Options[tokens[i-1][1:]]] = tokens[i]
+				extractedOptions[c.Options[c.tokens[i-1][1:]]] = c.tokens[i]
 			}
 		} else {
-			if tokens[i][0] != '-' {
+			if c.tokens[i][0] != '-' {
 				return nil, NewCliAppError(INVALID_OPTION_PAIR, INVALID_OPTION_PAIR)
 			} else {
-				if _, ok := c.Options[tokens[i][1:]]; !ok {
+				if _, ok := c.Options[c.tokens[i][1:]]; !ok {
 					return nil, NewCliAppError(INVALID_OPTION_PAIR, INVALID_OPTION_PAIR)
 				}
 				shouldOptionValue = true
@@ -69,5 +75,5 @@ func (c *Command) ProcessCommand(tokens []string) (interface{}, *models.AppError
 		}
 	}
 
-	return c.Entry(extractedOptions)
+	return c.Entry(email, extractedOptions)
 }
