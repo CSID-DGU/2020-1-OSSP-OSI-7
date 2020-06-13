@@ -5,12 +5,13 @@ import {useRecoilValue} from 'recoil';
 import {currentUser} from '../atoms';
 
 
-const QuizTemplate = () => {
+const QuizTemplate = ({match}) => {
     const [count, setCount] = useState(0);
     const [quizSetName, setQuizSetName] = useState("");
     const [classId, setClassId] = useState("");
     const [quizzes, setQuizzes] = useState([]);
     const [validated, setValidated] = useState(false);
+
 
     const user = useRecoilValue(currentUser);
     
@@ -24,7 +25,7 @@ const QuizTemplate = () => {
 
     useEffect(()=>{
         addQuiz("mul_choices");
-
+        setClassId(match.params.classId);
         window.addEventListener('beforeunload',unloadEvent);
             return () => {
                 window.removeEventListener("beforeunload",unloadEvent);

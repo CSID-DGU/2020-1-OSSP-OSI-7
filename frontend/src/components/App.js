@@ -10,6 +10,7 @@ import AuthRoute from './auth/AuthRoute';
 import NotFound from './NotFound';
 import TestQuiz from './quiz/TestQuiz';
 import TestQuizResult from './quiz/TestQuizResult';
+import FooterContent from './FooterContent';
 import Mypage from './mypage/Mypage';
 import ClassRoom from './class/ClassRoom'
 import {login, registerTo} from '../lib/api/auth';
@@ -154,7 +155,7 @@ const App = () => {
           <Register authenticated={authenticated} {...props} />
           )}/>
       
-      <AuthRoute authenticated={authenticated} path="/create"
+      <AuthRoute authenticated={authenticated} path="/create/:classId"
         render={props => <QuizTemplate {...props} />}
       />
       <AuthRoute authenticated={authenticated} path="/quiz/:quizSetId" component={TestQuiz} exact/>}
@@ -168,6 +169,9 @@ const App = () => {
       
       <Route component={NotFound} />
         </Switch>
+        <footer className="footer">
+          <FooterContent/>
+        </footer>
     </>
   );
 }

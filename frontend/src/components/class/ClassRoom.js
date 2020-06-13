@@ -1,6 +1,9 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import QuizSetList from '../quiz/QuizSetList';
-import {Container,Row,Col, Image, Form} from 'react-bootstrap';
+import {useHistory} from 'react-router-dom';
+import {Container,Row,Col, Image, Form,Button} from 'react-bootstrap';
+import {userAuth} from '../atoms';
+import {useRecoilValue} from 'recoil';
 
 const quizsetdata = {quizsetsList:
     [
@@ -43,7 +46,16 @@ const quizsetdata = {quizsetsList:
     ]
 }
 
-const ClassRoom = ({classId}) =>{
+const ClassRoom = ({match}) =>{
+    const [keyword, setKeyword] = useState("");
+    const [quizsetList, setQuizSetList] = useState(quizsetdata);
+    const auth = useRecoilValue(userAuth);
+    const history = useHistory();
+    const {classId} = match.params;
+    useEffect(()=>{
+        setQuizSetList(quizsetdata);
+    }, []);
+
 
     return(
         <Container className="quiz__container__no_border">
@@ -56,10 +68,11 @@ const ClassRoom = ({classId}) =>{
                 <h3>형식언어 </h3>
                 <h4>CSE-129313</h4>
                 <p>eoifjaiowejfiojeoifajweiofawi</p>
-            </Col>
-        </Row>
-        <hr className="profile__class__hr"/>
-        <Form>
+                </Col>
+                </Row>
+                <hr className="profile__class__hr"/>
+                {auth && <Button variant="outline-primary" block onClick={()=>history.push(`/create/${classId}`)}>퀴즈 만들기</Button>}
+            <Form>
             <Form.Group>
                 <Form.Control placeholder="search quiz"></Form.Control>
             </Form.Group>
@@ -67,7 +80,7 @@ const ClassRoom = ({classId}) =>{
         <Row>
         <Col>
         <h3>퀴즈 목록</h3>
-        <QuizSetList itemStyle={"profile__quiz__item"} quizsets={quizsetdata}/>
+        <QuizSetList itemStyle={"profile__quiz__item"} quizsets={quizsetList}/>
         </Col>
         </Row>
         </Container>

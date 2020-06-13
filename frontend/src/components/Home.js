@@ -16,7 +16,7 @@ const HomeHeadline = styled.div`
 
 const Home = () =>{
     return (
-        <div className="mr__top">
+        <div className="mr__top home__container">
             <HomeHeadline className="mr__mi">DQuiz</HomeHeadline>
             <br/>
             <HomeHeadline className="mr__mi2">2020-OSSP-OSI</HomeHeadline>
