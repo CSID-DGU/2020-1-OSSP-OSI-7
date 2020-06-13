@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useEffect, useMemo} from 'react';
+import React, {Fragment, useEffect} from 'react';
 import {Image, Row, Col} from 'react-bootstrap';
 import UserClassList from './UserClassList';
 import {useRecoilState} from 'recoil';
@@ -7,7 +7,6 @@ import ReactTextTransition from 'react-text-transition';
 import {getManagingClass, getEnrolledClass} from '../../lib/api/class';
 import {userAuth, managingClasses} from '../atoms';
 
-import {classdata} from './classData';
 
 const MypageLeft = (props)=>{
     const {avatar, user} = props;

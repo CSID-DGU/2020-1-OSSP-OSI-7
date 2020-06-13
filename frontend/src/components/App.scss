@@ -72,4 +72,16 @@ body {
 
 .home__container{
     height: calc(100vh - 180px) ;
+    z-index:3;
+}
+.home__img{
+    height: 100vh;
+    z-index:-1;
+    position: absolute;
+    right:0;
+    top:0;
+    @media (max-width: 500px) {
+        left: 0;
+        right: none;
+    }
 }

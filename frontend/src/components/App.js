@@ -1,6 +1,6 @@
 import React,{useState, useEffect,Fragment} from 'react';
 import { Route, Link, Switch, useHistory, useLocation} from 'react-router-dom';
-import {Navbar, Nav, Image, Container, NavDropdown} from 'react-bootstrap';
+import {Navbar, Nav, NavDropdown} from 'react-bootstrap';
 import QuizTemplate from './quiz/QuizTemplate';
 import QuizSetListContainer from './quiz/QuizSetListContainer';
 import Home from './Home';
@@ -13,7 +13,6 @@ import TestQuizResult from './quiz/TestQuizResult';
 import FooterContent from './FooterContent';
 import Mypage from './mypage/Mypage';
 import ClassRoom from './class/ClassRoom'
-import {login, registerTo} from '../lib/api/auth';
 import {getAvatar} from '../lib/api/mypage';
 import {useRecoilState} from 'recoil';
 import {currentUser, isAuthenticated, userAvatar, tokenExpiredate} from './atoms';
@@ -158,14 +157,10 @@ const App = () => {
       <AuthRoute authenticated={authenticated} path="/create/:classId"
         render={props => <QuizTemplate {...props} />}
       />
-      <AuthRoute authenticated={authenticated} path="/quiz/:quizSetId" component={TestQuiz} exact/>}
-      />
-      <AuthRoute authenticated={authenticated} path="/quiz/:quizSetId/result" component={TestQuizResult} exact/>}
-      />
-      <AuthRoute authenticated={authenticated} path="/mypage" component={Mypage}/>}
-      />
-      <AuthRoute authenticated={authenticated} path="/class/:classId" component={ClassRoom}/>}
-      />
+      <AuthRoute authenticated={authenticated} path="/quiz/:quizSetId" component={TestQuiz} exact/>
+      <AuthRoute authenticated={authenticated} path="/quiz/:quizSetId/result" component={TestQuizResult} exact/>
+      <AuthRoute authenticated={authenticated} path="/mypage" component={Mypage}/>
+      <AuthRoute authenticated={authenticated} path="/class/:classId" component={ClassRoom}/>
       
       <Route component={NotFound} />
         </Switch>

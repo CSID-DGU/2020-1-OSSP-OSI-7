@@ -1,4 +1,4 @@
-import React, {Fragment, useState, useRef, forwardRef } from 'react';
+import React, {Fragment, useState, forwardRef } from 'react';
 import { Link,Redirect,useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import {Form,Col,InputGroup, Button, ListGroup} from 'react-bootstrap';
@@ -31,9 +31,6 @@ const FieldForm = forwardRef(({placeholder, icon, type, onChange, onBlur, name, 
     </Form.Group>
 ));
 
-const selectList = styled.li`
-
-`;
 
 const SelectBtn = ({value, onClick, onFocus}) =>{
     const mailType = ["dongguk.edu", "dgu.ac.kr", "naver.com", "gmail.com"];

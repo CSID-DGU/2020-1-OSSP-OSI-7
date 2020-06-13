@@ -46,12 +46,15 @@ const quizsetdata = {quizsetsList:
     ]
 }
 
-const ClassRoom = ({match}) =>{
+const ClassRoom = ({match, location}) =>{
+    // api 추가 예정 퀴즈 받아오기
     const [keyword, setKeyword] = useState("");
     const [quizsetList, setQuizSetList] = useState(quizsetdata);
     const auth = useRecoilValue(userAuth);
     const history = useHistory();
     const {classId} = match.params;
+    const {class_code, class_name} = location.state;
+
     useEffect(()=>{
         setQuizSetList(quizsetdata);
     }, []);
@@ -65,8 +68,8 @@ const ClassRoom = ({match}) =>{
             </Col>
 
             <Col xs={8} md={9} lg={10}>
-                <h3>형식언어 </h3>
-                <h4>CSE-129313</h4>
+                <h3>{class_name}</h3>
+                <h4>{class_code}</h4>
                 <p>eoifjaiowejfiojeoifajweiofawi</p>
                 </Col>
                 </Row>

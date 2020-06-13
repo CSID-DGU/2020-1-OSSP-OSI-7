@@ -1,5 +1,5 @@
-import React,{Fragment, useState, useEffect} from 'react';
-import {Modal, Button,Row,Col} from 'react-bootstrap';
+import React,{Fragment} from 'react';
+import {Modal, Button,Col} from 'react-bootstrap';
 import styled from 'styled-components';
 
 const ChoiceBlock = styled.div`

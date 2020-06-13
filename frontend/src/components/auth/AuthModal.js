@@ -1,6 +1,5 @@
 import React,{Fragment} from 'react';
 import {Modal,Button} from 'react-bootstrap';
-import CheckCircle from '../quiz/CheckCircle';
 
 const AuthModal = ({onClick, username}) =>{
     return (

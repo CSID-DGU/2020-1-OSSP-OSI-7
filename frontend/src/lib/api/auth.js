@@ -1,6 +1,5 @@
 import client from './client';
 import jwt_decode from 'jwt-decode';
-import axios from 'axios';
 
 // const sendRequest = ({requestFunction})=> {
 //     let loading = false;

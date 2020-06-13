@@ -1,4 +1,4 @@
-import React,{Fragment} from 'react';
+import React from 'react';
 import {Container, Col,Row} from 'react-bootstrap';
 import {useRecoilValue} from 'recoil';
 import {currentUser,userAvatar,userAuth, modalShow} from '../atoms';

@@ -1,6 +1,7 @@
 import React from 'react';
 import QuizSetList from '../quiz/QuizSetList';
 
+
 const quizsetdata = {quizsetsList:
     [
         {
@@ -43,7 +44,7 @@ const quizsetdata = {quizsetsList:
 }
 
 const SolvedQuizList = () =>{
-
+    // api 추가 예정 퀴즈 받아오기
     return (
         <div>
         <h3>푼 퀴즈 목록</h3>

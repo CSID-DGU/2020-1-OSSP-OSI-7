@@ -1,6 +1,5 @@
-import React,{useState, useEffect, Fragment} from 'react';
+import React,{useState, Fragment} from 'react';
 import {Col, Row, OverlayTrigger, Tooltip} from 'react-bootstrap';
-import {IoIosSchool} from 'react-icons/io';
 
 
 const renderTooltip = (props) => {
@@ -55,7 +54,7 @@ const UserClassItem = (props) =>{
             </Col>
             </OverlayTrigger>
             <Col md={12} xs={2} lg={2} onClick={props.onClick} className="hover__pointer">
-            🏫
+            <span role="img" aria-label="classroom">🏫</span>
             </Col>
         </Row>
         <hr className="profile__class__hr"/>

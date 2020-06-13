@@ -173,6 +173,7 @@ const QuizTemplate = ({match}) => {
                 class_id: classId,
                 quizzes:quizzes
             }
+            // api 추가 예정 퀴즈 생성하기
             console.log(JSON.stringify(quizSet));
         }
         setValidated(true);
