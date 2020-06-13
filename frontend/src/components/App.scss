@@ -91,6 +91,8 @@ body {
     @media (max-width: 500px) {
         left: 0;
         right: none;
+        object-fit: cover;
+        object-position: left;
     }
 }
 
