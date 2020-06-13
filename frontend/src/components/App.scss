@@ -74,6 +74,14 @@ body {
     height: calc(100vh - 180px) ;
     z-index:3;
 }
+.img__container{
+    position: absolute;
+    right:0;
+    top:0;
+    overflow: hidden !important;
+    width: 100vw;
+    height:100vh;
+}
 .home__img{
     height: 100vh;
     z-index:-1;
@@ -84,4 +92,12 @@ body {
         left: 0;
         right: none;
     }
+}
+
+.home__emoji{
+    position: absolute;
+    top:3rem;
+    left:-1rem;
+    z-index:5;
+    transform: rotate( -15deg );
 }

@@ -17,13 +17,16 @@ const HomeHeadline = styled.div`
 const Home = () =>{
     return (
         <>
+        <img src="logoEmoji.png" className="home__emoji"/>
         <div className="mr__top home__container">
-        <HomeHeadline className="mr__mi">DQuiz</HomeHeadline>
+        <HomeHeadline className="mr__mi">DQuiz
+        </HomeHeadline>
         <br/>
         <HomeHeadline className="mr__mi2">2020-OSSP-OSI</HomeHeadline>
         </div>
-        <img src="rightpanel.png" className="home__img">
-        </img>
+        <div className="img__container">
+            <img src="rightpanel.png" className="home__img"/>
+        </div>
         </>
     )
 }
