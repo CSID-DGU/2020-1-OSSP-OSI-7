@@ -16,14 +16,20 @@ const QuizTemplate = () => {
     
     const koreanDict = {"mul_choices":"객관식", "essay":"주관식", "short_answer":"단답형","binary":"OX형"};
 
-    
+    const unloadEvent =  (e)  => {
+        let confirmationMessage = '정말 닫으시겠습니까?'
+        e.returnValue = confirmationMessage    // Gecko, Trident, Chrome 34+
+        return confirmationMessage             // Gecko, WebKit, Chrome < 34
+        }
+
     useEffect(()=>{
         addQuiz("mul_choices");
-        window.addEventListener('beforeunload',function (e) {
-            let confirmationMessage = '정말 닫으시겠습니까?'
-            e.returnValue = confirmationMessage    // Gecko, Trident, Chrome 34+
-            return confirmationMessage             // Gecko, WebKit, Chrome < 34
-            })
+
+        window.addEventListener('beforeunload',unloadEvent);
+            return () => {
+                window.removeEventListener("beforeunload",unloadEvent);
+              }    
+
     },[]);
 
     const initiateState = (quizId, type) => {
@@ -158,6 +164,8 @@ const QuizTemplate = () => {
 
         } else {
             console.log("hello");
+            e.preventDefault();
+            e.stopPropagation();
             const quizSet = {
                 quiz_set_author_name: user,
                 quiz_set_name: quizSetName,
