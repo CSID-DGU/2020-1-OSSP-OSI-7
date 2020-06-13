@@ -6,7 +6,7 @@
     "quiz":[
         {
             "id":1,
-            "type":"mul_choices",
+            "type":"MULTI",
             "question":"과일이 아닌 것은?",
             "content":{
                 "choices":[
@@ -20,7 +20,7 @@
         },
         {
             "id":2,
-            "type":"essay",
+            "type":"SHORT",
             "question":"과일 한가지 작성하시오",
             // 예시 정답
             "answer":""

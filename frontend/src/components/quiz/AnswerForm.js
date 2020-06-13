@@ -4,7 +4,7 @@ import ChoicesList from './ChoicesList';
 
 const AnswerForm = (props) =>{
     const {addChoices, onChange, quiz, handleBlur, onRemoveChoice, selectAnswerChoice} = props;
-    if(props.quiz.type === "mul_choices"){
+    if(props.quiz.type === "MULTI"){
         return (
             <Fragment>
                 <Form.Label  column sm="2">CHOICES</Form.Label>

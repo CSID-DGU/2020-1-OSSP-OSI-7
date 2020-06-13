@@ -10,7 +10,7 @@ export const quizsetdata = {
         "quizzes":[
            {
               "quiz_id":0,
-              "quiz_type":"mul_choices",
+              "quiz_type":"MULTI",
               "quiz_title":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam ",
               "quiz_answer":"0,3",
               "quiz_content":{
@@ -44,7 +44,7 @@ export const quizsetdata = {
            },
            {
               "quiz_id":1,
-              "quiz_type":"mul_choices",
+              "quiz_type":"MULTI",
               "quiz_title":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam",
               "quiz_answer":"1,2,3",
               "quiz_content":{
@@ -77,7 +77,7 @@ export const quizsetdata = {
            },
            {
               "quiz_id":2,
-              "quiz_type":"essay",
+              "quiz_type":"SHORT",
               "quiz_title":"ㅁㅈㄹ댜ㅐㅓ",
               "quiz_answer":"Hello global world",
               "quiz_content":{
@@ -85,7 +85,7 @@ export const quizsetdata = {
            },
            {
               "quiz_id":3,
-              "quiz_type":"essay",
+              "quiz_type":"SHORT",
               "quiz_title":"ㅁ재댜러ㅐㅑ",
               "quiz_answer":"ㅐㅑ더랴ㅐ머쟈ㅐ러ㅑㅐㅈㅇㄹ",
               "quiz_content":{
@@ -93,7 +93,7 @@ export const quizsetdata = {
            },
            {
             "quiz_id":4,
-            "quiz_type":"essay",
+            "quiz_type":"SHORT",
             "quiz_title":"ㅁ재댜러ㅐㅑ",
             "quiz_answer":"ㅐㅑ더랴ㅐ머쟈ㅐ러ㅑㅐㅈㅇㄹ",
             "quiz_content":{

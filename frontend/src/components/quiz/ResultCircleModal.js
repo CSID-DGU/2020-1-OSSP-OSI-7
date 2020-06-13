@@ -49,7 +49,7 @@ const ModalHeaderContainer = styled.div`
 const ResultCircleModal = ({index, onClick, wrong, quizInfo}) => {
     // const [choices, setChoices] = useState([]);
     // useEffect(()=>{
-    //     if(quizInfo.quiz_type === "mul_choices") {
+    //     if(quizInfo.quiz_type === "MULTI") {
     //         setChoices(quizInfo.quiz_answer.split(","));
     //         console.log(choices);
     //     }
@@ -71,13 +71,13 @@ const ResultCircleModal = ({index, onClick, wrong, quizInfo}) => {
             <h4>{quizInfo.quiz_title}</h4>
             <p>{quizInfo.quiz_type}</p>
             {
-                (quizInfo.quiz_type === "mul_choices") && 
+                (quizInfo.quiz_type === "MULTI") && 
                 quizInfo.quiz_content.choices.map(
                     (c)=><ChoiceBlock isAnswer={quizInfo.quiz_answer.split(",").indexOf((c.id).toString())} as={Col} fluid>{c.choice}</ChoiceBlock>
                 )
             }
             {
-                (quizInfo.quiz_type === "essay") && 
+                (quizInfo.quiz_type === "SHORT") && 
                 <AnswerBlock>{quizInfo.quiz_answer}</AnswerBlock>
             }
             </Modal.Body>

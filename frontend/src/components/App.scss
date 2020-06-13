@@ -68,9 +68,8 @@ body {
 .footer{
     width: 100%;
     background-color: #b5bfcc;
-    margin-top: calc(100vh - 100% - 176px);
 }
 
 .home__container{
-    // height: 100vh;
+    height: calc(100vh - 180px) ;
 }

@@ -77,7 +77,7 @@ const TestQuiz = ({match}) => {
                     <TestQuizHeader quiz={currentQuiz}/>
 
                     <Container>
-                    {currentQuiz.quiz_type ==="mul_choices" ? 
+                    {currentQuiz.quiz_type ==="MULTI" ? 
                         (
                             currentQuiz.quiz_content.choices.map((c)=>
                             <TestQuizChoice key={`${current}_${c.id}`} choice={c} onClick={onClick}/>)

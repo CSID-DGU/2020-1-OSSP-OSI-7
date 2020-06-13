@@ -15,7 +15,7 @@ const QuizTemplate = ({match}) => {
 
     const user = useRecoilValue(currentUser);
     
-    const koreanDict = {"mul_choices":"객관식", "essay":"주관식", "short_answer":"단답형","binary":"OX형"};
+    const koreanDict = {"MULTI":"객관식", "SHORT":"주관식", "short_answer":"단답형","binary":"OX형"};
 
     const unloadEvent =  (e)  => {
         let confirmationMessage = '정말 닫으시겠습니까?'
@@ -24,7 +24,7 @@ const QuizTemplate = ({match}) => {
         }
 
     useEffect(()=>{
-        addQuiz("mul_choices");
+        addQuiz("MULTI");
         setClassId(match.params.classId);
         window.addEventListener('beforeunload',unloadEvent);
             return () => {
@@ -43,7 +43,7 @@ const QuizTemplate = ({match}) => {
                 description: "",
             }  
         }
-        if(type === 'mul_choices'){
+        if(type === 'MULTI'){
                 quiz.content.choices = [
                     {id:0,choice:""},
                     {id:1,choice:""},
@@ -216,8 +216,8 @@ const QuizTemplate = ({match}) => {
             handleBlur={handleBlur} />
             <Container>
                 <ButtonToolbar>
-                    <QuizBtn quizType="mul_choices" />
-                    <QuizBtn quizType="essay" />
+                    <QuizBtn quizType="MULTI" />
+                    <QuizBtn quizType="SHORT" />
                     <QuizBtn quizType="short_answer" />
                     <QuizBtn quizType="binary" />
                     <ButtonGroup >

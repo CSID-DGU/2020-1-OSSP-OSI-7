@@ -11,7 +11,7 @@ import {Button, Form, Dropdown, Container, Row, Col} from 'react-bootstrap';
 
 
 const QuizForm = (props)=>{
-    const koreanDict = {"mul_choices":"객관식", "essay":"주관식", "short_answer":"단답형","binary":"OX형"};
+    const koreanDict = {"MULTI":"객관식", "SHORT":"주관식", "short_answer":"단답형","binary":"OX형"};
     const {onRemove, handleBlur, onTypeChange, AnswerForm, onChange, quiz, addChoices, onRemoveChoice, selectAnswerChoice} = props;
     const {id, type} = quiz;
 
@@ -31,8 +31,8 @@ const QuizForm = (props)=>{
                 {koreanDict[type]}
             </Dropdown.Toggle>
             <Dropdown.Menu>
-                <Dropdown.Item onClick={()=>{onTypeChange(id,"mul_choices")}}>객관식</Dropdown.Item>
-                <Dropdown.Item onClick={()=>{onTypeChange(id,"essay")}}>주관식</Dropdown.Item>
+                <Dropdown.Item onClick={()=>{onTypeChange(id,"MULTI")}}>객관식</Dropdown.Item>
+                <Dropdown.Item onClick={()=>{onTypeChange(id,"SHORT")}}>주관식</Dropdown.Item>
                 <Dropdown.Item onClick={()=>{onTypeChange(id,"short_answer")}}>단답형</Dropdown.Item>
                 <Dropdown.Item onClick={()=>{onTypeChange(id,"binary")}}>OX형</Dropdown.Item>
             </Dropdown.Menu>
