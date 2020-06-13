@@ -5,7 +5,7 @@ import {modalShow} from '../atoms';
 import CenteredModal from '../common/CenteredModal';
 import ResultCircleModal from './ResultCircleModal';
 
-const ResultCirclesContainer = ({results}) =>{
+const ResultCirclesContainer = ({results, quizData}) =>{
   const [modalOn, setModalOn] = useRecoilState(modalShow);
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -25,7 +25,7 @@ const ResultCirclesContainer = ({results}) =>{
         <div className="circle__container">
         {
             results.map((r,index)=>
-            <ResultCircle index={index} key={index}  result={r} modalOn={modalOn} handleShow={handleShow} handleClose={handleClose}/>
+            <ResultCircle index={index}  key={index}  result={r} modalOn={modalOn} handleShow={handleShow} handleClose={handleClose}/>
             )
         }
         
@@ -34,7 +34,7 @@ const ResultCirclesContainer = ({results}) =>{
         show={modalOn}
         onHide={handleClose}
         >
-        <ResultCircleModal index={currentIndex} wrong={results[currentIndex]} onClick={handleClick} />
+        <ResultCircleModal index={currentIndex} quizInfo={quizData[currentIndex]} wrong={results[currentIndex]} onClick={handleClick} />
         </CenteredModal>
         </Fragment>
     );

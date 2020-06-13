@@ -20,7 +20,7 @@ const QuizSetItem = ({quizset, user,auth,itemStyle}) => {
         !auth && 
         <Button onClick={()=>history.push(`/quiz/${quizset.quiz_set_id}`)}>퀴즈풀기</Button>
     }
-    <Button>결과보기</Button>
+    <Button onClick={()=>history.push(`/quiz/${quizset.quiz_set_id}/result`)}>결과보기</Button>
     </ButtonGroup>
     </Col>
     </Row>

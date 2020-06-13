@@ -59,7 +59,7 @@ const TestQuiz = ({match}) => {
                 <Fragment>
                 <Row className="mr__bottom__t1">
                     <Col md={{ span: 6, offset: 3 }}>
-                        <h2 className="align-text">{quizset.quizset_name}</h2>
+                        <h2 className="align-text">{quizset.quiz_set_name}</h2>
                     </Col>
                 </Row>
                 <Container className="mr__bottom__1">
@@ -77,9 +77,9 @@ const TestQuiz = ({match}) => {
                     <TestQuizHeader quiz={currentQuiz}/>
 
                     <Container>
-                    {currentQuiz.type ==="mul_choices" ? 
+                    {currentQuiz.quiz_type ==="mul_choices" ? 
                         (
-                            currentQuiz.content.choices.map((c)=>
+                            currentQuiz.quiz_content.choices.map((c)=>
                             <TestQuizChoice key={`${current}_${c.id}`} choice={c} onClick={onClick}/>)
                         ) :
                         (

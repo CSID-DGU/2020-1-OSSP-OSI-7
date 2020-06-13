@@ -3,7 +3,7 @@ import {Row,Col } from 'react-bootstrap';
 import SquareContainer from '../SquareContainer';
 import 'react-circular-progressbar/dist/styles.css';
 import ResultCirclesContainer from './ResultCirclesContainer';
-
+import {quizsetdata} from './quizsetdata';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 
 
@@ -11,7 +11,10 @@ import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 const TestQuizResult = () =>{
     const total = 10;
     const [value,setValue] = useState(0);
-    const results = [true, false, true,false,true, true, false,false];
+    const [quizData, setQuizData] = useState(quizsetdata.quizzes);
+    const results = [true, false, true,false];
+
+
 
     const colorGradiant = (percent) => {
         if(percent <= 30){
@@ -55,7 +58,7 @@ const TestQuizResult = () =>{
             </Row>
             <Row>
                 <Col xs={12} md={{span:4,offset:4}} className="resultCircle__container">
-                    <ResultCirclesContainer results={results} />            
+                    <ResultCirclesContainer results={results} quizData={quizData} />            
                 </Col>
             </Row>
         </SquareContainer>
