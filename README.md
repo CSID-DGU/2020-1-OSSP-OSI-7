@@ -3,6 +3,9 @@
 
 ![ERD](./ERD-1.PNG)
 
-S3 링크
+![fullsize](C:\Users\YONGSEOK\OneDrive\과제\fullsize.png)
 
-http://dquiz-frontend.s3-website.ap-northeast-2.amazonaws.com/
+## **S3 링크**
+
+[프로젝트 S3 호스팅 링크]: http://dquiz-frontend.s3-website.ap-northeast-2.amazonaws.com/	"DQUIZ"
+
