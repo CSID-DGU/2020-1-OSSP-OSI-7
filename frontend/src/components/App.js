@@ -154,7 +154,7 @@ const App = () => {
           <Register authenticated={authenticated} {...props} />
           )}/>
       
-      <AuthRoute authenticated={authenticated} path="/create/:classId"
+      <AuthRoute authenticated={authenticated} path="/create"
         render={props => <QuizTemplate {...props} />}
       />
       <AuthRoute authenticated={authenticated} path="/quiz/:quizSetId" component={TestQuiz} exact/>

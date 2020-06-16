@@ -7,19 +7,19 @@ const EnrollModal = ({isSuccess, class_code}) =>{
 
     return (
         <Fragment>
-            <Modal.Header>
-                <Modal.Title>
+            <Modal.Header closeButton>
+                <Modal.Title id="contained-modal-title-vcenter">
                     <CheckCircle  wrong={!isSuccess} className="modal__circle"/>
                     {
-                        isSuccess ? "Success!" : "Error"
+                        isSuccess ? "수강신청 성공!" : "문제가 있어요!"
                     }
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 {
                     isSuccess 
-                    ? `Enrolled Successfully at ${class_code}`
-                    : "Class Doesn't Exist or Already Enrolled"
+                    ? `${class_code} 강의가 성공적으로 신청되었습니다! 😆`
+                    : "존재하지 않는 강의이거나, 이미 신청한 강의입니다! 😢"
                 }
             </Modal.Body>
         </Fragment>

@@ -1,5 +1,7 @@
 import React from 'react';
 import QuizSetList from '../quiz/QuizSetList';
+import {userAuth} from '../atoms';
+import {useRecoilValue} from 'recoil';
 
 
 const quizsetdata = {quizsetsList:
@@ -45,9 +47,15 @@ const quizsetdata = {quizsetsList:
 
 const SolvedQuizList = () =>{
     // api 추가 예정 퀴즈 받아오기
+    const auth = useRecoilValue(userAuth);
+
     return (
         <div>
-        <h3>푼 퀴즈 목록</h3>
+        <h3>
+        {
+            auth ? "만든 퀴즈 목록" : "푼 퀴즈 목록"
+        }
+        </h3>
         <QuizSetList itemStyle={"profile__quiz__item"} quizsets={quizsetdata}/>
         </div>
     );

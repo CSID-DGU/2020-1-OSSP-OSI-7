@@ -68,6 +68,7 @@ body {
 .footer{
     width: 100%;
     background-color: #b5bfcc;
+    margin-top: auto;
 }
 
 .home__container{
@@ -102,4 +103,10 @@ body {
     left:-1rem;
     z-index:5;
     transform: rotate( -15deg );
+}
+
+#root {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 }

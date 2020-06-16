@@ -8,7 +8,6 @@ import {currentUser} from '../atoms';
 const QuizTemplate = ({match}) => {
     const [count, setCount] = useState(0);
     const [quizSetName, setQuizSetName] = useState("");
-    const [classId, setClassId] = useState("");
     const [quizzes, setQuizzes] = useState([]);
     const [validated, setValidated] = useState(false);
 
@@ -25,7 +24,6 @@ const QuizTemplate = ({match}) => {
 
     useEffect(()=>{
         addQuiz("MULTI");
-        setClassId(match.params.classId);
         window.addEventListener('beforeunload',unloadEvent);
             return () => {
                 window.removeEventListener("beforeunload",unloadEvent);
@@ -76,8 +74,6 @@ const QuizTemplate = ({match}) => {
 
         if (targetName === "quizSetName"){
             setQuizSetName(e.target.value);
-        }else if(targetName === "classId"){
-            setClassId(e.target.value);
         } else {
             let data = {
                 quizId: Number(e.target.getAttribute('quizId')),
@@ -170,7 +166,6 @@ const QuizTemplate = ({match}) => {
             const quizSet = {
                 quiz_set_author_name: user,
                 quiz_set_name: quizSetName,
-                class_id: classId,
                 quizzes:quizzes
             }
             // api 추가 예정 퀴즈 생성하기
@@ -195,17 +190,10 @@ const QuizTemplate = ({match}) => {
                 <h3>TOTAL : {count}</h3>
                 <Container>
                     <Form.Group as={Row}>
-                        <Form.Label column sm="2">NAME</Form.Label>
+                        <Form.Label column sm="2">QUIZ 이름</Form.Label>
                         <Col sm="4">
                             <Form.Control value={quizSetName} required name="quizSetName" onChange={(e)=>onChange(e)}></Form.Control>
                             <Form.Control.Feedback type="invalid">Please type Quiz name</Form.Control.Feedback>
-                        </Col>
-                    </Form.Group>
-                    <Form.Group as={Row}>
-                        <Form.Label column sm="2">CLASS_ID</Form.Label>
-                        <Col sm="4">
-                            <Form.Control value={classId} name="classId" required onChange={(e)=>onChange(e)} ></Form.Control>
-                            <Form.Control.Feedback type="invalid">Please choose a class</Form.Control.Feedback>
                         </Col>
                     </Form.Group>
                 </Container>

@@ -1,5 +1,6 @@
 import React, {Fragment, useEffect} from 'react';
-import {Image, Row, Col} from 'react-bootstrap';
+import {Image, Row, Col, Button} from 'react-bootstrap';
+import {useHistory} from 'react-router-dom';
 import UserClassList from './UserClassList';
 import {useRecoilState} from 'recoil';
 import ToggleSwitch from './ToggleSwitch';
@@ -9,6 +10,7 @@ import {userAuth, managingClasses} from '../atoms';
 
 
 const MypageLeft = (props)=>{
+    const history= useHistory();
     const {avatar, user} = props;
     const [classes, setClasses] = useRecoilState(managingClasses);
     const [auth,setAuth] = useRecoilState(userAuth);
@@ -31,6 +33,8 @@ const MypageLeft = (props)=>{
             </Col>
         </Row>
 
+
+
         <Row>
             <Col xs={6} md={8} xl={6} className="flex__align__center">
                 <ReactTextTransition text={auth ? "Professor" : "Student"} className="profile__auth" />
@@ -43,7 +47,15 @@ const MypageLeft = (props)=>{
                 />
             </Col>
         </Row>
+        {
+            auth &&
+            <Row>
+            <Col>
+            <Button block variant="outline-primary" onClick={()=>history.push('/create')}>퀴즈 만들기</Button>
+            </Col>
+            </Row>
 
+        }
         <hr className="profile__class__hr"/>
             <UserClassList classes={classes}/>
         </Fragment>

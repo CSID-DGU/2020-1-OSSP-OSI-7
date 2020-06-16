@@ -38,7 +38,7 @@ const ClassCreateForm = () => {
             <FormControl name="class_code" onChange={(e)=>onChange(e)} md={4} placeholder="강의 코드"/>
             <FormControl name="class_name" onChange={(e)=>onChange(e)} md={6} placeholder="강의 이름"/>
             <InputGroup.Append>
-            <Button onClick={()=>onSubmit()} variant="primary">Create</Button>
+            <Button onClick={()=>onSubmit()} variant="primary">개설 하기</Button>
           </InputGroup.Append>
         </InputGroup>
         

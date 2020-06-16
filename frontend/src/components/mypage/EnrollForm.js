@@ -29,12 +29,12 @@ const EnrollForm = () =>{
         <h3>수강 신청</h3>
         <InputGroup className="mb-3">
             <FormControl
-              placeholder="Class name"
+              placeholder="강의 코드"
               aria-describedby="basic-addon2"
               onChange={(e)=>onChange(e)}
             />
             <InputGroup.Append>
-              <Button variant="primary" onClick={()=>onSubmit()}>Enroll</Button>
+              <Button variant="primary" onClick={()=>onSubmit()}>신청 하기</Button>
             </InputGroup.Append>
         </InputGroup>
         <CenteredModal
