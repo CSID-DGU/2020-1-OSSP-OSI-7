@@ -1,0 +1,45 @@
+name: React deploy
+on:
+  push:
+    branches:
+      - dev-frontend                      
+
+jobs:                                 
+  build:                              
+    name: deploy to s3         
+    runs-on: ubuntu-latest           
+    steps:                            
+      - name: Checkout source code.   # 레포지토리 체크아웃
+        uses: actions/checkout@master
+        with:
+          ref: dev-frontend
+
+      - name: Cache node modules      # node modules 캐싱
+        uses: actions/cache@v1
+        with:
+          path: node_modules
+          key: ${{ runner.OS }}-build-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.OS }}-build-
+            ${{ runner.OS }}-
+
+      - name: Install Dependencies    # 의존 파일 설치
+        working-directory: ./frontend
+        run: npm install
+
+      - name: Build                   # React Build
+        working-directory: ./frontend
+        run: yarn run build
+        env:
+          CI: ""
+
+      - name: Deploy 
+        working-directory: ./frontend
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          aws s3 cp \
+            --recursive \
+            --region ap-northeast-2 \
+            build s3://dquiz-frontend

@@ -1,0 +1,57 @@
+
+.authform_container{
+    background-color: #fff !important;
+    border: 0 solid #edf2f9 !important;
+    padding: 60px 60px 45px 60px !important;
+    border-radius: 10px !important;
+    box-shadow: 0 7px 14px 0 rgba(65,69,88,.1), 0 3px 6px 0 rgba(0,0,0,.07);
+}
+
+.authform_group{
+    margin-bottom: 20px !important;
+}
+
+#authForm .invalid-feedback {
+    display: block!important;
+}
+
+.selectList {
+    position: relative;
+    z-index: 5;
+    top: 0;
+    right: 0;
+    left: 0;
+}
+
+@-webkit-keyframes flows{
+    0%{
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
+}
+
+.username {
+    animation: flows 2s ease-in-out infinite; 
+    background: linear-gradient(-60deg, #904e95, #904e95, #e73c7e, #ee7752);
+    background-size:300%;
+    -webkit-background-clip:text !important;
+    background-clip:text !important;
+    -webkit-text-fill-color: transparent;
+}
+
+@keyframes flows  {
+    0%{
+        background-position: 0 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0 50%;
+    }
+}
