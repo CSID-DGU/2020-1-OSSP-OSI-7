@@ -8,3 +8,10 @@ type User struct {
 	Email string `db:"email" json:"email" example:"donggukmail@dgu.ac.kr"`
 	NickName string `db:"nickname" json:"nickname" example:"my nickname"`
 }
+
+type UserGetForm struct {
+	UserName string `json:"username" example:"pigeon1234"`
+	StudentCode int64 `json:"student_code" example:"2015123456"`
+	Email string `json:"email" example:"donggukmail@dgu.ac.kr"`
+	NickName string `json:"nickname" example:"my nickname"`
+}
