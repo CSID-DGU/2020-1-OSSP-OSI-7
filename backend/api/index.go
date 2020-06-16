@@ -190,6 +190,7 @@ func InitRouters(context *web.Context) {
 	auth.GET("/refresh_token", authMiddleware.RefreshHandler)
 	auth.Use(authMiddleware.MiddlewareFunc())
 
+	auth.GET("/info/:userName", GetUserInfo(context))
 	auth.GET("/classes/enrolled/:userName", GetAllEnrolledClass(context))
 	auth.GET("/classes/managing/:userName", GetAllManagingClass(context))
 
@@ -202,13 +203,14 @@ func InitRouters(context *web.Context) {
 	quizset.GET("/class/:classQuizSetId", GetQuizSetByClassQuizSetId(context))
 	quizset.POST("/score", ScoreQuizzes(context))
 	quizset.DELETE("/quizset/:quizsetId", DeleteQuizSet(context))
+	quizset.DELETE("/result/users/:username", GetQuizResults(context))
 	quizset.POST("/quizset/:quizsetId/quiz/", AddQuiz(context))
 	quizset.DELETE("/quizset/:quizsetId/quiz/:quizId", DeleteQuizFromQuizSet(context))
 	quizset.POST("/quizset/:quizsetId/class/:classCode", LoadQuizSetToClass(context))
 	quizset.DELETE("/quizset/:quizsetId/class/:classCode", DeleteQuizSetFromClass(context))
 	quizset.POST("/classes/:classCode", GetQuizSetsOfClass(context))
 	quizset.GET("/users/:username", GetUserQuizSet(context))
-
+	quizset.GET("/result/users/:username", GetQuizResults(context))
 	quiz := r.Group("/quiz")
 	quiz.Use(CORSMiddleWare())
 	quiz.Use(authMiddleware.MiddlewareFunc())
