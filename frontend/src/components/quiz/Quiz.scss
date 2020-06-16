@@ -6,7 +6,6 @@
     border: 1px solid #6c757d57 !important;
 
     margin-bottom: 30px;
-    opacity:0.9;
     padding-top: 15px !important;
     border-radius: 10px !important;
     box-shadow: 0 7px 14px 0 rgba(65,69,88,.1), 0 3px 6px 0 rgba(0,0,0,.07);
@@ -109,6 +108,13 @@
 
 .quizItem__btn__container {
     display:flex;
-    flex-direction: row;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+    height: 7rem;
+}
+
+.quiz__btn__container {
+    display:flex;
     justify-content: flex-end;
 }

@@ -6,12 +6,15 @@ import {currentUser,userAuth} from '../atoms';
 const QuizSetList = ({itemStyle, quizsets}) =>{
     const user = useRecoilValue(currentUser);
     const auth = useRecoilValue(userAuth);
-    const [quizsetList, setQuizSetList] = useState(quizsets);
 
     return (
         <Fragment>
-        {quizsetList.quizsetsList.map((quizset,index)=> <QuizSetItem user={user} auth={auth} quizset={quizset} itemStyle={itemStyle} />)}
-        </Fragment>
+        {
+            quizsets.length !== 0 &&
+            
+            quizsets.map((quizset,index)=> <QuizSetItem user={user} auth={auth} quizset={quizset} itemStyle={itemStyle} />)}
+        
+            </Fragment>
     )
 }
 

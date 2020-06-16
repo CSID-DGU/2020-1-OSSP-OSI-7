@@ -33,8 +33,6 @@ const QuizForm = (props)=>{
             <Dropdown.Menu>
                 <Dropdown.Item onClick={()=>{onTypeChange(id,"MULTI")}}>객관식</Dropdown.Item>
                 <Dropdown.Item onClick={()=>{onTypeChange(id,"SHORT")}}>주관식</Dropdown.Item>
-                <Dropdown.Item onClick={()=>{onTypeChange(id,"short_answer")}}>단답형</Dropdown.Item>
-                <Dropdown.Item onClick={()=>{onTypeChange(id,"binary")}}>OX형</Dropdown.Item>
             </Dropdown.Menu>
             </Dropdown>
             </Col>

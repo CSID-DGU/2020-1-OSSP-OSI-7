@@ -3,6 +3,7 @@ import { Button, Container, ButtonToolbar, ButtonGroup,Form, Row,Col } from "rea
 import QuizList from "./QuizList";
 import {useRecoilValue} from 'recoil';
 import {currentUser} from '../atoms';
+import {quizSubmit} from '../../lib/api/quiz';
 
 
 const QuizTemplate = ({match}) => {
@@ -168,6 +169,9 @@ const QuizTemplate = ({match}) => {
                 quiz_set_name: quizSetName,
                 quizzes:quizzes
             }
+            quizSubmit(JSON.stringify(quizSet))
+            .then((res)=>console.log("hihi", res))
+            .catch((e)=>console.log(e));
             // api 추가 예정 퀴즈 생성하기
             console.log(JSON.stringify(quizSet));
         }
@@ -188,7 +192,6 @@ const QuizTemplate = ({match}) => {
             <Container>
                 <h1>QUIZ 만들기</h1>
                 <h3>TOTAL : {count}</h3>
-                <Container>
                     <Form.Group as={Row}>
                         <Form.Label column sm="2">QUIZ 이름</Form.Label>
                         <Col sm="4">
@@ -196,24 +199,21 @@ const QuizTemplate = ({match}) => {
                             <Form.Control.Feedback type="invalid">Please type Quiz name</Form.Control.Feedback>
                         </Col>
                     </Form.Group>
-                </Container>
             </Container>
             <QuizList quizzes={quizzes} onRemove={onRemove} 
             onTypeChange={onTypeChange} addChoices={addChoices} 
             onChange={onChange} onRemoveChoice={onRemoveChoice}
             selectAnswerChoice={selectAnswerChoice}
             handleBlur={handleBlur} />
-            <Container>
+            <div className="quiz__btn__container">
                 <ButtonToolbar>
                     <QuizBtn quizType="MULTI" />
                     <QuizBtn quizType="SHORT" />
-                    <QuizBtn quizType="short_answer" />
-                    <QuizBtn quizType="binary" />
                     <ButtonGroup >
                         <Button type="submit" variant="success">저장</Button>
                     </ButtonGroup>
                 </ButtonToolbar>
-            </Container>
+            </div>
         </Form>
         </Container>
     );

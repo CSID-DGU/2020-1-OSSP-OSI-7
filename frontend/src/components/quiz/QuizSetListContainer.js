@@ -47,7 +47,7 @@ const quizsetdata = {quizsetsList:
 const QuizSetListContainer = () => {
     return (
         <Container className="quiz__container">
-            <QuizSetList itemStyle={"quiz__container"} quizsets={quizsetdata}/>
+            <QuizSetList itemStyle={"quiz__container"} quizsets={quizsetdata.quizsetsList}/>
             <Link to="/create/"><Button>WRITE</Button></Link>
             <Link to="/quiz/1"><Button>quiz gogo</Button></Link>
         </Container>

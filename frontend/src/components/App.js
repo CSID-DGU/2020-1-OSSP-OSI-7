@@ -14,8 +14,8 @@ import FooterContent from './FooterContent';
 import Mypage from './mypage/Mypage';
 import ClassRoom from './class/ClassRoom'
 import {getAvatar} from '../lib/api/mypage';
-import {useRecoilState} from 'recoil';
-import {currentUser, isAuthenticated, userAvatar, tokenExpiredate} from './atoms';
+import {useRecoilState, useRecoilValue} from 'recoil';
+import {currentUser, isAuthenticated, userAvatar, tokenExpiredate, userAuth} from './atoms';
 
 const useTitle = (initialTitle)=>{
   const[title,setTitle] = useState(initialTitle);
@@ -29,6 +29,7 @@ const useTitle = (initialTitle)=>{
 
 const App = () => {
   const [avatar, setAvatar] = useRecoilState(userAvatar);
+  const auth = useRecoilValue(userAuth);
   const titleUpdator = useTitle("DQUIZ");
   const [user, setUser] = useRecoilState(currentUser);
   const [authenticated, setAuth] = useRecoilState(isAuthenticated);
@@ -101,7 +102,6 @@ const App = () => {
       <Navbar.Collapse>
 
       <Nav  className="mr-auto">
-        <Nav.Link><Link to="/quiz">QUIZ</Link></Nav.Link>
       </Nav>
       
       <Nav>
@@ -143,9 +143,7 @@ const App = () => {
 
 
     <Switch>
-      <Route path="/" component={Home} exact/>
-      <AuthRoute authenticated={authenticated} path="/quiz" component={QuizSetListContainer} exact/>
-      
+      <Route path="/" component={Home} exact/>      
       <Route path="/login" render={props => (
           <Login authenticated={authenticated} {...props} />
         )}/>
@@ -153,10 +151,12 @@ const App = () => {
       <Route path="/register" render={props => (
           <Register authenticated={authenticated} {...props} />
           )}/>
-      
-      <AuthRoute authenticated={authenticated} path="/create"
+      {
+        auth && 
+        <AuthRoute authenticated={authenticated} path="/create"
         render={props => <QuizTemplate {...props} />}
-      />
+        />
+      }
       <AuthRoute authenticated={authenticated} path="/quiz/:quizSetId" component={TestQuiz} exact/>
       <AuthRoute authenticated={authenticated} path="/quiz/:quizSetId/result" component={TestQuizResult} exact/>
       <AuthRoute authenticated={authenticated} path="/mypage" component={Mypage}/>
