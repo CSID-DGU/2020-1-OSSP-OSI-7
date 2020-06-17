@@ -77,12 +77,19 @@ func GetUserInfo (context *web.Context) gin.HandlerFunc {
  			return;
 		}
 
+		var professorFlag bool = false
+ 		if user.Authority == "PROFESSOR" {
+			professorFlag = true
+		}
+
 		userGetForm := &dto.UserGetForm {
 			UserName: user.UserName,
 			StudentCode: user.StudentCode,
 			Email: user.Email,
 			NickName: user.NickName,
+			Professor: professorFlag,
 		}
+
 		c.JSON(200, userGetForm)
 	}
 }

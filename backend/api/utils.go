@@ -18,3 +18,7 @@ func CORSMiddleWare() gin.HandlerFunc {
 		c.Next()
 	}
 }
+
+func NewDetailedInternalServerError(detail string) string {
+	return INTERNAL_SERVER_ERROR + " => " + detail
+}

@@ -14,4 +14,5 @@ type UserGetForm struct {
 	StudentCode int64 `json:"student_code" example:"2015123456"`
 	Email string `json:"email" example:"donggukmail@dgu.ac.kr"`
 	NickName string `json:"nickname" example:"my nickname"`
+	Professor bool `json:"professor" example:"true"`
 }

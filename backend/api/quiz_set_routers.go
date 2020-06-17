@@ -21,8 +21,8 @@ import (
 // @Param classCode JSON body dto.QuizCreateForm true "퀴즈 셋을 조회할 강의의 학수 번호"
 // @Router /quizsets/classes/{classCode} [GET]
 // @Failure 400 {string} INVALID_PATH_PARAMETER
-func GetQuizSetsOfClass (context *web.Context) gin.HandlerFunc {
-	return func (c *gin.Context) {
+func GetQuizSetsOfClass(context *web.Context) gin.HandlerFunc {
+	return func(c *gin.Context) {
 		classCode := c.Param("classCode")
 
 		quizSets, err := context.Repositories.QuizSetRepository().GetQuizSetsByClassCode(classCode)
@@ -31,7 +31,7 @@ func GetQuizSetsOfClass (context *web.Context) gin.HandlerFunc {
 			c.JSON(500, "DATA_NOT_FOUND")
 		}
 
-		if quizSets ==  nil {
+		if quizSets == nil {
 			c.JSON(404, "DATA_NOT_FOUND")
 			return
 		}
@@ -47,22 +47,22 @@ func GetQuizSetsOfClass (context *web.Context) gin.HandlerFunc {
 			var quizGetForms []dto.QuizGetForm
 
 			for _, quiz := range quizzes {
-				quizGetForms = append(quizGetForms, dto.QuizGetForm {
-					QuizId: quiz.QuizId,
-					QuizTitle: quiz.QuizTitle,
+				quizGetForms = append(quizGetForms, dto.QuizGetForm{
+					QuizId:      quiz.QuizId,
+					QuizTitle:   quiz.QuizTitle,
 					QuizContent: quiz.QuizContent,
-					QuizAnswer: quiz.QuizAnswer,
-					QuizType: quiz.QuizType,
+					QuizAnswer:  quiz.QuizAnswer,
+					QuizType:    quiz.QuizType,
 				})
 			}
 
-			quizSetGetForm := dto.ClassQuizSetGetForm {
-				ClassQuizSetId: quizSet.ClassQuizSetId,
-				QuizSetName: quizSet.QuizSetName,
+			quizSetGetForm := dto.ClassQuizSetGetForm{
+				ClassQuizSetId:        quizSet.ClassQuizSetId,
+				QuizSetName:           quizSet.QuizSetName,
 				QuizSetAuthorUserName: user.UserName,
-				Quizzes: quizGetForms,
+				Quizzes:               quizGetForms,
 			}
-			quizSetGetForms  = append(quizSetGetForms, quizSetGetForm)
+			quizSetGetForms = append(quizSetGetForms, quizSetGetForm)
 		}
 		c.JSON(200, quizSetGetForms)
 	}
@@ -78,34 +78,34 @@ func GetQuizSetsOfClass (context *web.Context) gin.HandlerFunc {
 // @Router /quizsets/class/{classQuizSetId} [GET]
 // @Success 200 {object} dto.ClassQuizSetGetForm "퀴즈 셋"
 // @Failure 400 {string} string "INVALID_PATH_PARAMETER"
-func GetQuizSetByClassQuizSetId (context *web.Context) gin.HandlerFunc {
-	return func (c *gin.Context) {
+func GetQuizSetByClassQuizSetId(context *web.Context) gin.HandlerFunc {
+	return func(c *gin.Context) {
 		classQuizSetIdString := c.Param("classQuizSetId")
 		classQuizSetId, err := strconv.ParseInt(classQuizSetIdString, 10, 64)
 		if err != nil {
-			c.JSON(400, INVALID_PATH_PARAMETER + "=> NO quiz set of ClassQuizSetId")
+			c.JSON(400, INVALID_PATH_PARAMETER+"=> NO quiz set of ClassQuizSetId")
 		}
 		classQuizSetGetForm, db_err := context.Repositories.ClassQuizSetRepository().GetClassQuizSetGetFormByClassQuizSetId(classQuizSetId)
 		if db_err != nil {
 			web.Logger.WithFields(logrus.Fields{
-				"err" : db_err,
+				"err": db_err,
 			}).Warning(cerror.DQUIZ_DB_OPERATION_ERROR)
 		}
 
 		quizzes, db_err := context.Repositories.QuizRepository().GetQuizzesByClassQuizSetId(classQuizSetGetForm.ClassQuizSetId)
 		if db_err != nil {
 			web.Logger.WithFields(logrus.Fields{
-				"err" : db_err,
+				"err": db_err,
 			}).Warning(cerror.DQUIZ_DB_OPERATION_ERROR)
 		}
 
 		var getFormQuizzes []dto.QuizGetForm
 		for _, quiz := range quizzes {
 			getFormQuizzes = append(getFormQuizzes, dto.QuizGetForm{
-				QuizId: quiz.QuizId,
-				QuizTitle: quiz.QuizTitle,
+				QuizId:      quiz.QuizId,
+				QuizTitle:   quiz.QuizTitle,
 				QuizContent: quiz.QuizContent,
-				QuizType: quiz.QuizType,
+				QuizType:    quiz.QuizType,
 			})
 		}
 		classQuizSetGetForm.Quizzes = getFormQuizzes
@@ -124,8 +124,8 @@ func GetQuizSetByClassQuizSetId (context *web.Context) gin.HandlerFunc {
 // @Router /quizsets/score [POST]
 // @Success 200 {string} string "ok"
 // @Failure 400 {string} string "INVALID_PATH_PARAMETER"
-func ScoreQuizzes (context *web.Context) gin.HandlerFunc {
-	return func (c *gin.Context) {
+func ScoreQuizzes(context *web.Context) gin.HandlerFunc {
+	return func(c *gin.Context) {
 		var quizSetForScoring *dto.QuizSetForScoring
 		err := c.Bind(&quizSetForScoring)
 		if err != nil || quizSetForScoring == nil {
@@ -134,7 +134,7 @@ func ScoreQuizzes (context *web.Context) gin.HandlerFunc {
 
 		service.ScoreQuizzes(context, service.ScoringQueueIdent{
 			ClassQuizSetId: quizSetForScoring.ClassQuizSetId,
-			Email: quizSetForScoring.UserName}, quizSetForScoring.QuizForScorings)
+			Email:          quizSetForScoring.UserName}, quizSetForScoring.QuizForScorings)
 
 	}
 }
@@ -150,7 +150,7 @@ func ScoreQuizzes (context *web.Context) gin.HandlerFunc {
 // @Success 200 {string} string "ok"
 // @Failure 400 {string} string INVALID_PATH_PARAMETER
 func CreateQuizSet(context *web.Context) gin.HandlerFunc {
-	return func (c *gin.Context) {
+	return func(c *gin.Context) {
 		claims := jwt.ExtractClaims(c)
 		var quizSetCreateForm *dto.QuizSetCreateForm
 		var username string = claims["UserName"].(string)
@@ -162,9 +162,9 @@ func CreateQuizSet(context *web.Context) gin.HandlerFunc {
 			return
 		}
 
-		newQuizSet := &models.QuizSet {
+		newQuizSet := &models.QuizSet{
 			QuizSetName: quizSetCreateForm.QuizSetName,
-			TotalScore: quizSetCreateForm.TotalScore,
+			TotalScore:  quizSetCreateForm.TotalScore,
 		}
 		quizSetId, createError := context.Repositories.QuizSetRepository().Create(username, newQuizSet)
 
@@ -180,11 +180,11 @@ func CreateQuizSet(context *web.Context) gin.HandlerFunc {
 		}
 		for _, quiz := range quizSetCreateForm.Quizes {
 			modelQuiz := &models.Quiz{
-				QuizTitle: quiz.QuizTitle,
-				QuizSetId: quizSetId,
+				QuizTitle:   quiz.QuizTitle,
+				QuizSetId:   quizSetId,
 				QuizContent: quiz.QuizContent,
-				QuizAnswer: quiz.QuizAnswer,
-				QuizType: quiz.QuizType,
+				QuizAnswer:  quiz.QuizAnswer,
+				QuizType:    quiz.QuizType,
 			}
 			err := context.Repositories.QuizRepository().Create(modelQuiz)
 
@@ -210,7 +210,7 @@ func CreateQuizSet(context *web.Context) gin.HandlerFunc {
 // @Success 200 {string} string "ok"
 // @Failure 400 {string} string "INVALID_PATH_PARAMETER"
 func DeleteQuizSet(context *web.Context) gin.HandlerFunc {
-	return func (c *gin.Context) {
+	return func(c *gin.Context) {
 		claims := jwt.ExtractClaims(c)
 		var username string = claims["UserName"].(string)
 		quizsetId, err := strconv.ParseInt(c.Param("quizsetId"), 10, 64)
@@ -253,7 +253,7 @@ func DeleteQuizSet(context *web.Context) gin.HandlerFunc {
 // @Success 200 {string} string "성공"
 // @Failure 400 {string} string "요청이 올바르지 않습니다."
 func AddQuiz(context *web.Context) gin.HandlerFunc {
-	return func (c *gin.Context) {
+	return func(c *gin.Context) {
 		quizSetId, err := strconv.ParseInt(c.Param("quizsetId"), 10, 64)
 
 		if err != nil {
@@ -270,11 +270,11 @@ func AddQuiz(context *web.Context) gin.HandlerFunc {
 		}
 
 		var newQuiz *models.Quiz = &models.Quiz{
-			QuizSetId: quizSetId,
-			QuizTitle: quizCreateForm.QuizTitle,
-			QuizType: quizCreateForm.QuizType,
+			QuizSetId:   quizSetId,
+			QuizTitle:   quizCreateForm.QuizTitle,
+			QuizType:    quizCreateForm.QuizType,
 			QuizContent: quizCreateForm.QuizContent,
-			QuizAnswer: quizCreateForm.QuizAnswer,
+			QuizAnswer:  quizCreateForm.QuizAnswer,
 		}
 		quizCreateError := context.Repositories.QuizRepository().Create(newQuiz)
 
@@ -332,7 +332,7 @@ func DeleteQuizFromQuizSet(context *web.Context) gin.HandlerFunc {
 // @Router /quizsets/quizset/{quizSetId}/class/{classCode} [POST]
 // @Success 200 {string} string "ok"
 // @Failure 400 {string} string "요청이 올바르지 않습니다."
-// @Failure 400 {string} string "CLASS_QUIZ_SET_ALREADY_EXISTS"
+// @Failure 500 {string} string "INTERNAL_SERVER_ERROR => <detail message>"
 func LoadQuizSetToClass(context *web.Context) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		var err *models.AppError
@@ -357,25 +357,36 @@ func LoadQuizSetToClass(context *web.Context) gin.HandlerFunc {
 
 		result, err := context.Repositories.ClassQuizSetRepository().GetByQuizSetIdAndClassCode(quizSetId, classCode)
 
-		if result == nil {
-			if err == nil {
-				c.JSON(400, "CLASS_QUIZ_SET_ALREADY_EXISTS")
-				return
-			} else {
-				c.JSON(500, INTERNAL_SERVER_ERROR)
-				return
-			}
+		if err != nil {
+			web.Logger.WithFields(logrus.Fields{
+				"classCode": classCode,
+				"quizSetId": quizSetId,
+				"err":       err,
+			}).Warn("Failed to load quiz set to class due to DB error")
+			c.JSON(400, INTERNAL_SERVER_ERROR)
+			return
 		}
 
-		classQuizSet := models.ClassQuizSet {
+		if result == true {
+			web.Logger.WithFields(logrus.Fields{
+				"classCode": classCode,
+				"quizSetId": quizSetId,
+				"err":       err,
+			}).Warn(`Failed to load quiz set to class due to
+							   requested class quiz set already exists`)
+			c.JSON(400, "CLASS_QUIZ_SET_ALREADY_EXISTS")
+			return
+		}
+
+		classQuizSet := models.ClassQuizSet{
 			QuizSetId: quizSetId,
-			ClassId: class.ClassId,
+			ClassId:   class.ClassId,
 		}
 
 		err = context.Repositories.ClassQuizSetRepository().Create(classQuizSet)
 
 		if err != nil {
-			c.JSON(500, INVALID_PATH_PARAMETER)
+			c.JSON(500, NewDetailedInternalServerError("DB operation failed"))
 			return
 		}
 	}

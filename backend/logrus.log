@@ -24,3 +24,12 @@ time="2020-06-17T05:34:14+09:00" level=info msg="Failed to send log" func=main.m
 time="2020-06-17T05:35:20+09:00" level=info msg="Failed to send log" func=main.main file="C:/Users/4whom/Desktop/workspace/oss/backend/main.go:32" event=event
 time="2020-06-17T05:37:20+09:00" level=info msg="Failed to send log" func=main.main file="C:/Users/4whom/Desktop/workspace/oss/backend/main.go:32" event=event
 time="2020-06-17T05:40:43+09:00" level=info msg="Failed to send log" func=main.main file="C:/Users/4whom/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-06-17T15:35:16+09:00" level=info msg="Failed to send log" func=main.main file="C:/Users/4whom/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-06-17T15:54:50+09:00" level=info msg="Failed to send log" func=main.main file="C:/Users/4whom/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-06-17T16:08:38+09:00" level=info msg="Failed to send log" func=main.main file="C:/Users/4whom/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-06-17T16:25:44+09:00" level=info msg="Failed to send log" func=main.main file="C:/Users/4whom/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-06-17T16:25:45+09:00" level=warning msg="Failed to load quiz set to class due to\n\t\t\t\t\t\t\t   requested class quiz set already exists" func=oss/api.LoadQuizSetToClass.func1 file="C:/Users/4whom/Desktop/workspace/oss/backend/api/quiz_set_routers.go:375" classCode=awef err="<nil>" quizSetId=1112
+time="2020-06-17T16:26:57+09:00" level=info msg="Failed to send log" func=main.main file="C:/Users/4whom/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-06-17T16:27:34+09:00" level=warning msg="Failed to load quiz set to class due to\n\t\t\t\t\t\t\t   requested class quiz set already exists" func=oss/api.LoadQuizSetToClass.func1 file="C:/Users/4whom/Desktop/workspace/oss/backend/api/quiz_set_routers.go:375" classCode=awef err="<nil>" quizSetId=1112
+time="2020-06-17T16:30:25+09:00" level=info msg="Failed to send log" func=main.main file="C:/Users/4whom/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-06-17T16:31:18+09:00" level=info msg="Failed to send log" func=main.main file="C:/Users/4whom/Desktop/workspace/oss/backend/main.go:32" event=event
