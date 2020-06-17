@@ -445,6 +445,6 @@ func GetQuizResults(context *web.Context) gin.HandlerFunc {
 			c.JSON(500, INTERNAL_SERVER_ERROR)
 			return
 		}
-		c.JSON(404, results)
+		c.JSON(200, results)
 	}
 }

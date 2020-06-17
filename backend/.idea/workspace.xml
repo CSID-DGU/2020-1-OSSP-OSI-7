@@ -4,14 +4,7 @@
     <list default="true" id="9517ee32-7d6d-4259-8ced-504d918953f5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/api/quiz_set_routers.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/quiz_set_routers.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/user_routers.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/user_routers.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/docs.go" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/swagger.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/swagger.yaml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/go.sum" beforeDir="false" afterPath="$PROJECT_DIR$/go.sum" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/logrus.log" beforeDir="false" afterPath="$PROJECT_DIR$/logrus.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/quiz_set_result.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/quiz_set_result.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/repository/repository.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/repository.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -265,10 +258,10 @@
     </state>
     <state x="96" y="49" width="820" height="1035" key="dock-window-3/65.24.1855.1056/65.24.1855.1056@65.24.1855.1056" timestamp="1590656493571" />
     <state x="132" y="62" width="820" height="1035" key="dock-window-3/65.24.1855.1056@65.24.1855.1056" timestamp="1590612006340" />
-    <state x="156" y="300" width="785" height="630" key="find.popup" timestamp="1592340019076">
+    <state x="156" y="300" width="785" height="630" key="find.popup" timestamp="1592374523038">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="156" y="300" width="785" height="630" key="find.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1592340019076" />
+    <state x="156" y="300" width="785" height="630" key="find.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1592374523038" />
     <state x="683" y="277" width="618" height="522" key="find.popup/65.24.1855.1056/65.24.1855.1056@65.24.1855.1056" timestamp="1590844231805" />
     <state x="216" y="317" width="758" height="616" key="find.popup/65.24.1855.1056@65.24.1855.1056" timestamp="1591019072120" />
     <state x="403" y="412" width="250" height="278" key="jetbrains.javascript.buildTools.run-task-popup" timestamp="1590487510446">
