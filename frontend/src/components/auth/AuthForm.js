@@ -4,7 +4,7 @@ import styled from 'styled-components';
 import {Form,Col,InputGroup, Button, ListGroup} from 'react-bootstrap';
 import {FaUser, FaLock, FaUnlockAlt, FaGrinSquint} from 'react-icons/fa'
 import {IoMdSchool} from 'react-icons/io'
-import {check, login, registerTo} from '../../lib/api/auth'
+import {check, login, registerTo, getUserInfo} from '../../lib/api/auth'
 import CenteredModal from '../common/CenteredModal';
 import {currentUser, isAuthenticated} from '../atoms';
 import {useForm} from 'react-hook-form';
@@ -77,6 +77,7 @@ const AuthForm = ({type, location})=>{
 
     const handleSignIn = () =>{
         login({username,password}).then((res)=>{
+            getUserInfo(username);
             setUser(res);
             setAuth(true);
           }).catch((e)=>alert(e));

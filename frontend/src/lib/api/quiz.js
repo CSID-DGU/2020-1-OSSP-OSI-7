@@ -9,5 +9,5 @@ export const getQuizSetList = (username) =>
 export const addQuiz2Class = (quizSetId, classCode) =>
     client.post(`/quizsets/quizset/${quizSetId}/class/${classCode}`,{quizSetId:quizSetId.toString(),classCode:classCode});
 
-export const quizDetail = ({quizSetId}) =>
-    client.get(`/quizset/${quizSetId}/`);
+export const quizDetail = (classQuizSetId) =>
+    client.get(`/quizsets/class/${classQuizSetId}`);

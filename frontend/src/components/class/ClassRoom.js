@@ -4,6 +4,7 @@ import {useHistory} from 'react-router-dom';
 import {Container,Row,Col, Image, Form,Button} from 'react-bootstrap';
 import {userAuth} from '../atoms';
 import {useRecoilValue} from 'recoil';
+import {getClassQuizSet} from '../../lib/api/class';
 
 const quizsetdata = {quizsetsList:
     [
@@ -49,14 +50,16 @@ const quizsetdata = {quizsetsList:
 const ClassRoom = ({match, location}) =>{
     // api 추가 예정 퀴즈 받아오기
     const [keyword, setKeyword] = useState("");
-    const [quizsetList, setQuizSetList] = useState(quizsetdata);
+    const [quizsetList, setQuizSetList] = useState([]);
     const auth = useRecoilValue(userAuth);
     const history = useHistory();
     const {classId} = match.params;
     const {class_code, class_name} = location.state;
 
+
     useEffect(()=>{
-        setQuizSetList(quizsetdata);
+        getClassQuizSet(class_code).then(
+            (res)=>setQuizSetList(res.data))
     }, []);
 
 

@@ -54,3 +54,6 @@ export const registerTo = async ({username,password, nickname, student_code}) =>
 
 
 export const check = (username) => client.get(`/users/${username}`);
+
+export const getUserInfo = (username) =>
+        client.get(`/user/info/${username}`);

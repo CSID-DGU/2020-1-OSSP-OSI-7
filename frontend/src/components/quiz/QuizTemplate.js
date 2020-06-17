@@ -35,15 +35,14 @@ const QuizTemplate = ({match}) => {
     const initiateState = (quizId, type) => {
         let quiz = {
             id: quizId,
-            type: type,
-            question: "",
-            answer:"",
-            content:{
-                description: "",
+            quiz_type: type,
+            quiz_title: "",
+            quiz_answer:"",
+            quiz_content:{
             }  
         }
         if(type === 'MULTI'){
-                quiz.content.choices = [
+                quiz.quiz_content.choices = [
                     {id:0,choice:""},
                     {id:1,choice:""},
                 ];
@@ -66,7 +65,7 @@ const QuizTemplate = ({match}) => {
     };
 
     const addChoices = (quizId, data) =>{
-        setQuizzes(quizzes.map((quiz)=>(quizId === quiz.id ? {...quiz, content:{description:quiz.content.description, choices:quiz.content.choices.concat(data)}}: quiz)));
+        setQuizzes(quizzes.map((quiz)=>(quizId === quiz.id ? {...quiz, quiz_content:{choices:quiz.quiz_content.choices.concat(data)}}: quiz)));
     }
 
 
@@ -79,8 +78,8 @@ const QuizTemplate = ({match}) => {
             let data = {
                 quizId: Number(e.target.getAttribute('quizId')),
             }
-            if(targetName === "choice" || targetName === "description"){
-                data['content'] = changeContent(e.target, targetName);
+            if(targetName === "choice"){
+                data['quiz_content'] = changeContent(e.target, targetName);
             }
             else {
                 data[targetName] = e.target.value;
@@ -98,13 +97,11 @@ const QuizTemplate = ({match}) => {
 
     const changeContent= (target, contentType)=>{
         const quizId = Number(target.getAttribute("quizId"));
-        let content = quizzes.filter((quiz)=>quiz.id === quizId)[0].content;
+        let content = quizzes.filter((quiz)=>quiz.id === quizId)[0].quiz_content;
         
         if(contentType === "choice"){
             const choiceId = Number(target.getAttribute("choiceId"));
             content.choices[choiceId] = {id:choiceId,choice:target.value};
-        }else if(contentType === "description"){
-            content.description = target.value;
         }
 
         return content
@@ -112,18 +109,18 @@ const QuizTemplate = ({match}) => {
     const onRemoveChoice = (quizId, choiceId) =>{
         let quiz = quizzes.filter((quiz)=>quiz.id === quizId)[0];
 
-        let answerList = quiz.answer.split(",").filter((an) => an !== String(choiceId)).map((an) => (Number(an) > choiceId ? String(an -1) : an));
+        let answerList = quiz.quiz_answer.split(",").filter((an) => an !== String(choiceId)).map((an) => (Number(an) > choiceId ? String(an -1) : an));
         const answer = answerList.join(",");
 
-        const changedChoices = quiz.content.choices.filter((c)=>c.id !== choiceId).map((c, index) => ({...c, id: index}));
-        setQuizzes(quizzes.map((quiz)=>(quiz.id === quizId ? {...quiz, answer:answer,content:{description:quiz.content.description,choices:changedChoices}}: quiz)));        
+        const changedChoices = quiz.quiz_content.choices.filter((c)=>c.id !== choiceId).map((c, index) => ({...c, id: index}));
+        setQuizzes(quizzes.map((quiz)=>(quiz.id === quizId ? {...quiz, quiz_answer:answer,quiz_content:{choices:changedChoices}}: quiz)));        
     }
 
     const handleBlur = (e) => {
         const value = e.target.value;
         const quizId = Number(e.target.getAttribute("quizId"));
         const choiceId = Number(e.target.getAttribute("choiceId"));
-        const choices = quizzes.filter((quiz)=>quiz.id === quizId)[0].content.choices;
+        const choices = quizzes.filter((quiz)=>quiz.id === quizId)[0].quiz_content.choices;
 
         const isExist = choices.filter((c)=> c.id !== choiceId && value !== "" &&c.choice === value);
         if (isExist.length){
@@ -137,7 +134,7 @@ const QuizTemplate = ({match}) => {
     
     const selectAnswerChoice = (quizId, choiceId) =>{
         let joinAnswer;
-        let answers = quizzes.filter((quiz)=>quiz.id === quizId)[0].answer;
+        let answers = quizzes.filter((quiz)=>quiz.id === quizId)[0].quiz_answer;
         if(answers.length >= 1){
             let answerList = answers.split(',');
             if(answerList.indexOf(String(choiceId)) !== -1){
@@ -150,7 +147,23 @@ const QuizTemplate = ({match}) => {
             joinAnswer = `${choiceId}`
         }
 
-        handleChange({quizId:quizId,answer:joinAnswer});
+        handleChange({quizId:quizId,quiz_answer:joinAnswer});
+    }
+
+    const makeQuiz2String = (quiz) =>{
+        return {
+            quiz_type: quiz.quiz_type,
+            quiz_title: quiz.quiz_title,
+            quiz_content: JSON.stringify(quiz.quiz_content),
+            quiz_answer: quiz.quiz_answer,
+        }
+    }
+
+    const makePayload = (quizzes)=>{
+        let result_quizzes = [];
+        quizzes.map((q)=>{result_quizzes = result_quizzes.concat(makeQuiz2String(q))});
+        console.log(result_quizzes);
+        return result_quizzes;
     }
 
     const onSubmit = (e)=>{
@@ -158,16 +171,14 @@ const QuizTemplate = ({match}) => {
         if (form.checkValidity() === false) {
           e.preventDefault();
           e.stopPropagation();
-          console.log("good bye");
-
         } else {
-            console.log("hello");
             e.preventDefault();
             e.stopPropagation();
+            const payload_quizzes = makePayload(quizzes);
             const quizSet = {
                 quiz_set_author_name: user,
                 quiz_set_name: quizSetName,
-                quizzes:quizzes
+                quizzes:payload_quizzes
             }
             quizSubmit(JSON.stringify(quizSet))
             .then((res)=>console.log("hihi", res))

@@ -5,6 +5,7 @@ import TestQuizChoice from './TestQuizChoice';
 import TestQuizAnswer from './TestQuizAnswer';
 import TestQuizResult from './TestQuizResult';
 import QuizModal from './QuizModal';
+import {quizDetail} from '../../lib/api/quiz';
 
 import {quizsetdata} from './quizsetdata';
 
@@ -16,14 +17,20 @@ const TestQuiz = ({match}) => {
     const [modalShow, setModalShow] = useState(false);
     const [tempAnswer, setTempAnswer] = useState("");
     const [tempChoice, setTempChoice] = useState([]);
+    const [quizset, setQuizSet] = useState([]);
 
-    const quizset = quizsetdata; // 나중에 수정
-    const total = quizset.quizzes.length;
+    const total = quizsetdata.quizzes.length;
     const currentPercent = Math.round((current / total) * 100);
     const {quizSetId} = match.params;
 
     const isLast = current === total+1;
-    const currentQuiz = quizset.quizzes[current-1];
+    const currentQuiz = quizsetdata.quizzes[current-1];
+
+    useEffect(()=>{
+        quizDetail(quizSetId).then(
+            (res)=>{console.log(res.data);}
+        );
+    }, []);
 
     useEffect(()=>{
         setTempAnswer(tempChoice.join(","));
