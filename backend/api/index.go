@@ -208,7 +208,7 @@ func InitRouters(context *web.Context) {
 	quizset.DELETE("/quizset/:quizsetId/quiz/:quizId", DeleteQuizFromQuizSet(context))
 	quizset.POST("/quizset/:quizsetId/class/:classCode", LoadQuizSetToClass(context))
 	quizset.DELETE("/quizset/:quizsetId/class/:classCode", DeleteQuizSetFromClass(context))
-	quizset.POST("/classes/:classCode", GetQuizSetsOfClass(context))
+	quizset.GET("/classes/:classCode", GetQuizSetsOfClass(context))
 	quizset.GET("/users/:username", GetUserQuizSet(context))
 	quizset.GET("/result/users/:username", GetQuizResults(context))
 	quiz := r.Group("/quiz")

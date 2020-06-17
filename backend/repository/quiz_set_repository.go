@@ -95,7 +95,7 @@ func (q *SqlQuizSetRepository) GetQuizSetsByClassCode (classCode string) ([]mode
 	_, err := q.Master.Select(&quizsets,
 		`SELECT cqs.class_quiz_set_id, cqs.quiz_set_id, q.user_id, q.quiz_set_name, q.total_score FROM
 			   class_quiz_set cqs INNER JOIN quiz_set q ON q.quiz_set_id = cqs.quiz_set_id
-			   INNER JOIN class c ON c.class_code = ?`, classCode)
+			   AND cqs.class_id = (SELECT c.class_id FROM class c WHERE c.class_code = ?)`, classCode)
 
 	if err != nil {
 		return nil, models.NewDatabaseAppError(err, "FAILED TO FETCH QUIZ SET BY USER NAME", "quiz_set_repository.go")
