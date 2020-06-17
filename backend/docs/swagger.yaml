@@ -101,7 +101,7 @@ definitions:
     type: object
   dto.QuizSetCreateForm:
     properties:
-      classCode:
+      class_code:
         type: string
       quiz_set_author_name:
         example: 퀴즈셋 생성자 로그인 아이디
@@ -109,7 +109,7 @@ definitions:
       quiz_set_name:
         example: 퀴즈셋 이름
         type: string
-      quizes:
+      quizzes:
         items:
           $ref: '#/definitions/dto.QuizCreateForm'
         type: array

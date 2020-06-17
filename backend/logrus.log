@@ -42,3 +42,6 @@ time="2020-06-17T17:05:42+09:00" level=warning msg="Failed to load quiz set to c
 time="2020-06-17T17:47:48+09:00" level=info msg="Failed to send log" func=main.main file="C:/Users/4whom/Desktop/workspace/oss/backend/main.go:32" event=event
 time="2020-06-17T17:49:15+09:00" level=info msg="Failed to send log" func=main.main file="C:/Users/4whom/Desktop/workspace/oss/backend/main.go:32" event=event
 time="2020-06-17T17:50:21+09:00" level=info msg="Failed to send log" func=main.main file="C:/Users/4whom/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-06-17T17:53:58+09:00" level=info msg="Failed to send log" func=main.main file="C:/Users/4whom/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-06-17T18:50:18+09:00" level=info msg="Failed to send log" func=main.main file="C:/Users/4whom/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-06-17T18:51:26+09:00" level=info msg="Failed to send log" func=main.main file="C:/Users/4whom/Desktop/workspace/oss/backend/main.go:32" event=event

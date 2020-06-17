@@ -178,7 +178,7 @@ func CreateQuizSet(context *web.Context) gin.HandlerFunc {
 			c.JSON(500, INTERNAL_SERVER_ERROR)
 			return
 		}
-		for _, quiz := range quizSetCreateForm.Quizes {
+		for _, quiz := range quizSetCreateForm.Quizzes {
 			modelQuiz := &models.Quiz{
 				QuizTitle:   quiz.QuizTitle,
 				QuizSetId:   quizSetId,

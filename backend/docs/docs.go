@@ -885,7 +885,7 @@ var doc = `{
         "dto.QuizSetCreateForm": {
             "type": "object",
             "properties": {
-                "classCode": {
+                "class_code": {
                     "type": "string"
                 },
                 "quiz_set_author_name": {
@@ -896,7 +896,7 @@ var doc = `{
                     "type": "string",
                     "example": "퀴즈셋 이름"
                 },
-                "quizes": {
+                "quizzes": {
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/dto.QuizCreateForm"

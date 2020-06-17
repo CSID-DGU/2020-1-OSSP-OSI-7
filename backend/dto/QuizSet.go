@@ -2,9 +2,9 @@ package dto
 
 type QuizSetCreateForm struct {
 	QuizSetName string `db:"quiz_set_name" json:"quiz_set_name" example:"퀴즈셋 이름"`
-	ClassCode string `db:""`
+	ClassCode string `db:"" json:"class_code"`
 	QuizSetAuthorUserName string `json:"quiz_set_author_name" example:"퀴즈셋 생성자 로그인 아이디"`
-	Quizes []QuizCreateForm
+	Quizzes []QuizCreateForm `json:"quizzes"`
 	TotalScore uint16 `db:"total_score" json:"total_score" example:"100"`
 }
 
