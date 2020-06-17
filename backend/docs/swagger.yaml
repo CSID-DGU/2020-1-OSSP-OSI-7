@@ -27,6 +27,26 @@ definitions:
         example: 100
         type: integer
     type: object
+  dto.GetQuizSetResult:
+    properties:
+      class_code:
+        type: string
+      class_name:
+        type: string
+      my_score:
+        type: integer
+      quiz_set_name:
+        type: string
+      total_score:
+        type: integer
+    type: object
+  dto.GetQuizSetResults:
+    properties:
+      quiz_set_results:
+        items:
+          $ref: '#/definitions/dto.GetQuizSetResult'
+        type: array
+    type: object
   dto.Login:
     properties:
       password:
@@ -49,7 +69,7 @@ definitions:
         example: 퀴즈 문제
         type: string
       quiz_type:
-        example: 퀴즈 타입(객관식, 주관식)
+        example: 퀴즈 타입(MULTI 혹은 SIMPLE)
         type: string
     type: object
   dto.QuizForScoring:
@@ -76,11 +96,13 @@ definitions:
         example: 퀴즈 문제
         type: string
       quiz_type:
-        example: 퀴즈 타입(객관식, 주관식)
+        example: 퀴즈 타입(MULTI 혹은 SIMPLE)
         type: string
     type: object
   dto.QuizSetCreateForm:
     properties:
+      classCode:
+        type: string
       quiz_set_author_name:
         example: 퀴즈셋 생성자 로그인 아이디
         type: string
@@ -98,6 +120,7 @@ definitions:
   dto.QuizSetForScoring:
     properties:
       class_quiz_set_id:
+        example: 1234
         type: integer
       quiz_for_scorings:
         items:
@@ -105,6 +128,7 @@ definitions:
         type: array
       username:
         description: email 과 같음
+        example: 유저 이메일
         type: string
     type: object
   dto.QuizSetGetForm:
@@ -135,6 +159,21 @@ definitions:
         example: my nickname
         type: string
       password:
+        type: string
+      student_code:
+        example: 2015123456
+        type: integer
+      username:
+        example: pigeon1234
+        type: string
+    type: object
+  dto.UserGetForm:
+    properties:
+      email:
+        example: donggukmail@dgu.ac.kr
+        type: string
+      nickname:
+        example: my nickname
         type: string
       student_code:
         example: 2015123456
@@ -230,12 +269,6 @@ paths:
         schema:
           $ref: '#/definitions/dto.QuizCreateForm'
       responses:
-        "200":
-          description: 퀴즈 셋 배열
-          schema:
-            items:
-              $ref: '#/definitions/dto.QuizSetGetForm'
-            type: array
         "400":
           description: Bad Request
           schema:
@@ -404,6 +437,32 @@ paths:
       summary: 퀴즈셋에 퀴즈를 추가한다.
       tags:
       - Quiz set
+  /quizsets/result/users/{userName}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 채점 결과를 받아오려는 유저의 로그인 아이디(즉 이메일)
+        in: path
+        name: username
+        required: true
+        type: string
+      responses:
+        "200":
+          description: 채점된 퀴즈셋 목록(배열)
+          schema:
+            $ref: '#/definitions/dto.GetQuizSetResults'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: 유저가 가진 모든 퀴즈 셋 채점 결과를 가져온다.
+      tags:
+      - Quiz set
   /quizsets/score:
     post:
       consumes:
@@ -503,6 +562,28 @@ paths:
       summary: 유저가 관리하고 있는 모든 강의들을 가져온다
       tags:
       - Class
+  /user/info/{userName}:
+    get:
+      consumes:
+      - application/json
+      parameters:
+      - description: 유저 아이디
+        in: path
+        name: username
+        required: true
+        type: string
+      responses:
+        "200":
+          description: 유저 정보
+          schema:
+            $ref: '#/definitions/dto.UserGetForm'
+        "404":
+          description: 'user not exists '
+          schema:
+            type: json
+      summary: 유저 정보를 반환한다.
+      tags:
+      - User
   /user/login:
     post:
       parameters:

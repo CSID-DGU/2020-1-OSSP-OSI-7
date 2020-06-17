@@ -131,7 +131,7 @@ func initSqlStore() (*sql.DB, *gorp.DbMap) {
     	quiz_set_result_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     	class_quiz_set_id BIGINT NOT NULL, 
     	user_id BIGINT NOT NULL,
-    	total_score INT UNSIGNED NOT NULL,
+    	my_score INT UNSIGNED NOT NULL,
     	FOREIGN KEY (class_quiz_set_id) REFERENCES class_quiz_set(class_quiz_set_id) ON DELETE CASCADE,
     	FOREIGN KEY (user_id) REFERENCES user(user_id) ON DELETE CASCADE 
 	) DEFAULT CHARSET = UTF8`)

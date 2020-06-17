@@ -156,15 +156,6 @@ var doc = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "퀴즈 셋 배열",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/dto.QuizSetGetForm"
-                            }
-                        }
-                    },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
@@ -416,6 +407,46 @@ var doc = `{
                 }
             }
         },
+        "/quizsets/result/users/{userName}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Quiz set"
+                ],
+                "summary": "유저가 가진 모든 퀴즈 셋 채점 결과를 가져온다.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "채점 결과를 받아오려는 유저의 로그인 아이디(즉 이메일)",
+                        "name": "username",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "채점된 퀴즈셋 목록(배열)",
+                        "schema": {
+                            "$ref": "#/definitions/dto.GetQuizSetResults"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        },
         "/quizsets/score": {
             "post": {
                 "consumes": [
@@ -569,6 +600,40 @@ var doc = `{
                 }
             }
         },
+        "/user/info/{userName}": {
+            "get": {
+                "consumes": [
+                    "application/json"
+                ],
+                "tags": [
+                    "User"
+                ],
+                "summary": "유저 정보를 반환한다.",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "유저 아이디",
+                        "name": "username",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "유저 정보",
+                        "schema": {
+                            "$ref": "#/definitions/dto.UserGetForm"
+                        }
+                    },
+                    "404": {
+                        "description": "user not exists ",
+                        "schema": {
+                            "type": "json"
+                        }
+                    }
+                }
+            }
+        },
         "/user/login": {
             "post": {
                 "summary": "로그인",
@@ -705,6 +770,37 @@ var doc = `{
                 }
             }
         },
+        "dto.GetQuizSetResult": {
+            "type": "object",
+            "properties": {
+                "class_code": {
+                    "type": "string"
+                },
+                "class_name": {
+                    "type": "string"
+                },
+                "my_score": {
+                    "type": "integer"
+                },
+                "quiz_set_name": {
+                    "type": "string"
+                },
+                "total_score": {
+                    "type": "integer"
+                }
+            }
+        },
+        "dto.GetQuizSetResults": {
+            "type": "object",
+            "properties": {
+                "quiz_set_results": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/dto.GetQuizSetResult"
+                    }
+                }
+            }
+        },
         "dto.Login": {
             "type": "object",
             "required": [
@@ -737,7 +833,7 @@ var doc = `{
                 },
                 "quiz_type": {
                     "type": "string",
-                    "example": "퀴즈 타입(객관식, 주관식)"
+                    "example": "퀴즈 타입(MULTI 혹은 SIMPLE)"
                 }
             }
         },
@@ -776,13 +872,16 @@ var doc = `{
                 },
                 "quiz_type": {
                     "type": "string",
-                    "example": "퀴즈 타입(객관식, 주관식)"
+                    "example": "퀴즈 타입(MULTI 혹은 SIMPLE)"
                 }
             }
         },
         "dto.QuizSetCreateForm": {
             "type": "object",
             "properties": {
+                "classCode": {
+                    "type": "string"
+                },
                 "quiz_set_author_name": {
                     "type": "string",
                     "example": "퀴즈셋 생성자 로그인 아이디"
@@ -807,7 +906,8 @@ var doc = `{
             "type": "object",
             "properties": {
                 "class_quiz_set_id": {
-                    "type": "integer"
+                    "type": "integer",
+                    "example": 1234
                 },
                 "quiz_for_scorings": {
                     "type": "array",
@@ -817,7 +917,8 @@ var doc = `{
                 },
                 "username": {
                     "description": "email 과 같음",
-                    "type": "string"
+                    "type": "string",
+                    "example": "유저 이메일"
                 }
             }
         },
@@ -861,6 +962,27 @@ var doc = `{
                 },
                 "password": {
                     "type": "string"
+                },
+                "student_code": {
+                    "type": "integer",
+                    "example": 2015123456
+                },
+                "username": {
+                    "type": "string",
+                    "example": "pigeon1234"
+                }
+            }
+        },
+        "dto.UserGetForm": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "example": "donggukmail@dgu.ac.kr"
+                },
+                "nickname": {
+                    "type": "string",
+                    "example": "my nickname"
                 },
                 "student_code": {
                     "type": "integer",

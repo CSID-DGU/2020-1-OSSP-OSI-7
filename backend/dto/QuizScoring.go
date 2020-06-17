@@ -3,7 +3,7 @@ package dto
 type QuizSetForScoring struct {
 	ClassQuizSetId int64 `json:"class_quiz_set_id" example:"1234"`
 	UserName string `json:"username" example:"유저 이메일"`// email 과 같음
-	QuizForScorings []*QuizForScoring `json:"quiz_for_scorings" example:"채점 대상 퀴즈들"`
+	QuizForScorings []*QuizForScoring `json:"quiz_for_scorings"`
 }
 
 type QuizForScoring struct {

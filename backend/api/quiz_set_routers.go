@@ -434,13 +434,13 @@ func DeleteQuizSetFromClass(context *web.Context) gin.HandlerFunc {
 // @Product json
 // @Param username path string true "채점 결과를 받아오려는 유저의 로그인 아이디(즉 이메일)"
 // @Router /quizsets/result/users/{userName} [GET]
-// @Success 200 {array} *models.QuizSetResult "퀴즈셋목록(배열)"
+// @Success 200 {object} dto.GetQuizSetResults "채점된 퀴즈셋 목록(배열)"
 // @Failure 400 {string} string INVALID_PATH_PARAMETER
 // @Failure 500 {string} string INTERNAL_SERVER_ERROR
 func GetQuizResults(context *web.Context) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		userName := c.Param("userName")
-		results, err := context.Repositories.QuizSetResultRepository().GetUserAllQuizSet(userName)
+		username := c.Param("username")
+		results, err := context.Repositories.QuizSetResultRepository().GetUserAllQuizSet(username)
 		if err != nil {
 			c.JSON(500, INTERNAL_SERVER_ERROR)
 			return

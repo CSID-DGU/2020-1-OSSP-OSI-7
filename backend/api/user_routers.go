@@ -65,7 +65,7 @@ func Register (context *web.Context) gin.HandlerFunc {
 // @Product json
 // @Param username path string true "유저 아이디"
 // @Router /user/info/{userName} [GET]
-// @Success 200 {object} dto.UseGetForm "유저 정보"
+// @Success 200 {object} dto.UserGetForm "유저 정보"
 // @Failure 404 json string "user not exists "
 func GetUserInfo (context *web.Context) gin.HandlerFunc {
  	return func (c *gin.Context) {
