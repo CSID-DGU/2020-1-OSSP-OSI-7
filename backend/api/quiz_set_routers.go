@@ -363,7 +363,7 @@ func LoadQuizSetToClass(context *web.Context) gin.HandlerFunc {
 				"quizSetId": quizSetId,
 				"err":       err,
 			}).Warn("Failed to load quiz set to class due to DB error")
-			c.JSON(400, INTERNAL_SERVER_ERROR)
+			c.JSON(500, INTERNAL_SERVER_ERROR)
 			return
 		}
 
