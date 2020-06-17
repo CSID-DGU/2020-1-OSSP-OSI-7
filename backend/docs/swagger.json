@@ -215,7 +215,13 @@
                         }
                     },
                     "400": {
-                        "description": "CLASS_QUIZ_SET_ALREADY_EXISTS",
+                        "description": "요청이 올바르지 않습니다.",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    "500": {
+                        "description": "INTERNAL_SERVER_ERROR =\u003e \u003cdetail message\u003e",
                         "schema": {
                             "type": "string"
                         }
@@ -963,6 +969,10 @@
                 "nickname": {
                     "type": "string",
                     "example": "my nickname"
+                },
+                "professor": {
+                    "type": "boolean",
+                    "example": true
                 },
                 "student_code": {
                     "type": "integer",
