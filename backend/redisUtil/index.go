@@ -11,8 +11,13 @@ import (
 
 const (
 	QUIZ_ANSWER_EXPIRE_TIME = 60 * 10
+	HOUR = 60 * 60
 )
 
+// <TESTING>이메일 의 정보로 유저가 어떤 classQuizSet 을 응시하고 있는지 저장
+func TestingClassQuizSetIdKey(email string) string {
+	return "<TESTING>" + email
+}
 func RedisGet(conn *redis.Conn, key string) (string, *models.AppError) {
 	result, err := redis.String((*conn).Do("GET", key))
 	if err != nil {

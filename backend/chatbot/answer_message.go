@@ -24,8 +24,7 @@ func (a *AnswerMessage) Process(email string) (interface{}, *models.AppError) {
 	return nil, nil
 }
 
-
-// 퀴즈를 풀어저 제출했을 때 다음 퀴즈를 리턴해준다
+// 퀴즈를 풀어서 제출했을 때 다음 퀴즈를 리턴해준다
 // 리턴 값은 DeprecatedQuiz의 json 이다
 // email 을 가지고 다음 퀴즈의 quizId 를 가져온다
 // quizid 를 가지고 Redis 에서 quiz 를 가져온다

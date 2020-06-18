@@ -18,7 +18,11 @@ type TextButton struct {
 // Redis 리스트에 랜덤하게 퀴즈셋을 넣는다
 // 유저가 답을 제출할 때 마다 리스트에서 하나씩 pop 한다.
 func StartTest(email string, classQuizSetId int64) (interface{}, *models.AppError) {
+	conn := web.Context0.Redis.Get()
 	redisUtil.MakeQuizQueue(web.Context0, email, classQuizSetId)
+	redisUtil.RedisSet(&conn,
+					   redisUtil.TestingClassQuizSetIdKey(email),
+					   strconv.FormatInt(classQuizSetId, 10), redisUtil.HOUR )
 	/*
 
 
@@ -138,7 +142,7 @@ func StartTest(email string, classQuizSetId int64) (interface{}, *models.AppErro
 										NullFields:      nil,
 									},
 								},
-							},
+				cd new				},
 						},
 						ForceSendFields: nil,
 						NullFields:      nil,

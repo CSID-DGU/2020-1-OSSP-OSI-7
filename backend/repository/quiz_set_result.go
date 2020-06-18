@@ -71,9 +71,9 @@ func (q *SqlQuizSetResultRepository) Delete(quizSetResultId int64) (*models.AppE
 func (q *SqlQuizSetResultRepository) Update(quizSet *models.QuizSetResult) (*models.AppError) {
 	//_, err := q.Master.Update(quizSet)
 	_, err := q.Master.Exec(`UPDATE quiz_set_result 
-								SET total_score = ?
+								SET my_score = ?
 								WHERE quiz_set_result_id = ?`,
-								quizSet.TotalScore, quizSet.QuizSetResultId)
+								quizSet.MyScore, quizSet.QuizSetResultId)
 	if err != nil {
 		return models.NewDatabaseAppError(err, "FAILED TO UPDATE QUIZ SET RESULT", "quiz_set_result_repository.go")
 	}

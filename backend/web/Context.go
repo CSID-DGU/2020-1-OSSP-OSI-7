@@ -74,7 +74,7 @@ func initContext () *Context {
 	//redisHost := os.Getenv("REDIS_HOST")
 	redisHost := ""
 	if redisHost == "" {
-		redisHost = "34.64.116.239:6379"
+		redisHost = "34.64.212.3:6379"
 	}
 	pool := newPool(redisHost)
 	//cleanupHook()

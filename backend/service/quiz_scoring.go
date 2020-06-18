@@ -21,7 +21,7 @@ import (
  퀴즈 타입에 따라 가져온 answer 이용해서 채점하기
  */
 const (
-	SCORE_BATCH_SIZE = 3
+	SCORE_BATCH_SIZE = 1
 	SCORING_QUEUE = "SCORING_QUEUE"
 	CLASS_QUIZ_SET_QUEUE = "CLASS_QUIZ_SET_QUEUE"
 	QUEUE = "QUEUE"
@@ -252,7 +252,7 @@ func updateQuizSetResult (context *web.Context, quizSetResult *models.QuizSetRes
 				scoreAcc += quiz.QuizScore
 				if lenAcc == length {
 					// 누적된 채점 점수로 TotalScore 를 갱신함.
-					quizSetResult.TotalScore = scoreAcc
+					quizSetResult.MyScore = scoreAcc
 					context.Repositories.QuizSetResultRepository().Update(quizSetResult)
 				}
 		}
@@ -286,7 +286,7 @@ func ScoreQuizzes (context *web.Context, ident ScoringQueueIdent, quizScorings [
 		result = &models.QuizSetResult {
 			ClassQuizSetId: ident.ClassQuizSetId,
 			UserId: userId,
-			TotalScore: 0,
+			MyScore: 0,
 		}
 		create_err := context.Repositories.QuizSetResultRepository().Create(result)
 		if create_err != nil {

@@ -90,6 +90,7 @@ func InitRouters(context *web.Context) {
 	if err != nil {
 		log.Fatal("JWT Error:" + err.Error())
 	}
+
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, "why???")
 	})
@@ -108,8 +109,13 @@ func InitRouters(context *web.Context) {
 			return
 		}
 
+		_, user_err := web.Context0.Repositories.UserRepository().GetByUserName(obj.User.Email)
+		if user_err != nil {
+			c.JSON(200, chatbot.UnauthorizedError())
+			return
+		}
 		if obj.Type == "CARD_CLICKED" {
-			c.JSON(200, chatbot.GetNextQuiz(context, obj.User.Email))
+			c.JSON(200, chatbot.ProcessChat(context, obj))
 		} else {
 			processedMessage := chatbot.InitialProcess(s)
 			result, process_err := processedMessage.Process(obj.User.Email)

@@ -178,17 +178,29 @@ func CreateQuizSet(context *web.Context) gin.HandlerFunc {
 			c.JSON(500, INTERNAL_SERVER_ERROR)
 			return
 		}
+
 		for _, quiz := range quizSetCreateForm.Quizzes {
+			/*
+			var  quiz *dto.QuizCreateForm
+			err := json.Unmarshal([]byte(quiz), &quiz)
+
+			if err != nil {
+				c.JSON(400, INVALID_REQUEST_BODY)
+				return
+			}
+			 */
+
 			modelQuiz := &models.Quiz{
 				QuizTitle:   quiz.QuizTitle,
 				QuizSetId:   quizSetId,
 				QuizContent: quiz.QuizContent,
 				QuizAnswer:  quiz.QuizAnswer,
 				QuizType:    quiz.QuizType,
+				QuizScore: quiz.QuizScore,
 			}
-			err := context.Repositories.QuizRepository().Create(modelQuiz)
+			db_err := context.Repositories.QuizRepository().Create(modelQuiz)
 
-			if err != nil {
+			if db_err != nil {
 				_ = tx.Rollback()
 				c.JSON(500, INTERNAL_SERVER_ERROR)
 				return

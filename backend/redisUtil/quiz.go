@@ -6,6 +6,7 @@ import (
 	"github.com/sirupsen/logrus"
 	"oss/cerror"
 	"oss/models"
+	"oss/test/utils"
 	"oss/util"
 	"oss/web"
 	"strconv"
@@ -34,6 +35,7 @@ func makeRedisQuizSequenceQueue (conn *redis.Conn, email string, quizzes []model
 // 유저가 풀어야 할 퀴즈들을 Redis 리스트에 랜덤하게 generate 한다
 func MakeQuizQueue (c *web.Context, email string, classQuizSetId int64) *models.AppError {
 	conn := c.Redis.Get()
+	defer utils.CloseRedisConnection(&conn)
 	quizzes, err := c.Repositories.QuizRepository().GetQuizzesByClassQuizSetId(classQuizSetId)
 	if err != nil {
 		web.Logger.WithFields(logrus.Fields{
