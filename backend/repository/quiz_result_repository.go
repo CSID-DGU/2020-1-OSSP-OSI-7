@@ -4,6 +4,7 @@ import "oss/models"
 
 type QuizResultRepository interface {
 	Create(quizResult *models.QuizResult) (*models.AppError)
+	Get(quizSetResultId, quizId int64) (*models.QuizResult, *models.AppError)
 	Delete(quizResultId int64) (*models.AppError)
 	Edit(quizResult *models.QuizResult) (*models.AppError)
 }
@@ -13,12 +14,24 @@ type SqlQuizResultRepository struct {
 }
 
 func (q *SqlQuizResultRepository) Create(quizResult *models.QuizResult) (*models.AppError) {
-	err := q.Master.Insert(&quizResult)
+	err := q.Master.Insert(quizResult)
 
 	if err != nil {
 		return models.NewDatabaseAppError(err, "FAILED TO CREATE QUIZ RESULT", "quiz_result_repository.go")
 	}
 	return nil
+
+}
+
+
+func (q *SqlQuizResultRepository) Get(quizSetResultId, quizId int64) (*models.QuizResult, *models.AppError) {
+	var result *models.QuizResult
+	err := q.Master.SelectOne(&result, `SELECT * from quiz_result WHERE quiz_set_result_id=? AND quiz_id=?`, quizSetResultId, quizId)
+
+	if err != nil {
+		return nil, models.NewDatabaseAppError(err, "FAILED TO GET QUIZ RESULT", "quiz_result_repository.go")
+	}
+	return result, nil
 
 }
 

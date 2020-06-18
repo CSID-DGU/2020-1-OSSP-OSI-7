@@ -2,7 +2,7 @@ package models
 
 const (
 	QUIZ_TYPE_MULTI = "MULTI"
-	QUIZ_TYPE_SIMPLE = "SIMPLE"
+	QUIZ_TYPE_SHORT = "SHORT"
 )
 type Quiz struct {
 	QuizId int64 `db:"quiz_id" json:"quiz_id"`

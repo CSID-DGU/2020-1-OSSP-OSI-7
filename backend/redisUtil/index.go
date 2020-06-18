@@ -29,6 +29,17 @@ func RedisGet(conn *redis.Conn, key string) (string, *models.AppError) {
 	return result, nil
 }
 
+func RedisGetInt(conn *redis.Conn, key string) (int64, *models.AppError) {
+	result, err := redis.Int64((*conn).Do("GET", key))
+	if err != nil {
+		web.Logger.WithFields(logrus.Fields{
+			"err": err,
+		}).Info(cerror.DQUIZ_REDIS_OP_FAIL)
+		return -1, models.NewAppError(err, cerror.BuildRedisGetFailMsg(key), models.GetFuncName())
+	}
+	return result, nil
+}
+
 func RedisSetByte(conn *redis.Conn, key string, val []byte, lifeTime int) *models.AppError {
 	_, err := (*conn).Do("SET", key, val)
 	if err != nil {
@@ -94,4 +105,12 @@ func RedisPopFromQueue(conn *redis.Conn, queueName string) (string, *models.AppE
 		return "", models.NewRedisError(err, "failed to pop Redis queue", "")
 	}
 	return data, nil
+}
+
+func RedisRangeFromQueue(conn *redis.Conn, queueName string) (string, *models.AppError) {
+	data, err := redis.Strings((*conn).Do("LRANGE", queueName, 0, 0))
+	if err != nil {
+		return "", models.NewRedisError(err, "failed to pop Redis queue", "")
+	}
+	return data[0], nil
 }

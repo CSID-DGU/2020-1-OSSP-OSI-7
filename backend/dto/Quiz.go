@@ -39,5 +39,5 @@ type MultiQuizContent struct {
 }
 
 type ShortQuizContent struct {
-
+	Text string
 }

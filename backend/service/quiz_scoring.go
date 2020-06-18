@@ -2,6 +2,7 @@ package service
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/gomodule/redigo/redis"
 	"github.com/sirupsen/logrus"
@@ -228,16 +229,22 @@ func scoreMultiSelectQuiz (quizForScoring *dto.QuizForScoring, answer string) bo
 	return quizForScoring.QuizAnswer == answer
 }
 
-func scoreSimpleQuiz (quizForScoring *dto.QuizForScoring, answer string) bool {
-	return true
+func scoreShortQuiz (quizForScoring *dto.QuizForScoring, answer string) bool {
+	answers := strings.Split(answer, ",")
+	for _, ans := range answers {
+		if quizForScoring.QuizAnswer == ans {
+			return true
+		}
+	}
+	return false
 }
 
 func scoreQuiz (quizForScoring *dto.QuizForScoring, answer string) bool {
 	switch quizForScoring.QuizType {
 		case models.QUIZ_TYPE_MULTI:
 			return scoreMultiSelectQuiz(quizForScoring, answer)
-	 	case models.QUIZ_TYPE_SIMPLE:
-	 		return scoreSimpleQuiz(quizForScoring, answer)
+	 	case models.QUIZ_TYPE_SHORT:
+	 		return scoreShortQuiz(quizForScoring, answer)
 	}
 	return false
 }
@@ -325,7 +332,6 @@ func ScoreQuizzes (context *web.Context, ident ScoringQueueIdent, quizScorings [
 		scoreResult := scoreQuiz(quiz, answer)
 		quizResult := &models.QuizResult {
 			QuizSetResultId: result.QuizSetResultId,
-			UserId: result.UserId,
 			QuizId: quiz.QuizId,
 			Correct: scoreResult,
 		}
@@ -333,7 +339,25 @@ func ScoreQuizzes (context *web.Context, ident ScoringQueueIdent, quizScorings [
 		if scoreResult == false {
 			score = 0
 		}
-		context.Repositories.QuizResultRepository().Create(quizResult)
+		result, err := context.Repositories.QuizResultRepository().Get(result.QuizSetResultId, quiz.QuizId)
+		if err == nil && result != nil {
+			return models.NewAppError(errors.New("ANSWER_ALREADY_SUBMITTED"),
+									  "이미 답안을 제출 했습니다.", models.GetFuncName())
+		}
+
+		if err != nil {
+			web.Logger.WithFields(logrus.Fields{
+				"quiz_result" : quizResult,
+				"err" : err,
+			}).Warn("It could be DB error not just failed to fetch row")
+		}
+
+		create_err := context.Repositories.QuizResultRepository().Create(quizResult)
+		if create_err != nil {
+			web.Logger.WithFields(logrus.Fields{
+				"quiz_result" : quizResult,
+			}).Warn("Failed to create QuizResult")
+		}
 		quizResultCompleteChan <- &dto.QuizAnswerWithScore{
 			QuizAnswer: answer,
 			QuizScore: score,

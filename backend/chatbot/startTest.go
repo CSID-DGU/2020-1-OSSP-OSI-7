@@ -165,6 +165,7 @@ func StartTestEntry(email string, args map[int]string) (interface{}, *models.App
 
 	/*
 		if err != nil {
+
 			return nil, NewCliAppError(
 				OPTION_VALUE_TYPE_ERROR,START_QUIZ + "에 주어진 학번" + args[0] + "이 유효하지 않습니다.")
 		}

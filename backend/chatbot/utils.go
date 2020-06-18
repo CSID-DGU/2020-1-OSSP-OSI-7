@@ -50,3 +50,24 @@ func UnauthorizedError() *chat.Message {
 		NullFields:      nil,
 	}
 }
+
+
+func ChatbotServiceError(detail string) *chat.Message {
+	return &chat.Message{
+		ActionResponse:  nil,
+		Annotations:     nil,
+		ArgumentText:    "",
+		Cards:           nil,
+		CreateTime:      "",
+		FallbackText:    "",
+		Name:            "",
+		PreviewText:     "",
+		Sender:          nil,
+		Space:           nil,
+		Text:            detail,
+		Thread:          nil,
+		ServerResponse:  googleapi.ServerResponse{},
+		ForceSendFields: nil,
+		NullFields:      nil,
+	}
+}

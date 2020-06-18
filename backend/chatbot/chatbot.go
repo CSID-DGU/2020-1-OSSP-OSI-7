@@ -1,12 +1,15 @@
 package chatbot
 
 import (
+	"github.com/sirupsen/logrus"
 	"google.golang.org/api/chat/v1"
 	"oss/dto"
 	"oss/hangout"
 	"oss/models"
+	"oss/redisUtil"
 	"oss/service"
 	_ "oss/service"
+	"oss/test/utils"
 	"oss/web"
 	"strconv"
 	_ "strconv"
@@ -34,7 +37,7 @@ func submitAnswerProcessor (c *web.Context, content string) *chat.Message {
 	if err != nil {
 		return InternalServerError()
 	}
-	service.ScoreQuizzes(c,
+	score_err := service.ScoreQuizzes(c,
 		service.ScoringQueueIdent{
 		ClassQuizSetId: parsedClassQuizSetId,
 		Email:          email },
@@ -45,6 +48,20 @@ func submitAnswerProcessor (c *web.Context, content string) *chat.Message {
 				QuizAnswer: buttonIndex,
 			},
 	})
+
+	if score_err != nil {
+		return ChatbotServiceError(score_err.DetailedError)
+	}
+
+	conn := web.Context0.Redis.Get()
+	defer utils.CloseRedisConnection(&conn)
+	_, redis_err :=  redisUtil.RedisPopFromQueue(&conn, email)
+	if redis_err != nil {
+		web.Logger.WithFields(logrus.Fields{
+			"email": email,
+			"redis_err": redis_err,
+		}).Warn("Failed to fetch classQuizSetId from user with email")
+	}
 	return GetNextQuiz(c, email)
 }
 

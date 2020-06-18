@@ -18,7 +18,7 @@ import (
 
  */
 func MakeActionMethodNameForQuizCard(quizId int64, email, classQuizSetId, buttonIndex string) string {
-	return SUBMIT_MULTI_ANSWER+":"+email+"-"+classQuizSetId+"-"+strconv.FormatInt(quizId, 10)+"-"+buttonIndex
+	return SUBMIT_MULTI_ANSWER + ":" + email + "-" + classQuizSetId + "-" + strconv.FormatInt(quizId, 10) + "-" + buttonIndex
 }
 
 func makeButtonWidgetForCard(email, classQuizSetId string, quizId int64, choice *dto.Choice) *chat.WidgetMarkup {
@@ -28,13 +28,13 @@ func makeButtonWidgetForCard(email, classQuizSetId string, quizId int64, choice 
 			&chat.Button{
 				ImageButton: nil,
 				TextButton: &chat.TextButton{
-					Text:  buttonIndex + " : " + choice.Choice,
+					Text: buttonIndex + " : " + choice.Choice,
 					OnClick: &chat.OnClick{
 						Action: &chat.FormAction{
 							ActionMethodName:
-								MakeActionMethodNameForQuizCard(quizId, email, classQuizSetId, buttonIndex),
+							MakeActionMethodNameForQuizCard(quizId, email, classQuizSetId, buttonIndex),
 						},
-						OpenLink: nil,
+						OpenLink:        nil,
 						ForceSendFields: nil,
 						NullFields:      nil,
 					},
@@ -54,16 +54,20 @@ func makeButtonWidgetsForCard(email string, quizId int64, multiQuizContent *dto.
 		&conn, redisUtil.TestingClassQuizSetIdKey(email))
 	if err != nil {
 		web.Logger.WithFields(logrus.Fields{
-			"email": email,
-			"quiz_id": quizId,
+			"email":            email,
+			"quiz_id":          quizId,
 			"multiQuizContent": multiQuizContent,
 		}).Warn("Failed to fetch classQuizSetId")
 		return nil, err
 	}
 	for _, content := range multiQuizContent.Choices {
-		result = append(result, makeButtonWidgetForCard(email, classQuizSetId,quizId, content))
+		result = append(result, makeButtonWidgetForCard(email, classQuizSetId, quizId, content))
 	}
 	return result, nil
+}
+
+func makeTextFieldWidgetForCard(email string, shortQuizContent dto.MultiQuizContent) ([]*chat.WidgetMarkup, *models.AppError) {
+	return nil, nil
 }
 
 func makeQuizCard(email string, quiz *models.Quiz) *chat.Message {
@@ -113,7 +117,23 @@ func makeQuizCard(email string, quiz *models.Quiz) *chat.Message {
 			}
 
 		}
+	} else if quiz.QuizType == models.QUIZ_TYPE_SHORT {
+
+		return &chat.Message{
+			Cards: []*chat.Card{
+				&chat.Card{
+					Header: &chat.CardHeader{
+						ImageStyle:      "",
+						ImageUrl:        "",
+						Subtitle:        "",
+						Title:           quiz.QuizContent,
+						ForceSendFields: nil,
+						NullFields:      nil,
+					},
+					Name: "card name",
+				},
+			},
+		}
 	}
 	return nil
-
 }
