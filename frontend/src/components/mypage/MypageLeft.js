@@ -2,7 +2,7 @@ import React, {Fragment, useEffect} from 'react';
 import {Image, Row, Col, Button} from 'react-bootstrap';
 import {useHistory} from 'react-router-dom';
 import UserClassList from './UserClassList';
-import {useRecoilState} from 'recoil';
+import {useRecoilState, useRecoilValue} from 'recoil';
 import ToggleSwitch from './ToggleSwitch';
 import ReactTextTransition from 'react-text-transition';
 import {getManagingClass, getEnrolledClass} from '../../lib/api/class';
@@ -11,7 +11,7 @@ import {userAuth, managingClasses} from '../atoms';
 
 const MypageLeft = (props)=>{
     const history= useHistory();
-    const {avatar, user} = props;
+    const {avatar,userInfo, user} = props;
     const [classes, setClasses] = useRecoilState(managingClasses);
     const [auth,setAuth] = useRecoilState(userAuth);
 
@@ -22,13 +22,12 @@ const MypageLeft = (props)=>{
             getEnrolledClass(user).then((res)=>{setClasses(res.data)});
         }
     }, [auth]);
-
     return (
         <Fragment>
         <Image src={avatar} fluid className="profile__img"/>
         <Row>
             <Col>
-                <h3>2015111888</h3>
+                <h3>{userInfo.student_code}</h3>
                 <h5 className="profile__username">{user}</h5>
             </Col>
         </Row>
@@ -36,16 +35,10 @@ const MypageLeft = (props)=>{
 
 
         <Row>
-            <Col xs={6} md={8} xl={6} className="flex__align__center">
-                <ReactTextTransition text={auth ? "Professor" : "Student"} className="profile__auth" />
+            <Col xs={6} md={8} xl={6} className="flex__align__center" onClick={()=>setAuth(!auth)}>
+                <ReactTextTransition  text={auth ? "Professor" : "Student"} className="profile__auth" />
             </Col>
-            <Col xs={6} md={4} xl={6} className="toggle__container flex__align__center">
-                <ToggleSwitch
-                isOn={auth}
-                onColor={"#06D6A0"}
-                handleToggle={() => setAuth(!auth)}
-                />
-            </Col>
+
         </Row>
         {
             auth &&
@@ -63,3 +56,11 @@ const MypageLeft = (props)=>{
 }
 
 export default MypageLeft;
+
+// <Col xs={6} md={4} xl={6} className="toggle__container flex__align__center">
+// <ToggleSwitch
+// isOn={auth}
+// onColor={"#06D6A0"}
+// handleToggle={() => setAuth(!auth)}
+// />
+// </Col>

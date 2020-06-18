@@ -6,7 +6,7 @@ import {FaUser, FaLock, FaUnlockAlt, FaGrinSquint} from 'react-icons/fa'
 import {IoMdSchool} from 'react-icons/io'
 import {check, login, registerTo, getUserInfo} from '../../lib/api/auth'
 import CenteredModal from '../common/CenteredModal';
-import {currentUser, isAuthenticated} from '../atoms';
+import {currentUser, isAuthenticated, currentUserInfo} from '../atoms';
 import {useForm} from 'react-hook-form';
 import { useSpring, animated as a } from "react-spring";
 import {useRecoilState} from 'recoil';
@@ -61,6 +61,7 @@ const AuthForm = ({type, location})=>{
     const [username, setUsername] = useState("");
     const [password,setPassword] = useState("");
     const [passwordCheck, setPasswordCheck] = useState("");
+    const [userInfo, setUserInfo] = useRecoilState(currentUserInfo);
 
     // submit 시 발동
     const [validated, setValid] = useState(false); 
@@ -80,6 +81,7 @@ const AuthForm = ({type, location})=>{
             getUserInfo(username);
             setUser(res);
             setAuth(true);
+            getUserInfo(username).then((r)=>setUserInfo(r.data));
           }).catch((e)=>alert(e));
     }
 

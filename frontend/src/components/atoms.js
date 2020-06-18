@@ -13,6 +13,16 @@ const currentUser = atom({
     key:'currentUser',
     default: null
 })
+const currentUserInfo = atom({
+    key:'currentUserInfo',
+    default: {
+        "email": "",
+        "nickname": "",
+        "professor": false,
+        "student_code": null,
+        "username": ""
+      }
+})
 
 const userAvatar = atom({
     key:'userAvatar',
@@ -34,4 +44,4 @@ const managingClasses = atom({
     default: []
 })
 
-export {managingClasses, isAuthenticated, currentUser, userAvatar, userAuth, modalShow, tokenExpiredate}
+export {currentUserInfo, managingClasses, isAuthenticated, currentUser, userAvatar, userAuth, modalShow, tokenExpiredate}

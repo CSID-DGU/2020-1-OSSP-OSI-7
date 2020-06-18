@@ -14,8 +14,9 @@ import FooterContent from './FooterContent';
 import Mypage from './mypage/Mypage';
 import ClassRoom from './class/ClassRoom'
 import {getAvatar} from '../lib/api/mypage';
+import {getUserInfo} from '../lib/api/auth';
 import {useRecoilState, useRecoilValue} from 'recoil';
-import {currentUser, isAuthenticated, userAvatar, tokenExpiredate, userAuth} from './atoms';
+import {currentUser, currentUserInfo, isAuthenticated, userAvatar, tokenExpiredate, userAuth} from './atoms';
 
 const useTitle = (initialTitle)=>{
   const[title,setTitle] = useState(initialTitle);
@@ -29,6 +30,7 @@ const useTitle = (initialTitle)=>{
 
 const App = () => {
   const [avatar, setAvatar] = useRecoilState(userAvatar);
+  const [userinfo, setUserInfo] = useRecoilState(currentUserInfo);
   const auth = useRecoilValue(userAuth);
   const titleUpdator = useTitle("DQUIZ");
   const [user, setUser] = useRecoilState(currentUser);
@@ -51,6 +53,8 @@ const App = () => {
       // setUser(local.user);
       if(user !== null){
         getAvatar(user.split("@")[0]).then((res)=>setAvatar(res.data.avatar_url));
+        getUserInfo(user).then((r)=>setUserInfo(r.data));
+
       }
     }, [user])
     

@@ -1,7 +1,7 @@
 import React from 'react';
 import {Container, Col,Row} from 'react-bootstrap';
 import {useRecoilValue} from 'recoil';
-import {currentUser,userAvatar,userAuth, modalShow} from '../atoms';
+import {currentUser, currentUserInfo, userAvatar,userAuth, modalShow} from '../atoms';
 import MypageRight from './MypageRight';
 import MypageLeft from './MypageLeft';
 
@@ -11,7 +11,8 @@ const Mypage = () =>{
     const user = useRecoilValue(currentUser);
     const auth = useRecoilValue(userAuth);
     const isModal = useRecoilValue(modalShow);
-    
+    const userInfo = useRecoilValue(currentUserInfo);
+
     // useEffect(()=>{
         // getAvatar(user).then((res)=>setAvatar(res.data.avatar_url));
     // }, [user])
@@ -20,7 +21,7 @@ const Mypage = () =>{
         <Container className={`quiz__container__no_border ${isModal&& " modal_blur"}`}   as={Col} md={{ span: 10, offset: 1 }}>
             <Row>
                 <Col md={3}>
-                <MypageLeft avatar={avatar} user={user}/>
+                <MypageLeft avatar={avatar} userInfo={userInfo} user={user}/>
                 </Col>
                 <Col md={9}>
                 <MypageRight auth={auth}/>
