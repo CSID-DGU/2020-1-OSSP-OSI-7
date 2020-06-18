@@ -154,7 +154,7 @@ const QuizTemplate = ({match}) => {
         return {
             quiz_type: quiz.quiz_type,
             quiz_title: quiz.quiz_title,
-            quiz_content: JSON.stringify(quiz.quiz_content),
+            quiz_content: btoa(JSON.stringify(quiz.quiz_content)),
             quiz_answer: quiz.quiz_answer,
         }
     }

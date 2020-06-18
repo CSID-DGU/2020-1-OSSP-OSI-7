@@ -9,28 +9,30 @@ import {quizDetail} from '../../lib/api/quiz';
 
 import {quizsetdata} from './quizsetdata';
 
+const useBeforeFirstRender  = (f) => {
+  const [hasRendered, setHasRendered] = useState(false)
+  useEffect(() => setHasRendered(true), [hasRendered])
+  if (!hasRendered) {
+    f()
+  }
+}
 
-const TestQuiz = ({match}) => {
+
+const TestQuiz = ({match, location}) => {
     const [current,setCurrent] = useState(1);
     const [answers, setAnswers] = useState([]);
     const [check,setCheck] = useState(false);
     const [modalShow, setModalShow] = useState(false);
     const [tempAnswer, setTempAnswer] = useState("");
     const [tempChoice, setTempChoice] = useState([]);
-    const [quizset, setQuizSet] = useState([]);
+    const [quizset, setQuizSet] = useState(location.state.quizset);
 
-    const total = quizsetdata.quizzes.length;
+    let total = quizset.quizzes.length;
     const currentPercent = Math.round((current / total) * 100);
     const {quizSetId} = match.params;
 
     const isLast = current === total+1;
-    const currentQuiz = quizsetdata.quizzes[current-1];
-
-    useEffect(()=>{
-        quizDetail(quizSetId).then(
-            (res)=>{console.log(res.data);}
-        );
-    }, []);
+    let currentQuiz = quizset.quizzes[current-1];
 
     useEffect(()=>{
         setTempAnswer(tempChoice.join(","));
@@ -59,8 +61,7 @@ const TestQuiz = ({match}) => {
             setTempChoice(tempChoice.filter((c)=> c !== choiceId));
         }
     }
-
-    return (
+    return (   
         <Container className="quiz__container">
             {!isLast ? (
                 <Fragment>
@@ -86,8 +87,8 @@ const TestQuiz = ({match}) => {
                     <Container>
                     {currentQuiz.quiz_type ==="MULTI" ? 
                         (
-                            currentQuiz.quiz_content.choices.map((c)=>
-                            <TestQuizChoice key={`${current}_${c.id}`} choice={c} onClick={onClick}/>)
+                            JSON.parse(atob(currentQuiz.quiz_content)).choices.map((c)=>
+                            <TestQuizChoice key={`${current}_${c.index}`} choice={c} onClick={onClick}/>)
                         ) :
                         (
                             <TestQuizAnswer key={current} setTempAnswer={setTempAnswer} tempAnswer={tempAnswer}/>

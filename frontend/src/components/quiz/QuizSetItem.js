@@ -90,7 +90,7 @@ const QuizSetItem = ({quizset, user,auth,itemStyle}) => {
     }
     {
         !auth && 
-        <Button size="sm" onClick={()=>history.push(`/quiz/${quizset.class_quiz_set_id}`)}>퀴즈풀기</Button>
+        <Button size="sm" onClick={()=>history.push({pathname:`/quiz/${quizset.class_quiz_set_id}`, state:{quizset:quizset}})}>퀴즈풀기</Button>
     }
     <Button size="sm" onClick={()=>history.push(`/quiz/${quizset.quiz_set_id}/result`)}>결과보기</Button>
     </ButtonGroup>
