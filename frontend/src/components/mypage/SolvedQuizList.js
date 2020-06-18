@@ -3,7 +3,9 @@ import QuizSetList from '../quiz/QuizSetList';
 import {userAuth,currentUser} from '../atoms';
 import {useRecoilValue} from 'recoil';
 import {getQuizSetList} from '../../lib/api/quiz';
-
+import styled from 'styled-components';
+import {GrSort} from 'react-icons/gr';
+import {Button} from 'react-bootstrap';
 
 const quizsetdata = {quizsetsList:
     [
@@ -46,6 +48,11 @@ const quizsetdata = {quizsetsList:
     ]
 }
 
+const QuizListHeader = styled.div`
+    display:flex;
+    justify-content: space-between;
+`;
+
 const SolvedQuizList = () =>{
     const [quizsets, setQuizSets] = useState([]);
     const auth = useRecoilValue(userAuth);
@@ -60,14 +67,16 @@ const SolvedQuizList = () =>{
         }
     }, [auth]);
     // api 추가 예정 퀴즈 받아오기
-
     return (
         <div>
-        <h3>
+        <QuizListHeader>
+        <h3  >
         {
             auth ? "만든 퀴즈 목록" : "푼 퀴즈 목록"
         }
         </h3>
+        <GrSort className="sort__icon" onClick={()=>setQuizSets([...quizsets].reverse())}/>
+        </QuizListHeader>
         <QuizSetList itemStyle={"profile__quiz__item"} quizsets={quizsets}/>
         </div>
     );

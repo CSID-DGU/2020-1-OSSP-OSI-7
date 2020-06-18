@@ -81,7 +81,6 @@ const AuthForm = ({type, location})=>{
             getUserInfo(username);
             setUser(res);
             setAuth(true);
-            getUserInfo(username).then((r)=>setUserInfo(r.data));
           }).catch((e)=>alert(e));
     }
 

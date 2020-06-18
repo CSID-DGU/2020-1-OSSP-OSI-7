@@ -1,9 +1,12 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect, Fragment} from "react";
 import { Button, Container, ButtonToolbar, ButtonGroup,Form, Row,Col } from "react-bootstrap";
 import QuizList from "./QuizList";
-import {useRecoilValue} from 'recoil';
-import {currentUser} from '../atoms';
+import CenteredModal from '../common/CenteredModal';
+import QuizCreateModal from './QuizCreateModal';
+import {useRecoilValue, useRecoilState} from 'recoil';
+import {currentUser, modalShow} from '../atoms';
 import {quizSubmit} from '../../lib/api/quiz';
+import {useHistory} from 'react-router-dom';
 
 
 const QuizTemplate = ({match}) => {
@@ -11,8 +14,9 @@ const QuizTemplate = ({match}) => {
     const [quizSetName, setQuizSetName] = useState("");
     const [quizzes, setQuizzes] = useState([]);
     const [validated, setValidated] = useState(false);
+    const [modalOn, setModalShow] = useRecoilState(modalShow);
 
-
+    const history = useHistory();
     const user = useRecoilValue(currentUser);
     
     const koreanDict = {"MULTI":"객관식", "SHORT":"주관식", "short_answer":"단답형","binary":"OX형"};
@@ -29,9 +33,8 @@ const QuizTemplate = ({match}) => {
             return () => {
                 window.removeEventListener("beforeunload",unloadEvent);
               }    
-
     },[]);
-
+            
     const initiateState = (quizId, type) => {
         let quiz = {
             id: quizId,
@@ -181,7 +184,7 @@ const QuizTemplate = ({match}) => {
                 quizzes:payload_quizzes
             }
             quizSubmit(JSON.stringify(quizSet))
-            .then((res)=>console.log("hihi", res))
+            .then((res)=>setModalShow(true))
             .catch((e)=>console.log(e));
             // api 추가 예정 퀴즈 생성하기
             console.log(JSON.stringify(quizSet));
@@ -198,6 +201,7 @@ const QuizTemplate = ({match}) => {
 
 
     return (
+        <Fragment>
         <Container  className="quiz__container">
         <Form noValidate validated={validated} onSubmit={onSubmit}>
             <Container>
@@ -227,6 +231,16 @@ const QuizTemplate = ({match}) => {
             </div>
         </Form>
         </Container>
+        <CenteredModal
+            show={modalOn}
+            onHide={()=>{setModalShow(false); history.push('/mypage'); }}
+        >
+        <QuizCreateModal
+
+        />
+        </CenteredModal>
+
+        </Fragment>
     );
 };
 
