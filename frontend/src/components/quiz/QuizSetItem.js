@@ -1,15 +1,16 @@
-import React, {useState} from "react";
+import React, {useState, Fragment} from "react";
 import {useHistory} from 'react-router-dom';
-import {Container, Col,Row, Button, ButtonGroup, Dropdown, FormControl} from 'react-bootstrap';
+import {Container, Col,Row, Badge,Button, ButtonGroup, Dropdown, FormControl} from 'react-bootstrap';
 import { useRecoilValue } from "recoil";
 import {managingClasses, auth} from '../atoms';
-import {addQuiz2Class} from '../../lib/api/quiz';
+import {addQuiz2Class, removeQuizFromClass, deleteQuiz} from '../../lib/api/quiz';
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     <Dropdown.Toggle
     size="sm"
       variant="outline-info"
       href=""
+      alignRight
       ref={ref}
       onClick={(e) => {
         e.preventDefault();
@@ -51,7 +52,7 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     },
   );
 
-const QuizSetItem = ({quizset, user,auth,itemStyle}) => {
+const QuizSetItem = ({quizset, user,auth,itemStyle, class_code}) => {
     const classes = useRecoilValue(managingClasses);
     const history = useHistory();
     return (
@@ -59,24 +60,37 @@ const QuizSetItem = ({quizset, user,auth,itemStyle}) => {
 
     <Row>
     <Col xs={6}>
-    <h2>{quizset.quiz_set_id}</h2>
+    <h5><Badge variant="secondary">{quizset.quiz_set_id || quizset.class_quiz_set_id}</Badge></h5>
     <h5>{quizset.quiz_set_name}</h5>
     </Col>
     <Col xs={6} className="quizItem__btn__container">
-    <div>
+    <div className="quiz__auth_btn__container">
     {auth &&
-    
-        <Dropdown>
-        <Dropdown.Toggle as={CustomToggle}>
-        강의 +
+      <Fragment>
+      
+      <Dropdown>
+      <Dropdown.Toggle   as={CustomToggle}>
+      강의 +
+      </Dropdown.Toggle>
+      <Dropdown.Menu alignRight as={CustomMenu}>
+      {
+        classes.map((c,index)=><Dropdown.Item onClick={()=>addQuiz2Class(quizset.quiz_set_id, c.class_code)}
+        eventKey={index}>{c.class_name}</Dropdown.Item>)
+      }
+      </Dropdown.Menu>
+      </Dropdown>
+      <Dropdown alignRight>
+        <Dropdown.Toggle size="sm" variant="outline-danger">
+        Action
         </Dropdown.Toggle>
-        <Dropdown.Menu as={CustomMenu}>
-        {
-            classes.map((c,index)=><Dropdown.Item onClick={()=>addQuiz2Class(quizset.quiz_set_id, c.class_code)}
-            eventKey={index}>{c.class_name}</Dropdown.Item>)
+        <Dropdown.Menu alignRight>
+        {quizset.class_quiz_set_id && 
+          <Dropdown.Item onClick={()=>removeQuizFromClass(quizset.quiz_set_id,class_code)}>강의에서 제거</Dropdown.Item>
         }
+        <Dropdown.Item onClick={()=>deleteQuiz(quizset.quiz_set_id)}>퀴즈 완전 삭제</Dropdown.Item>
         </Dropdown.Menu>
-        </Dropdown>
+      </Dropdown>   
+      </Fragment>
         
     }
     </div>

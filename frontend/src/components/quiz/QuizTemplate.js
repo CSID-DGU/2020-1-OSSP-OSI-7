@@ -46,8 +46,8 @@ const QuizTemplate = ({match}) => {
         }
         if(type === 'MULTI'){
                 quiz.quiz_content.choices = [
-                    {id:0,choice:""},
-                    {id:1,choice:""},
+                    {index:0,choice:""},
+                    {index:1,choice:""},
                 ];
         }
         return quiz;
@@ -104,7 +104,7 @@ const QuizTemplate = ({match}) => {
         
         if(contentType === "choice"){
             const choiceId = Number(target.getAttribute("choiceId"));
-            content.choices[choiceId] = {id:choiceId,choice:target.value};
+            content.choices[choiceId] = {index:choiceId,choice:target.value};
         }
 
         return content
@@ -115,7 +115,7 @@ const QuizTemplate = ({match}) => {
         let answerList = quiz.quiz_answer.split(",").filter((an) => an !== String(choiceId)).map((an) => (Number(an) > choiceId ? String(an -1) : an));
         const answer = answerList.join(",");
 
-        const changedChoices = quiz.quiz_content.choices.filter((c)=>c.id !== choiceId).map((c, index) => ({...c, id: index}));
+        const changedChoices = quiz.quiz_content.choices.filter((c)=>c.index !== choiceId).map((c, index) => ({...c, index: index}));
         setQuizzes(quizzes.map((quiz)=>(quiz.id === quizId ? {...quiz, quiz_answer:answer,quiz_content:{choices:changedChoices}}: quiz)));        
     }
 
@@ -125,7 +125,7 @@ const QuizTemplate = ({match}) => {
         const choiceId = Number(e.target.getAttribute("choiceId"));
         const choices = quizzes.filter((quiz)=>quiz.id === quizId)[0].quiz_content.choices;
 
-        const isExist = choices.filter((c)=> c.id !== choiceId && value !== "" &&c.choice === value);
+        const isExist = choices.filter((c)=> c.index !== choiceId && value !== "" &&c.choice === value);
         if (isExist.length){
             alert("already exist choice please change");
             e.target.setCustomValidity("already exist");

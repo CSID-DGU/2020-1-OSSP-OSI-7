@@ -8,6 +8,12 @@ export const getQuizSetList = (username) =>
 
 export const addQuiz2Class = (quizSetId, classCode) =>
     client.post(`/quizsets/quizset/${quizSetId}/class/${classCode}`,{quizSetId:quizSetId.toString(),classCode:classCode});
-
+    
 export const quizDetail = (classQuizSetId) =>
     client.get(`/quizsets/class/${classQuizSetId}`);
+    
+export const deleteQuiz = (quizSetId) =>
+    client.delete(`/quizsets/quizset/${quizSetId}`);
+    
+export const removeQuizFromClass = (quizSetId, classCode) =>
+    client.delete(`/quizsets/quizset/${quizSetId}/class/${classCode}`);

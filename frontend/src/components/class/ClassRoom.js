@@ -6,46 +6,7 @@ import {userAuth} from '../atoms';
 import {useRecoilValue} from 'recoil';
 import {getClassQuizSet} from '../../lib/api/class';
 
-const quizsetdata = {quizsetsList:
-    [
-        {
-            quiz_set_author_name:"pop@dongguk.edu",
-            quiz_set_id: 1,
-            quiz_set_name: "hello world",
-            quizzes:""
-        },
-        {
-            quiz_set_author_name:"yongsk0066@dongguk.edu",
-            quiz_set_id: 2,
-            quiz_set_name: "hello world",
-            quizzes:""
-        },
-        {
-            quiz_set_author_name:"testuser@dongguk.edu",
-            quiz_set_id: 3,
-            quiz_set_name: "hello world",
-            quizzes:""
-        },
-        {
-            quiz_set_author_name:"pop@dongguk.edu",
-            quiz_set_id: 4,
-            quiz_set_name: "hello world",
-            quizzes:""
-        },
-        {
-            quiz_set_author_name:"pop@dongguk.edu",
-            quiz_set_id: 5,
-            quiz_set_name: "hello world",
-            quizzes:""
-        },
-        {
-            quiz_set_author_name:"pop@dongguk.edu",
-            quiz_set_id: 6,
-            quiz_set_name: "hello world",
-            quizzes:""
-        }
-    ]
-}
+
 
 const ClassRoom = ({match, location}) =>{
     // api 추가 예정 퀴즈 받아오기
@@ -64,7 +25,7 @@ const ClassRoom = ({match, location}) =>{
 
 
     return(
-        <Container className="quiz__container__no_border">
+        <Container className="quiz__container__no_border" as={Col} md={{ span: 8, offset: 2 }}>
         <Row>
             <Col xs={4} md={3} lg={2}>
                 <Image src="https://placekitten.com/300/300" fluid className="profile__img"></Image>
@@ -73,7 +34,7 @@ const ClassRoom = ({match, location}) =>{
             <Col xs={8} md={9} lg={10}>
                 <h3>{class_name}</h3>
                 <h4>{class_code}</h4>
-                <p>eoifjaiowejfiojeoifajweiofawi</p>
+                <p></p>
                 </Col>
                 </Row>
                 <hr className="profile__class__hr"/>
@@ -86,7 +47,7 @@ const ClassRoom = ({match, location}) =>{
         <Row>
         <Col>
         <h3>퀴즈 목록</h3>
-        <QuizSetList itemStyle={"profile__quiz__item"} quizsets={quizsetList}/>
+        <QuizSetList itemStyle={"profile__quiz__item"} quizsets={quizsetList} class_code={class_code}/>
         </Col>
         </Row>
         </Container>

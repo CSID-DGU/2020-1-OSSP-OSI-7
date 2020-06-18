@@ -9,9 +9,9 @@ const ChoicesList = (props) =>{
 
     return (
         <Fragment>
-            {choices.map((c)=><ChoiceItem handleBlur={handleBlur} onChange={onChange} isAnswer={answers.indexOf(String(c.id))} choice={c} quizId={quiz.id} selectAnswerChoice={selectAnswerChoice} onRemoveChoice={onRemoveChoice}/>)}
+            {choices.map((c)=><ChoiceItem handleBlur={handleBlur} onChange={onChange} isAnswer={answers.indexOf(String(c.index))} choice={c} quizId={quiz.id} selectAnswerChoice={selectAnswerChoice} onRemoveChoice={onRemoveChoice}/>)}
         <Form.Group as={Col}>
-        <Button variant="success" onClick={()=>{addChoices(quiz.id, {id:choices.length, choice:""})}}>+</Button>
+        <Button variant="success" onClick={()=>{addChoices(quiz.id, {index:choices.length, choice:""})}}>+</Button>
         </Form.Group>
         </Fragment>
     );

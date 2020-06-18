@@ -3,7 +3,7 @@ import QuizSetItem from './QuizSetItem';
 import {useRecoilValue} from 'recoil';
 import {currentUser,userAuth} from '../atoms';
 
-const QuizSetList = ({itemStyle, quizsets}) =>{
+const QuizSetList = ({itemStyle, quizsets, class_code}) =>{
     const user = useRecoilValue(currentUser);
     const auth = useRecoilValue(userAuth);
 
@@ -12,7 +12,7 @@ const QuizSetList = ({itemStyle, quizsets}) =>{
         {
             quizsets.length !== 0 &&
             
-            quizsets.map((quizset,index)=> <QuizSetItem user={user} auth={auth} quizset={quizset} itemStyle={itemStyle} />)}
+            quizsets.map((quizset,index)=> <QuizSetItem user={user} auth={auth} quizset={quizset} itemStyle={itemStyle} class_code={class_code}/>)}
         
             </Fragment>
     )
