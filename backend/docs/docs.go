@@ -833,6 +833,10 @@ var doc = `{
                     "type": "string",
                     "example": "퀴즈 렌더링 정보"
                 },
+                "quiz_score": {
+                    "type": "integer",
+                    "example": 35
+                },
                 "quiz_title": {
                     "type": "string",
                     "example": "퀴즈 문제"

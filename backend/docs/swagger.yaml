@@ -65,6 +65,9 @@ definitions:
       quiz_content:
         example: 퀴즈 렌더링 정보
         type: string
+      quiz_score:
+        example: 35
+        type: integer
       quiz_title:
         example: 퀴즈 문제
         type: string
