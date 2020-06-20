@@ -5,7 +5,7 @@ import TestQuizChoice from './TestQuizChoice';
 import TestQuizAnswer from './TestQuizAnswer';
 import TestQuizResult from './TestQuizResult';
 import QuizModal from './QuizModal';
-import {quizDetail, quizSubmit} from '../../lib/api/quiz';
+import {quizDetail, quizTestSubmit} from '../../lib/api/quiz';
 import {currentUser} from '../atoms';
 import {useRecoilValue} from 'recoil';
 
@@ -81,7 +81,7 @@ const TestQuiz = ({match, location}) => {
     const handleSubmit = (e) => {
         const result =resultFormating(answers.concat(tempAnswer));
         console.log(result);
-        quizSubmit(result).then((res)=>console.log("제출!", res))
+        quizTestSubmit(result).then((res)=>console.log("제출!", res))
     }
 
     const onClick = (choiceId, select) =>{

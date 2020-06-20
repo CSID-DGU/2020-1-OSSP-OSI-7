@@ -162,7 +162,7 @@ const App = () => {
         />
       }
       <AuthRoute authenticated={authenticated} path="/quiz/:quizSetId" component={TestQuiz} exact/>
-      <AuthRoute authenticated={authenticated} path="/quiz/:quizSetId/result" component={TestQuizResult} exact/>
+      <AuthRoute authenticated={authenticated} path="/quiz/:quizSetName/result" component={TestQuizResult} exact/>
       <AuthRoute authenticated={authenticated} path="/mypage" component={Mypage}/>
       <AuthRoute authenticated={authenticated} path="/class/:classId" component={ClassRoom}/>
       

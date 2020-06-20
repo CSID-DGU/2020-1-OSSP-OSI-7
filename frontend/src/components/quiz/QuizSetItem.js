@@ -106,7 +106,7 @@ const QuizSetItem = ({quizset, user,auth,itemStyle, class_code}) => {
         !auth && 
         <Button size="sm" onClick={()=>history.push({pathname:`/quiz/${quizset.class_quiz_set_id}`, state:{quizset:quizset}})}>퀴즈풀기</Button>
     }
-    <Button size="sm" onClick={()=>history.push(`/quiz/${quizset.quiz_set_id}/result`)}>결과보기</Button>
+    <Button size="sm" onClick={()=>history.push({pathname:`/quiz/${quizset.quiz_set_name}/result`,state:{quizset:quizset}})}>결과보기</Button>
     </ButtonGroup>
     </div>
     </Col>

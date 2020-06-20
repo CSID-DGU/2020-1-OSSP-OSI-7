@@ -47,33 +47,27 @@ const ModalHeaderContainer = styled.div`
 `;
 
 const ResultCircleModal = ({index, onClick, wrong, quizInfo}) => {
-    // const [choices, setChoices] = useState([]);
-    // useEffect(()=>{
-    //     if(quizInfo.quiz_type === "MULTI") {
-    //         setChoices(quizInfo.quiz_answer.split(","));
-    //         console.log(choices);
-    //     }
-    // },[]);
 
-    
     return (
         <Fragment>
             <Modal.Header closeButton>
             <ModalHeaderContainer>
             <Modal.Title>
-                문항 {index+1}
+                {index + 1})  
+                {
+                    !wrong ? "  틀린 문제" : "  맞은 문제"
+                }
             </Modal.Title>
-            <ResultIndicator wrong={!wrong}/>
+            <ResultIndicator wrong={wrong}/>
             
             </ModalHeaderContainer>
             </Modal.Header>
             <Modal.Body>
             <h4>{quizInfo.quiz_title}</h4>
-            <p>{quizInfo.quiz_type}</p>
             {
                 (quizInfo.quiz_type === "MULTI") && 
-                quizInfo.quiz_content.choices.map(
-                    (c)=><ChoiceBlock isAnswer={quizInfo.quiz_answer.split(",").indexOf((c.id).toString())} as={Col} fluid>{c.choice}</ChoiceBlock>
+                JSON.parse(atob(quizInfo.quiz_content)).choices.map(
+                    (c)=><ChoiceBlock isAnswer={quizInfo.quiz_answer.split(",").indexOf((c.index).toString())} as={Col} fluid>{c.choice}</ChoiceBlock>
                 )
             }
             {

@@ -17,3 +17,9 @@ export const deleteQuiz = (quizSetId) =>
     
 export const removeQuizFromClass = (quizSetId, classCode) =>
     client.delete(`/quizsets/quizset/${quizSetId}/class/${classCode}`);
+
+export const quizTestSubmit = (quizset) =>
+    client.post('/quizsets/score', quizset);
+
+export const getQuizResult = (username) =>
+    client.get(`/quizsets/result/users/${username}`)

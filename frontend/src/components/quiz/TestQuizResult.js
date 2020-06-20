@@ -5,17 +5,47 @@ import 'react-circular-progressbar/dist/styles.css';
 import ResultCirclesContainer from './ResultCirclesContainer';
 import {quizsetdata} from './quizsetdata';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import {getQuizResult} from '../../lib/api/quiz';
+import {currentUser} from '../atoms';
+import {useRecoilValue} from 'recoil';
+import {useHistory} from 'react-router-dom';
 
 
-
-const TestQuizResult = () =>{
-    const total = 10;
-    const [value,setValue] = useState(0);
+const TestQuizResult = ({match, location}) =>{
+    const [percent, setPercent] = useState(0);
+    const [isTrueResult, setTrueResult] = useState([]);
     const [quizData, setQuizData] = useState(quizsetdata.quizzes);
     const results = [true, false, true,false];
+    const {quizSetName} = match.params;
+    const username = useRecoilValue(currentUser);
+    const [quizset, setQuizSet] = useState(location.state.quizset);
+    const history = useHistory();
+    
+    const getBinary = (dec) => {
+        return (dec >>> 0).toString(2);
+    }
+    
+    const setQuizTrueFalse = (total, myscore) =>{
+        return (getBinary(total) ^ getBinary(myscore)).toString().split("").map((i) =>(i==="0"));
+    }
+    
+    const makeQuizResult = (quizData) => {
 
+        setTrueResult(setQuizTrueFalse(quizData.total_score, quizData.my_score));
+        setPercent(isTrueResult.filter((c) => c=== true).length/isTrueResult.length * 100);
+    }
 
-
+    useEffect(()=>{
+        getQuizResult(username).then(
+            (res)=>{
+                makeQuizResult(res.data.filter(quiz => quiz.quiz_set_name === quizSetName)[0])
+            
+            }
+        )
+        console.log(quizset);
+        console.log(quizData);
+    }, []);
+    
     const colorGradiant = (percent) => {
         if(percent <= 30){
             return "red";
@@ -26,20 +56,14 @@ const TestQuizResult = () =>{
         }
     }
 
-    const pathColor = colorGradiant(value/total * 100);
-
-    useEffect(()=>{
-        // 결과 값으로 대체
-        setValue(4);
-    }, [])
 
     return (
         <SquareContainer>
             <h3>
-                퀴즈 이름
+                퀴즈 : {quizset.quiz_set_name}
             </h3>
             <h5>
-                강의 이름
+                출제자 : {quizset.quiz_set_author_name}
             </h5>
             <hr className="profile__class__hr"/>
             <Row>
@@ -49,8 +73,8 @@ const TestQuizResult = () =>{
             </Row>
             <Row>
             <Col xs={{span: 6, offset: 3}} md={{span:2,offset:5}}>
-            <CircularProgressbar height="100px" value={value} text={`${value}/${total}`} maxValue={total} styles={buildStyles({
-                pathColor: pathColor,
+            <CircularProgressbar height="100px" value={isTrueResult.filter((c) => c=== true).length} text={`${isTrueResult.filter((c) => c=== true).length}/${isTrueResult.length}`} maxValue={isTrueResult.length} styles={buildStyles({
+                pathColor: colorGradiant(percent),
                 trailColor: "#edf2f9",
                 textColor: "black",
             })} />
@@ -58,7 +82,7 @@ const TestQuizResult = () =>{
             </Row>
             <Row>
                 <Col xs={12} md={{span:4,offset:4}} className="resultCircle__container">
-                    <ResultCirclesContainer results={results} quizData={quizData} />            
+                    <ResultCirclesContainer results={isTrueResult} quizData={quizset.quizzes} />            
                 </Col>
             </Row>
         </SquareContainer>

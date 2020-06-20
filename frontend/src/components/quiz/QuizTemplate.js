@@ -153,10 +153,11 @@ const QuizTemplate = ({match}) => {
         handleChange({quizId:quizId,quiz_answer:joinAnswer});
     }
 
-    const makeQuiz2String = (quiz) =>{
+    const makeQuiz2String = (quiz, index) =>{
         return {
             quiz_type: quiz.quiz_type,
             quiz_title: quiz.quiz_title,
+            quiz_score: Math.pow(2,index),
             quiz_content: btoa(JSON.stringify(quiz.quiz_content)),
             quiz_answer: quiz.quiz_answer,
         }
@@ -164,7 +165,7 @@ const QuizTemplate = ({match}) => {
 
     const makePayload = (quizzes)=>{
         let result_quizzes = [];
-        quizzes.map((q)=>{result_quizzes = result_quizzes.concat(makeQuiz2String(q))});
+        quizzes.map((q, index)=>{result_quizzes = result_quizzes.concat(makeQuiz2String(q, index))});
         console.log(result_quizzes);
         return result_quizzes;
     }
@@ -181,7 +182,8 @@ const QuizTemplate = ({match}) => {
             const quizSet = {
                 quiz_set_author_name: user,
                 quiz_set_name: quizSetName,
-                quizzes:payload_quizzes
+                quizzes:payload_quizzes,
+                total_score: Math.pow(2,payload_quizzes.length)-1
             }
             quizSubmit(JSON.stringify(quizSet))
             .then((res)=>setModalShow(true))
@@ -233,7 +235,7 @@ const QuizTemplate = ({match}) => {
         </Container>
         <CenteredModal
             show={modalOn}
-            onHide={()=>{setModalShow(false); history.push('/mypage'); }}
+            onHide={async ()=>{await setModalShow(false); await history.push('/mypage'); }}
         >
         <QuizCreateModal
 
