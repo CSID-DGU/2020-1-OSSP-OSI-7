@@ -83,6 +83,7 @@ const TestQuiz = ({match, location}) => {
     const handleSubmit = (e) => {
         const result =resultFormating(answers.concat(tempAnswer));
         quizTestSubmit(result).then((res)=>console.log("제출!", res));
+        alert("풀이를 완료하셨습니다. 마이페이지로 돌아갑니다.")
         history.push('/mypage');
     }
 
