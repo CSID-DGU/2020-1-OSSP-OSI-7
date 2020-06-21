@@ -45,7 +45,7 @@ client.interceptors.request.use(async (config) => {
 
 client.interceptors.response.use(
     response => {
-        console.log("It's response", response);
+        // console.log("It's response", response);
         return response;
     },
     error => {

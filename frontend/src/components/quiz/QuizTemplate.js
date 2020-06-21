@@ -189,7 +189,6 @@ const QuizTemplate = ({match}) => {
             .then((res)=>setModalShow(true))
             .catch((e)=>console.log(e));
             // api 추가 예정 퀴즈 생성하기
-            console.log(JSON.stringify(quizSet));
         }
         setValidated(true);
     }

@@ -28,7 +28,6 @@ const SolvedQuizList = () =>{
             );
         }
     }, [auth]);
-    console.log(quizsets)
     // api 추가 예정 퀴즈 받아오기
     return (
         <div>

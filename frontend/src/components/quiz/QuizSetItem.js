@@ -4,6 +4,7 @@ import {Container, Col,Row, Badge,Button, ButtonGroup, Dropdown, FormControl} fr
 import { useRecoilValue } from "recoil";
 import {managingClasses, auth} from '../atoms';
 import {addQuiz2Class, removeQuizFromClass, deleteQuiz, quizDetail} from '../../lib/api/quiz';
+import {getClassQuizSet} from '../../lib/api/class';
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     <Dropdown.Toggle
@@ -112,17 +113,13 @@ const QuizSetItem = ({quizset, user,auth,itemStyle, class_code, location}) => {
     <div>
     <ButtonGroup>
     {
-        quizset.quiz_set_author_name === user && auth &&
-        <Button size="sm">수정하기</Button>
-    }
-    {
-        !auth && 
+      !auth && 
         <>
         {location !== "/mypage" &&
         <Button size="sm" onClick={()=>history.push({pathname:`/quiz/${quizset.class_quiz_set_id}`, state:{quizset:quizset}})}>퀴즈풀기</Button>
       }
       <Button size="sm" onClick={()=>handleResult()}>결과보기</Button>
-        </>
+      </>
       }
     </ButtonGroup>
     </div>
@@ -133,3 +130,7 @@ const QuizSetItem = ({quizset, user,auth,itemStyle, class_code, location}) => {
 }
 
 export default QuizSetItem;
+// {
+//     quizset.quiz_set_author_name === user && auth &&
+//     <Button size="sm">수정하기</Button>
+// }

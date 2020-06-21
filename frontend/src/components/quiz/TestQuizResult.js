@@ -26,11 +26,11 @@ const TestQuizResult = ({match, location}) =>{
     }
     
     const setQuizTrueFalse = (total, myscore) =>{
-        return (getBinary(total) ^ getBinary(myscore)).toString().split("").map((i) =>(i==="0"));
+        return (getBinary(total) ^ getBinary(myscore)).toString().split("").map((i) =>(i==="0")).reverse();
     }
     
     const makeQuizResult = (quizData) => {
-
+        console.log(quizData);
         setTrueResult(setQuizTrueFalse(quizData.total_score, quizData.my_score));
         setPercent(isTrueResult.filter((c) => c=== true).length/isTrueResult.length * 100);
     }
@@ -43,7 +43,7 @@ const TestQuizResult = ({match, location}) =>{
             }
         )
     }, []);
-    
+    console.log(isTrueResult);
     const colorGradiant = (percent) => {
         if(percent <= 30){
             return "red";
