@@ -74,6 +74,7 @@ const QuizSetItem = ({quizset, user,auth,itemStyle, class_code}) => {
       </Dropdown.Toggle>
       <Dropdown.Menu alignRight as={CustomMenu}>
       {
+        (classes !== null) && 
         classes.map((c,index)=><Dropdown.Item onClick={()=>addQuiz2Class(quizset.quiz_set_id, c.class_code)}
         eventKey={index}>{c.class_name}</Dropdown.Item>)
       }

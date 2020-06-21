@@ -7,10 +7,11 @@ const QuizSetList = ({itemStyle, quizsets, class_code}) =>{
     const user = useRecoilValue(currentUser);
     const auth = useRecoilValue(userAuth);
 
+    console.log(quizsets);
     return (
         <Fragment>
         {
-            quizsets.length !== 0 &&
+            (quizsets !== null) &&
             
             quizsets.map((quizset,index)=> <QuizSetItem user={user} auth={auth} quizset={quizset} itemStyle={itemStyle} class_code={class_code}/>)}
         

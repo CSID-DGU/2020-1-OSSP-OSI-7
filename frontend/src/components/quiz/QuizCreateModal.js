@@ -3,10 +3,13 @@ import {Modal, Button} from 'react-bootstrap';
 import {useHistory} from 'react-router-dom';
 import styled from 'styled-components';
 import CheckCircle from '../quiz/CheckCircle';
+import {currentUser, modalShow} from '../atoms';
 
+import {useRecoilValue, useRecoilState} from 'recoil';
 
 
 const QuizCreateModal = () => {
+    const [modalOn, setModalShow] = useRecoilState(modalShow);
     let history = useHistory();
     return (
         <Fragment>
@@ -22,7 +25,7 @@ const QuizCreateModal = () => {
             성공적으로 퀴즈가 만들어졌습니다! 😆
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="success" onClick={()=>history.push('/mypage')}>
+                <Button variant="success" onClick={()=>{setModalShow(false); history.push('/mypage');}}>
                 Mypage로 돌아가기
                 </Button>
             </Modal.Footer>

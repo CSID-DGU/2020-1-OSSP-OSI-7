@@ -63,7 +63,7 @@ const SolvedQuizList = () =>{
             getQuizSetList(username).then(
                 (res)=>setQuizSets(res.data));
         } else {
-            setQuizSets(quizsetdata.quizsetsList);
+            setQuizSets([]);
         }
     }, [auth]);
     // api 추가 예정 퀴즈 받아오기

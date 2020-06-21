@@ -8,6 +8,9 @@ import QuizModal from './QuizModal';
 import {quizDetail, quizTestSubmit} from '../../lib/api/quiz';
 import {currentUser} from '../atoms';
 import {useRecoilValue} from 'recoil';
+import Base64 from '../../lib/Base64';
+import {useHistory} from 'react-router-dom';
+
 
 import {quizsetdata} from './quizsetdata';
 
@@ -33,7 +36,7 @@ const TestQuiz = ({match, location}) => {
     let total = quizset.quizzes.length;
     const currentPercent = Math.round((current / total) * 100);
     const {quizSetId} = match.params;
-
+    const history = useHistory();
     const isLast = current === total;
     let currentQuiz = quizset.quizzes[current-1];
 
@@ -74,14 +77,13 @@ const TestQuiz = ({match, location}) => {
             "quiz_for_scorings":answerList,
             "username":username
         }
-        console.log(answerList);
         return quizResult;
     }
 
     const handleSubmit = (e) => {
         const result =resultFormating(answers.concat(tempAnswer));
-        console.log(result);
-        quizTestSubmit(result).then((res)=>console.log("제출!", res))
+        quizTestSubmit(result).then((res)=>console.log("제출!", res));
+        history.push('/mypage');
     }
 
     const onClick = (choiceId, select) =>{
@@ -116,7 +118,7 @@ const TestQuiz = ({match, location}) => {
                     <Container>
                     {currentQuiz.quiz_type ==="MULTI" ? 
                         (
-                            JSON.parse(atob(currentQuiz.quiz_content)).choices.map((c)=>
+                            JSON.parse(Base64.decode(currentQuiz.quiz_content)).choices.map((c)=>
                             <TestQuizChoice key={`${current}_${c.index}`} choice={c} onClick={onClick}/>)
                         ) :
                         (

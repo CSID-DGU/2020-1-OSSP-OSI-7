@@ -1,6 +1,7 @@
 import React,{Fragment} from 'react';
 import {Modal, Button,Col} from 'react-bootstrap';
 import styled from 'styled-components';
+import Base64 from '../../lib/Base64';
 
 const ChoiceBlock = styled.div`
     color: #707070;
@@ -66,7 +67,7 @@ const ResultCircleModal = ({index, onClick, wrong, quizInfo}) => {
             <h4>{quizInfo.quiz_title}</h4>
             {
                 (quizInfo.quiz_type === "MULTI") && 
-                JSON.parse(atob(quizInfo.quiz_content)).choices.map(
+                JSON.parse(Base64.decode(quizInfo.quiz_content)).choices.map(
                     (c)=><ChoiceBlock isAnswer={quizInfo.quiz_answer.split(",").indexOf((c.index).toString())} as={Col} fluid>{c.choice}</ChoiceBlock>
                 )
             }
