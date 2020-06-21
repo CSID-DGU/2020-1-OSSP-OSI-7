@@ -8,7 +8,7 @@ import (
 type QuizSetResultRepository interface {
 	Get(classQuizSetResultId int64, userName string) (*models.QuizSetResult, *models.AppError)
 	GetUserAllQuizSet(userName string) ([]*dto.GetQuizSetResult, *models.AppError)
-	Create(quizSetResult *models.QuizSetResult) (*models.AppError)
+	Create(quizSetResult *models.QuizSetResult) (int64, *models.AppError)
 	Delete(quizSetResultId int64) (*models.AppError)
 	Update(quizSetResult *models.QuizSetResult) (*models.AppError)
 }
@@ -46,13 +46,16 @@ func (q *SqlQuizSetResultRepository) GetUserAllQuizSet(userName string) ([]*dto.
 	return quizSetResults, nil
 }
 
-func (q *SqlQuizSetResultRepository) Create(quizSetResult *models.QuizSetResult) (*models.AppError) {
-	err := q.Master.Insert(quizSetResult)
+func (q *SqlQuizSetResultRepository) Create(quizSetResult *models.QuizSetResult) (int64, *models.AppError) {
+	result, err := q.Master.Exec(`INSERT INTO quiz_set_result (class_quiz_set_id, user_id, my_score) VALUES 
+					(?, ?, ?)`, quizSetResult.ClassQuizSetId, quizSetResult.UserId, quizSetResult.MyScore)
 
 	if err != nil {
-		return models.NewDatabaseAppError(err, "FAILED TO CREATE QUIZ SET RESULT", "quiz_set_result_repository.go")
+		return -1, models.NewDatabaseAppError(err, "FAILED TO CREATE QUIZ SET RESULT", "quiz_set_result_repository.go")
 	}
-	return nil
+
+	id, err := result.LastInsertId()
+	return id, nil
 }
 
 func (q *SqlQuizSetResultRepository) Delete(quizSetResultId int64) (*models.AppError) {

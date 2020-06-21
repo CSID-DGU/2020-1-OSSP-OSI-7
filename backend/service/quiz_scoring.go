@@ -10,6 +10,7 @@ import (
 	"oss/models"
 	"oss/redisUtil"
 	"oss/test/utils"
+	"oss/util"
 	"oss/web"
 	"strconv"
 	"strings"
@@ -269,7 +270,18 @@ func updateQuizSetResult (context *web.Context, quizSetResult *models.QuizSetRes
 func ScoreQuizzes (context *web.Context, ident ScoringQueueIdent, quizScorings []*dto.QuizForScoring) *models.AppError {
 	// quiz 답을 가져오기 위한 Redis connection
 	conn := context.Redis.Get()
+	tx, tx_err := context.Repository.Master.Db.Begin()
 	defer utils.CloseRedisConnection(&conn)
+
+
+	if tx_err != nil {
+		web.Logger.WithFields(logrus.Fields{
+			"username" : ident.Email,
+			"tx_err" : tx_err,
+		}).Error("Failed to begin transaction")
+		return models.NewAppError(tx_err, "Failed to begin transaction", models.GetFuncName())
+	}
+
 	if quizScorings == nil || len(quizScorings) == 0 {
 		logMsg := "quizForScoring array which is passed to ScoreQuizzes is null"
 		web.Logger.Error(logMsg)
@@ -288,6 +300,11 @@ func ScoreQuizzes (context *web.Context, ident ScoringQueueIdent, quizScorings [
 		userId, err := context.Repositories.UserRepository().GetUserIdByUserName(ident.Email)
 		if err != nil {
 			// TODO 채점을 실패한 경우와 다르지 않으므로 Job Queue 에 넣어서 나중에 재시도 해야 함
+			web.Logger.WithFields(logrus.Fields{
+				"username" : ident.Email,
+				"err" : err,
+			}).Error("Failed to get user_id by username")
+			return models.NewAppError(errors.New(err.Message), "Failed to create GetUserIdByUserName @This is fatal error@", models.GetFuncName())
 		}
 
 		result = &models.QuizSetResult {
@@ -295,10 +312,20 @@ func ScoreQuizzes (context *web.Context, ident ScoringQueueIdent, quizScorings [
 			UserId: userId,
 			MyScore: 0,
 		}
-		create_err := context.Repositories.QuizSetResultRepository().Create(result)
+
+		newId, create_err := context.Repositories.QuizSetResultRepository().Create(result)
 		if create_err != nil {
+			util.Rollback(tx, models.GetFuncName())
 			// TODO 채점을 실패한 경우와 다르지 않으므로 Job Queue 에 넣어서 나중에 재시도 해야 함
+			web.Logger.WithFields(logrus.Fields{
+				"username" : ident.Email,
+				"result" : result,
+				"create_err" : create_err,
+			}).Error("Failed to get user_id by username")
+			return models.NewAppError(errors.New(create_err.Message), "Failed to create QuizSetResult", models.GetFuncName())
 		}
+		result.QuizSetResultId = newId
+
 	}
 
 	quizResultCompleteChan := make(chan *dto.QuizAnswerWithScore, len(quizScorings))
@@ -319,6 +346,7 @@ func ScoreQuizzes (context *web.Context, ident ScoringQueueIdent, quizScorings [
 			redisUtil.RedisSet(&conn, string(quiz.QuizId)+"-"+"ans", answer, 30)
 			redisUtil.RedisSet(&conn, string(quiz.QuizId)+"-"+"score", string(score),30)
 		} else {
+			util.Rollback(tx, models.GetFuncName())
 			var parse_err error
 			score, parse_err = strconv.ParseUint(strScore, 10, 64)
 			if parse_err != nil {
@@ -341,7 +369,8 @@ func ScoreQuizzes (context *web.Context, ident ScoringQueueIdent, quizScorings [
 		}
 		result, err := context.Repositories.QuizResultRepository().Get(result.QuizSetResultId, quiz.QuizId)
 		if err == nil && result != nil {
-			return models.NewAppError(errors.New("ANSWER_ALREADY_SUBMITTED"),
+			util.Rollback(tx, models.GetFuncName())
+			return models.NewAppError(errors.New("ALREADY_S"),
 									  "이미 답안을 제출 했습니다.", models.GetFuncName())
 		}
 
@@ -354,15 +383,20 @@ func ScoreQuizzes (context *web.Context, ident ScoringQueueIdent, quizScorings [
 
 		create_err := context.Repositories.QuizResultRepository().Create(quizResult)
 		if create_err != nil {
+			util.Rollback(tx, models.GetFuncName())
 			web.Logger.WithFields(logrus.Fields{
 				"quiz_result" : quizResult,
+				"create_err" : create_err,
 			}).Warn("Failed to create QuizResult")
+			return create_err
 		}
 		quizResultCompleteChan <- &dto.QuizAnswerWithScore{
 			QuizAnswer: answer,
 			QuizScore: score,
 		}
 	}
+
+	util.CommitTransaction(tx)
 	return nil
 }
 
