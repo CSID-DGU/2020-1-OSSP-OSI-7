@@ -2,7 +2,7 @@
 @import url('./auth/Auth.scss');
 @import url('./mypage/Mypage.scss');
 @import url('./etc.scss');
-
+@import "~bootstrap/scss/bootstrap";
 $main_color : #edf2f9;
 
 @font-face{
@@ -63,4 +63,50 @@ body {
 
 #collasible-nav-dropdown{
     height: 30px;
+}
+
+.footer{
+    width: 100%;
+    background-color: #b5bfcc;
+    margin-top: auto;
+}
+
+.home__container{
+    height: calc(100vh - 180px) ;
+    z-index:3;
+}
+.img__container{
+    position: absolute;
+    right:0;
+    top:0;
+    overflow: hidden !important;
+    width: 100vw;
+    height:100vh;
+}
+.home__img{
+    height: 100vh;
+    z-index:-1;
+    position: absolute;
+    right:0;
+    top:0;
+    @media (max-width: 500px) {
+        left: 0;
+        right: none;
+        object-fit: cover;
+        object-position: left;
+    }
+}
+
+.home__emoji{
+    position: absolute;
+    top:3rem;
+    left:-1rem;
+    z-index:5;
+    transform: rotate( -15deg );
+}
+
+#root {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
 }

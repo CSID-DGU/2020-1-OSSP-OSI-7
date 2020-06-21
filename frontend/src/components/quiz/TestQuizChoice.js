@@ -32,7 +32,7 @@ const TestQuizChoice = ({choice, onClick}) => {
     const [select, setSelect] = useState(false);
 
     const handleClick = () => {
-        onClick(choice.id, select);
+        onClick(choice.index, select);
         select ? setSelect(false):setSelect(true);
     }
 

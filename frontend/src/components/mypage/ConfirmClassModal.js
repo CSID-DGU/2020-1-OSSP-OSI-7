@@ -34,7 +34,7 @@ const ConfirmClassModal = ({onHide, onClick, class_code, class_name}) => {
     
     const textChange = (type) =>{
         const textArray = [
-            ["Success!", "Error!", "Confirmation"],["Successfully Opened", "Same Class Is Already Exist", "Are you sure this is Right?"]
+            ["강의 개설 성공!", "문제가 있네요!", "입력 확인"],["성공적으로 강의가 개설되었습니다! 😄", "동일한 강의가 이미 존재합니다. 😢", "강의 코드와 이름을 확인 해주세요! ☝️"]
         ];
         let selectArray = textArray[1];
         if(type === "title"){
@@ -55,7 +55,7 @@ const ConfirmClassModal = ({onHide, onClick, class_code, class_name}) => {
                 <Modal.Title id="contained-modal-title-vcenter">
                     {isError && (<CheckCircle wrong className="modal__circle"/>)}    
                     {isOpened && (<CheckCircle className="modal__circle"/>)}    
-                <ReactTextTransition text={textChange("title")} inline className="confirm__modal" />
+                <ReactTextTransition text={textChange("title")} inline className="confirm__modal__title" />
                 </Modal.Title>
             </Modal.Header>
             <Modal.Body>
@@ -68,9 +68,9 @@ const ConfirmClassModal = ({onHide, onClick, class_code, class_name}) => {
             {
                 (!isOpened && !isError) && (
                     <Modal.Footer>
-                        <Button variant="outline-primary" onClick={onHide}>Cancel</Button>
+                        <Button variant="outline-primary" onClick={onHide}>취소 하기</Button>
                         <Button variant="primary" onClick={async ()=>onClick().then((res)=>{setIsOpened(true); setClasses(classes.concat([{"class_name":class_name,"class_code":class_code}]))})
-                        .catch((e)=>setIsError(true))}>Open Course</Button>
+                        .catch((e)=>setIsError(true))}>강의 개설</Button>
                     </Modal.Footer>
                         ) 
             }

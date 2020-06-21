@@ -1,12 +1,12 @@
-import React, {Fragment, useState, useRef, forwardRef } from 'react';
+import React, {Fragment, useState, forwardRef } from 'react';
 import { Link,Redirect,useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import {Form,Col,InputGroup, Button, ListGroup} from 'react-bootstrap';
 import {FaUser, FaLock, FaUnlockAlt, FaGrinSquint} from 'react-icons/fa'
 import {IoMdSchool} from 'react-icons/io'
-import {check, login, registerTo} from '../../lib/api/auth'
+import {check, login, registerTo, getUserInfo} from '../../lib/api/auth'
 import CenteredModal from '../common/CenteredModal';
-import {currentUser, isAuthenticated} from '../atoms';
+import {currentUser, isAuthenticated, currentUserInfo} from '../atoms';
 import {useForm} from 'react-hook-form';
 import { useSpring, animated as a } from "react-spring";
 import {useRecoilState} from 'recoil';
@@ -31,9 +31,6 @@ const FieldForm = forwardRef(({placeholder, icon, type, onChange, onBlur, name, 
     </Form.Group>
 ));
 
-const selectList = styled.li`
-
-`;
 
 const SelectBtn = ({value, onClick, onFocus}) =>{
     const mailType = ["dongguk.edu", "dgu.ac.kr", "naver.com", "gmail.com"];
@@ -64,6 +61,7 @@ const AuthForm = ({type, location})=>{
     const [username, setUsername] = useState("");
     const [password,setPassword] = useState("");
     const [passwordCheck, setPasswordCheck] = useState("");
+    const [userInfo, setUserInfo] = useRecoilState(currentUserInfo);
 
     // submit 시 발동
     const [validated, setValid] = useState(false); 
@@ -80,6 +78,7 @@ const AuthForm = ({type, location})=>{
 
     const handleSignIn = () =>{
         login({username,password}).then((res)=>{
+            getUserInfo(username);
             setUser(res);
             setAuth(true);
           }).catch((e)=>alert(e));

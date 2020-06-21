@@ -11,9 +11,9 @@ import {Button, Form, Dropdown, Container, Row, Col} from 'react-bootstrap';
 
 
 const QuizForm = (props)=>{
-    const koreanDict = {"mul_choices":"객관식", "essay":"주관식", "short_answer":"단답형","binary":"OX형"};
+    const koreanDict = {"MULTI":"객관식", "SHORT":"주관식", "short_answer":"단답형","binary":"OX형"};
     const {onRemove, handleBlur, onTypeChange, AnswerForm, onChange, quiz, addChoices, onRemoveChoice, selectAnswerChoice} = props;
-    const {id, type} = quiz;
+    const {id, quiz_type} = quiz;
 
 
 
@@ -28,13 +28,11 @@ const QuizForm = (props)=>{
             <Col xs={"auto"}>
             <Dropdown>
             <Dropdown.Toggle variant="info" id="dropdown-basic">
-                {koreanDict[type]}
+                {koreanDict[quiz_type]}
             </Dropdown.Toggle>
             <Dropdown.Menu>
-                <Dropdown.Item onClick={()=>{onTypeChange(id,"mul_choices")}}>객관식</Dropdown.Item>
-                <Dropdown.Item onClick={()=>{onTypeChange(id,"essay")}}>주관식</Dropdown.Item>
-                <Dropdown.Item onClick={()=>{onTypeChange(id,"short_answer")}}>단답형</Dropdown.Item>
-                <Dropdown.Item onClick={()=>{onTypeChange(id,"binary")}}>OX형</Dropdown.Item>
+                <Dropdown.Item onClick={()=>{onTypeChange(id,"MULTI")}}>객관식</Dropdown.Item>
+                <Dropdown.Item onClick={()=>{onTypeChange(id,"SHORT")}}>주관식</Dropdown.Item>
             </Dropdown.Menu>
             </Dropdown>
             </Col>
@@ -49,7 +47,7 @@ const QuizForm = (props)=>{
         <Form.Group as={Row}>
             <Form.Label  column sm="2">QUESTION</Form.Label>
             <Col sm="10">
-            <Form.Control required as="textarea" name="question" quizId={id} value={quiz.question} onChange={(e)=>{onChange(e)}}></Form.Control>
+            <Form.Control required as="textarea" name="quiz_title" quizId={id} value={quiz.quiz_title} onChange={(e)=>{onChange(e)}}></Form.Control>
             <Form.Control.Feedback type="invalid">Please type a question</Form.Control.Feedback>
             </Col>
         </Form.Group>

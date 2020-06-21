@@ -31,7 +31,7 @@ const ChoicesItem = (props) =>{
     const [focus,setFocus] = useState(false);
     const [btnfocus,setBtnFocus] = useState(false);
 
-    const placeholder = `choice ${choice.id+1}`
+    const placeholder = `choice ${choice.index+1}`
 
     const inputBackground = ()=>{
         if(btnfocus === "delete"){
@@ -47,7 +47,7 @@ const ChoicesItem = (props) =>{
             onMouseEnter={()=> setFocus(true)}>
             <Form.Control placeholder={placeholder} 
                 name='choice' quizId={Number(quizId)} 
-                value={choice.choice} choiceId={choice.id} 
+                value={choice.choice} choiceId={choice.index} 
                 onChange={(e)=>onChange(e)}
                 className={inputBackground()}
                 isAnswer={isAnswer} onBlur={handleBlur} required
@@ -57,10 +57,10 @@ const ChoicesItem = (props) =>{
                 <AnswerBtn 
                     onMouseLeave={() => setBtnFocus(false)}
                     onMouseEnter={()=> setBtnFocus("answer")}
-                    onClick={()=>{selectAnswerChoice(quizId,choice.id)}}>
+                    onClick={()=>{selectAnswerChoice(quizId,choice.index)}}>
                     <MdCheck/>
                 </AnswerBtn>
-                <DeleteBtn onClick={()=>{onRemoveChoice(quizId,choice.id)}}
+                <DeleteBtn onClick={()=>{onRemoveChoice(quizId,choice.index)}}
                     onMouseLeave={() => setBtnFocus(false)}
                     onMouseEnter={()=> setBtnFocus("delete")}>
                     <MdDelete/>

@@ -16,11 +16,18 @@ const HomeHeadline = styled.div`
 
 const Home = () =>{
     return (
-        <div className="mr__top">
-            <HomeHeadline className="mr__mi">DQuiz</HomeHeadline>
-            <br/>
-            <HomeHeadline className="mr__mi2">2020-OSSP-OSI</HomeHeadline>
+        <>
+        <img src="logoEmoji.png" className="home__emoji"/>
+        <div className="mr__top home__container">
+        <HomeHeadline className="mr__mi">DQuiz
+        </HomeHeadline>
+        <br/>
+        <HomeHeadline className="mr__mi2">2020-OSSP-OSI</HomeHeadline>
         </div>
+        <div className="img__container">
+            <img src="rightpanel.png" className="home__img"/>
+        </div>
+        </>
     )
 }
 
