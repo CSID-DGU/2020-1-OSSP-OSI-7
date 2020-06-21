@@ -561,3 +561,4 @@ time="2020-06-21T20:50:01+09:00" level=error msg="Failed to push Redis queue" fu
 time="2020-06-21T20:50:01+09:00" level=error msg=REDIS_OP_FAIL func=oss/redisUtil.RedisSet file="C:/Users/4whom/Desktop/workspace/oss/backend/redisUtil/index.go:71" err="READONLY You can't write against a read only replica."
 time="2020-06-21T23:43:26+09:00" level=info msg="Failed to send log" func=main.main file="C:/Users/4whom/Desktop/workspace/oss/backend/main.go:32" event=event
 time="2020-06-21T23:44:47+09:00" level=info msg="Failed to send log" func=main.main file="C:/Users/4whom/Desktop/workspace/oss/backend/main.go:32" event=event
+time="2020-06-21T23:45:37+09:00" level=info msg="Failed to send log" func=main.main file="C:/Users/4whom/Desktop/workspace/oss/backend/main.go:32" event=event

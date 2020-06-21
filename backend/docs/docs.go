@@ -785,6 +785,9 @@ var doc = `{
                 "class_name": {
                     "type": "string"
                 },
+                "class_quiz_set_id": {
+                    "type": "string"
+                },
                 "my_score": {
                     "type": "integer"
                 },
