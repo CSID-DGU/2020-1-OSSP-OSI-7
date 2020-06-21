@@ -25,12 +25,20 @@ const TestQuizResult = ({match, location}) =>{
         return (dec >>> 0).toString(2);
     }
     
+    const scoreAdjust = (total, score) => {
+        const xor = total ^ score;
+        if(xor.toString().length < total.length) {
+            return Array(total.length-xor.toString().length).fill("0").join("") + xor.toString();
+        }
+        return xor.toString();
+    }
+
     const setQuizTrueFalse = (total, myscore) =>{
-        return (getBinary(total) ^ getBinary(myscore)).toString().split("").map((i) =>(i==="0")).reverse();
+        return scoreAdjust(getBinary(total), getBinary(myscore)).split("").map((i) =>(i==="0")).reverse();
     }
     
     const makeQuizResult = (quizData) => {
-        console.log(quizData);
+        // console.log(quizData);
         setTrueResult(setQuizTrueFalse(quizData.total_score, quizData.my_score));
         setPercent(isTrueResult.filter((c) => c=== true).length/isTrueResult.length * 100);
     }
@@ -43,7 +51,7 @@ const TestQuizResult = ({match, location}) =>{
             }
         )
     }, []);
-    console.log(isTrueResult);
+    // console.log(quizset);
     const colorGradiant = (percent) => {
         if(percent <= 30){
             return "red";
