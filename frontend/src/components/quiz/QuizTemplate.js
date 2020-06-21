@@ -167,7 +167,7 @@ const QuizTemplate = ({match}) => {
             quiz_type: quiz.quiz_type,
             quiz_title: quiz.quiz_title,
             quiz_score: Math.pow(2,index),
-            quiz_content: removeContent(Base64.encode(JSON.stringify(quiz.quiz_content))),
+            quiz_content: removeContent(quiz.quiz_type, Base64.encode(JSON.stringify(quiz.quiz_content))),
             quiz_answer: quiz.quiz_answer,
         }
     }
