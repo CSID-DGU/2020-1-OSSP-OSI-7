@@ -5,25 +5,40 @@ import TestQuizChoice from './TestQuizChoice';
 import TestQuizAnswer from './TestQuizAnswer';
 import TestQuizResult from './TestQuizResult';
 import QuizModal from './QuizModal';
+import {quizDetail, quizTestSubmit} from '../../lib/api/quiz';
+import {currentUser} from '../atoms';
+import {useRecoilValue} from 'recoil';
+import Base64 from '../../lib/Base64';
+import {useHistory} from 'react-router-dom';
+
 
 import {quizsetdata} from './quizsetdata';
 
+const useBeforeFirstRender  = (f) => {
+  const [hasRendered, setHasRendered] = useState(false)
+  useEffect(() => setHasRendered(true), [hasRendered])
+  if (!hasRendered) {
+    f()
+  }
+}
 
-const TestQuiz = ({match}) => {
+
+const TestQuiz = ({match, location}) => {
     const [current,setCurrent] = useState(1);
     const [answers, setAnswers] = useState([]);
     const [check,setCheck] = useState(false);
     const [modalShow, setModalShow] = useState(false);
     const [tempAnswer, setTempAnswer] = useState("");
     const [tempChoice, setTempChoice] = useState([]);
+    const [quizset, setQuizSet] = useState(location.state.quizset);
+    const username = useRecoilValue(currentUser);
 
-    const quizset = quizsetdata; // 나중에 수정
-    const total = quizset.quizzes.length;
+    let total = quizset.quizzes.length;
     const currentPercent = Math.round((current / total) * 100);
     const {quizSetId} = match.params;
-
-    const isLast = current === total+1;
-    const currentQuiz = quizset.quizzes[current-1];
+    const history = useHistory();
+    const isLast = current === total;
+    let currentQuiz = quizset.quizzes[current-1];
 
     useEffect(()=>{
         setTempAnswer(tempChoice.join(","));
@@ -45,6 +60,32 @@ const TestQuiz = ({match}) => {
         }
     }
 
+    const resultFormating = (final_answers) =>{
+        let answerList = [];
+        quizset.quizzes.map((q,index) => {
+            answerList = answerList.concat(
+                {
+                    "quiz_answer": final_answers[index],
+                    "quiz_id":q.quiz_id,
+                    "quiz_type":q.quiz_type
+                }
+
+            )
+        })
+        const quizResult = {
+            "class_quiz_set_id": quizset.class_quiz_set_id,
+            "quiz_for_scorings":answerList,
+            "username":username
+        }
+        return quizResult;
+    }
+
+    const handleSubmit = (e) => {
+        const result =resultFormating(answers.concat(tempAnswer));
+        quizTestSubmit(result).then((res)=>console.log("제출!", res));
+        history.push('/mypage');
+    }
+
     const onClick = (choiceId, select) =>{
         if(!select){
             setTempChoice(tempChoice.concat(choiceId));
@@ -52,14 +93,12 @@ const TestQuiz = ({match}) => {
             setTempChoice(tempChoice.filter((c)=> c !== choiceId));
         }
     }
-
-    return (
+    return (   
         <Container className="quiz__container">
-            {!isLast ? (
                 <Fragment>
                 <Row className="mr__bottom__t1">
                     <Col md={{ span: 6, offset: 3 }}>
-                        <h2 className="align-text">{quizset.quizset_name}</h2>
+                        <h2 className="align-text">{quizset.quiz_set_name}</h2>
                     </Col>
                 </Row>
                 <Container className="mr__bottom__1">
@@ -77,26 +116,30 @@ const TestQuiz = ({match}) => {
                     <TestQuizHeader quiz={currentQuiz}/>
 
                     <Container>
-                    {currentQuiz.type ==="mul_choices" ? 
+                    {currentQuiz.quiz_type ==="MULTI" ? 
                         (
-                            currentQuiz.content.choices.map((c)=>
-                            <TestQuizChoice key={`${current}_${c.id}`} choice={c} onClick={onClick}/>)
+                            JSON.parse(Base64.decode(currentQuiz.quiz_content)).choices.map((c)=>
+                            <TestQuizChoice key={`${current}_${c.index}`} choice={c} onClick={onClick}/>)
                         ) :
                         (
                             <TestQuizAnswer key={current} setTempAnswer={setTempAnswer} tempAnswer={tempAnswer}/>
                         )
                     }
-                    <Button block onClick={()=>{handleNext() }}>Next</Button>
+                    {
+                        isLast 
+                        ? 
+                        <Button block onClick={()=>{handleSubmit()}}>제출하기</Button>
+                        : 
+                        <Button block onClick={()=>{handleNext() }}>다음 문제</Button>
+                    }
                     </Container>
                 </Col>
                 <QuizModal show={modalShow} onHide={()=> setModalShow(false)}/>
             </Fragment>
-            ):
-                (<TestQuizResult total={total} />)
-        }
         </Container>
-    )
-
-}
-
-export default TestQuiz;
+        )
+        
+    }
+    
+    export default TestQuiz;
+    // (<TestQuizResult total={total} />)

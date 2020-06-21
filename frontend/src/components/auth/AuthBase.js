@@ -4,6 +4,7 @@ import {Container,Col, Row} from 'react-bootstrap';
 
 const AuthBaseBlock = styled.div`
     margin-top: 3rem;
+    height: calc(100vh - 176px);
 `;
 
 const AuthBase = ({children})=>{

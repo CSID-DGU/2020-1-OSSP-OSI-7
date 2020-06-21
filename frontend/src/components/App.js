@@ -1,6 +1,6 @@
 import React,{useState, useEffect,Fragment} from 'react';
 import { Route, Link, Switch, useHistory, useLocation} from 'react-router-dom';
-import {Navbar, Nav, Image, Container, NavDropdown} from 'react-bootstrap';
+import {Navbar, Nav, NavDropdown} from 'react-bootstrap';
 import QuizTemplate from './quiz/QuizTemplate';
 import QuizSetListContainer from './quiz/QuizSetListContainer';
 import Home from './Home';
@@ -10,12 +10,13 @@ import AuthRoute from './auth/AuthRoute';
 import NotFound from './NotFound';
 import TestQuiz from './quiz/TestQuiz';
 import TestQuizResult from './quiz/TestQuizResult';
+import FooterContent from './FooterContent';
 import Mypage from './mypage/Mypage';
 import ClassRoom from './class/ClassRoom'
-import {login, registerTo} from '../lib/api/auth';
 import {getAvatar} from '../lib/api/mypage';
-import {useRecoilState} from 'recoil';
-import {currentUser, isAuthenticated, userAvatar, tokenExpiredate} from './atoms';
+import {getUserInfo} from '../lib/api/auth';
+import {useRecoilState, useRecoilValue} from 'recoil';
+import {currentUser, currentUserInfo, isAuthenticated, userAvatar, tokenExpiredate, userAuth} from './atoms';
 
 const useTitle = (initialTitle)=>{
   const[title,setTitle] = useState(initialTitle);
@@ -29,6 +30,8 @@ const useTitle = (initialTitle)=>{
 
 const App = () => {
   const [avatar, setAvatar] = useRecoilState(userAvatar);
+  const [userinfo, setUserInfo] = useRecoilState(currentUserInfo);
+  const auth = useRecoilValue(userAuth);
   const titleUpdator = useTitle("DQUIZ");
   const [user, setUser] = useRecoilState(currentUser);
   const [authenticated, setAuth] = useRecoilState(isAuthenticated);
@@ -50,6 +53,8 @@ const App = () => {
       // setUser(local.user);
       if(user !== null){
         getAvatar(user.split("@")[0]).then((res)=>setAvatar(res.data.avatar_url));
+        getUserInfo(user).then((r)=>setUserInfo(r.data));
+
       }
     }, [user])
     
@@ -58,6 +63,7 @@ const App = () => {
         const local = JSON.parse(localStorage.getItem("user_info"));
         if( Date.now() > local.exp){
           console.log("token check expired");
+          alert("token is expired");
           logOut();
         } else{
           console.log("token is ok");
@@ -78,11 +84,6 @@ const App = () => {
 
   return (
     <>
-    <link
-      rel="stylesheet"
-      href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
-      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
-      crossorigin="anonymous"/>
 
     <Navbar collapseOnSelect expand="sm" bg="dark" sticky="top" className="nav__bar" variant="dark">
       <Link to="/">
@@ -100,7 +101,6 @@ const App = () => {
       <Navbar.Collapse>
 
       <Nav  className="mr-auto">
-        <Nav.Link><Link to="/quiz">QUIZ</Link></Nav.Link>
       </Nav>
       
       <Nav>
@@ -142,9 +142,7 @@ const App = () => {
 
 
     <Switch>
-      <Route path="/" component={Home} exact/>
-      <AuthRoute authenticated={authenticated} path="/quiz" component={QuizSetListContainer} exact/>
-      
+      <Route path="/" component={Home} exact/>      
       <Route path="/login" render={props => (
           <Login authenticated={authenticated} {...props} />
         )}/>
@@ -152,21 +150,22 @@ const App = () => {
       <Route path="/register" render={props => (
           <Register authenticated={authenticated} {...props} />
           )}/>
-      
-      <AuthRoute authenticated={authenticated} path="/create"
+      {
+        auth && 
+        <AuthRoute authenticated={authenticated} path="/create"
         render={props => <QuizTemplate {...props} />}
-      />
-      <AuthRoute authenticated={authenticated} path="/quiz/:quizSetId" component={TestQuiz} exact/>}
-      />
-      <AuthRoute authenticated={authenticated} path="/quiz/:quizSetId/result" component={TestQuizResult} exact/>}
-      />
-      <AuthRoute authenticated={authenticated} path="/mypage" component={Mypage}/>}
-      />
-      <AuthRoute authenticated={authenticated} path="/class/:classId" component={ClassRoom}/>}
-      />
+        />
+      }
+      <AuthRoute authenticated={authenticated} path="/quiz/:quizSetId" component={TestQuiz} exact/>
+      <AuthRoute authenticated={authenticated} path="/quiz/:quizSetName/result" component={TestQuizResult} exact/>
+      <AuthRoute authenticated={authenticated} path="/mypage" component={Mypage}/>
+      <AuthRoute authenticated={authenticated} path="/class/:classId" component={ClassRoom}/>
       
       <Route component={NotFound} />
         </Switch>
+        <footer className="footer">
+          <FooterContent/>
+        </footer>
     </>
   );
 }

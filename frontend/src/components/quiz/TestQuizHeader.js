@@ -12,9 +12,9 @@ const TestQuizHeader = ({quiz}) =>{
     return (
         <Container  className="mr__bottom__t1" >
             <QuizH5>Select an answer</QuizH5>
-            <p>{quiz.question}</p>
-            {quiz.content.images &&
-                <Image src={quiz.content.images[0]} fluid/>
+            <p>{quiz.quiz_title}</p>
+            {quiz.quiz_content.images &&
+                <Image src={quiz.quiz_content.images[0]} fluid/>
             }
         </Container>
     )
