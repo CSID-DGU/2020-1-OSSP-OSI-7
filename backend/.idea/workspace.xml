@@ -3,10 +3,9 @@
   <component name="ChangeListManager">
     <list default="true" id="9517ee32-7d6d-4259-8ced-504d918953f5" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/quiz_set_routers.go" beforeDir="false" afterPath="$PROJECT_DIR$/api/quiz_set_routers.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/go.mod" beforeDir="false" afterPath="$PROJECT_DIR$/go.mod" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/logrus.log" beforeDir="false" afterPath="$PROJECT_DIR$/logrus.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/repository/quiz_set_result.go" beforeDir="false" afterPath="$PROJECT_DIR$/repository/quiz_set_result.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/quiz_scoring.go" beforeDir="false" afterPath="$PROJECT_DIR$/service/quiz_scoring.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/redisUtil/index.go" beforeDir="false" afterPath="$PROJECT_DIR$/redisUtil/index.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -176,52 +175,52 @@
     </state>
     <state x="489" y="325" key="FileChooserDialogImpl/0.0.1920.1080@0.0.1920.1080" timestamp="1591296780810" />
     <state x="780" y="313" key="FileChooserDialogImpl/65.24.1855.1056/65.24.1855.1056@65.24.1855.1056" timestamp="1589814629254" />
-    <state width="960" height="317" key="GridCell.Tab.0.bottom" timestamp="1592738296760">
+    <state width="960" height="311" key="GridCell.Tab.0.bottom" timestamp="1592740829290">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="960" height="317" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1592738296760" />
+    <state width="960" height="311" key="GridCell.Tab.0.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1592740829290" />
     <state width="882" height="255" key="GridCell.Tab.0.bottom/65.24.1855.1056/65.24.1855.1056@65.24.1855.1056" timestamp="1590844232416" />
     <state width="882" height="245" key="GridCell.Tab.0.bottom/65.24.1855.1056@65.24.1855.1056" timestamp="1591012984739" />
-    <state width="960" height="317" key="GridCell.Tab.0.center" timestamp="1592738296760">
+    <state width="960" height="311" key="GridCell.Tab.0.center" timestamp="1592740829290">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="960" height="317" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1592738296760" />
+    <state width="960" height="311" key="GridCell.Tab.0.center/0.0.1920.1080@0.0.1920.1080" timestamp="1592740829290" />
     <state width="882" height="255" key="GridCell.Tab.0.center/65.24.1855.1056/65.24.1855.1056@65.24.1855.1056" timestamp="1590844232416" />
     <state width="882" height="245" key="GridCell.Tab.0.center/65.24.1855.1056@65.24.1855.1056" timestamp="1591012984737" />
-    <state width="960" height="317" key="GridCell.Tab.0.left" timestamp="1592738296760">
+    <state width="960" height="311" key="GridCell.Tab.0.left" timestamp="1592740829289">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="960" height="317" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1592738296760" />
+    <state width="960" height="311" key="GridCell.Tab.0.left/0.0.1920.1080@0.0.1920.1080" timestamp="1592740829289" />
     <state width="882" height="255" key="GridCell.Tab.0.left/65.24.1855.1056/65.24.1855.1056@65.24.1855.1056" timestamp="1590844232416" />
     <state width="882" height="245" key="GridCell.Tab.0.left/65.24.1855.1056@65.24.1855.1056" timestamp="1591012984733" />
-    <state width="960" height="317" key="GridCell.Tab.0.right" timestamp="1592738296760">
+    <state width="960" height="311" key="GridCell.Tab.0.right" timestamp="1592740829290">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="960" height="317" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1592738296760" />
+    <state width="960" height="311" key="GridCell.Tab.0.right/0.0.1920.1080@0.0.1920.1080" timestamp="1592740829290" />
     <state width="882" height="255" key="GridCell.Tab.0.right/65.24.1855.1056/65.24.1855.1056@65.24.1855.1056" timestamp="1590844232416" />
     <state width="882" height="245" key="GridCell.Tab.0.right/65.24.1855.1056@65.24.1855.1056" timestamp="1591012984738" />
-    <state width="960" height="317" key="GridCell.Tab.1.bottom" timestamp="1592738296700">
+    <state width="960" height="311" key="GridCell.Tab.1.bottom" timestamp="1592740829290">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="960" height="317" key="GridCell.Tab.1.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1592738296700" />
+    <state width="960" height="311" key="GridCell.Tab.1.bottom/0.0.1920.1080@0.0.1920.1080" timestamp="1592740829290" />
     <state width="882" height="238" key="GridCell.Tab.1.bottom/65.24.1855.1056/65.24.1855.1056@65.24.1855.1056" timestamp="1590844232413" />
     <state width="882" height="245" key="GridCell.Tab.1.bottom/65.24.1855.1056@65.24.1855.1056" timestamp="1591012984741" />
-    <state width="960" height="317" key="GridCell.Tab.1.center" timestamp="1592738296699">
+    <state width="960" height="311" key="GridCell.Tab.1.center" timestamp="1592740829290">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="960" height="317" key="GridCell.Tab.1.center/0.0.1920.1080@0.0.1920.1080" timestamp="1592738296699" />
+    <state width="960" height="311" key="GridCell.Tab.1.center/0.0.1920.1080@0.0.1920.1080" timestamp="1592740829290" />
     <state width="882" height="238" key="GridCell.Tab.1.center/65.24.1855.1056/65.24.1855.1056@65.24.1855.1056" timestamp="1590844232413" />
     <state width="882" height="245" key="GridCell.Tab.1.center/65.24.1855.1056@65.24.1855.1056" timestamp="1591012984740" />
-    <state width="960" height="317" key="GridCell.Tab.1.left" timestamp="1592738296699">
+    <state width="960" height="311" key="GridCell.Tab.1.left" timestamp="1592740829290">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="960" height="317" key="GridCell.Tab.1.left/0.0.1920.1080@0.0.1920.1080" timestamp="1592738296699" />
+    <state width="960" height="311" key="GridCell.Tab.1.left/0.0.1920.1080@0.0.1920.1080" timestamp="1592740829290" />
     <state width="882" height="238" key="GridCell.Tab.1.left/65.24.1855.1056/65.24.1855.1056@65.24.1855.1056" timestamp="1590844232413" />
     <state width="882" height="245" key="GridCell.Tab.1.left/65.24.1855.1056@65.24.1855.1056" timestamp="1591012984739" />
-    <state width="960" height="317" key="GridCell.Tab.1.right" timestamp="1592738296699">
+    <state width="960" height="311" key="GridCell.Tab.1.right" timestamp="1592740829290">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state width="960" height="317" key="GridCell.Tab.1.right/0.0.1920.1080@0.0.1920.1080" timestamp="1592738296699" />
+    <state width="960" height="311" key="GridCell.Tab.1.right/0.0.1920.1080@0.0.1920.1080" timestamp="1592740829290" />
     <state width="882" height="238" key="GridCell.Tab.1.right/65.24.1855.1056/65.24.1855.1056@65.24.1855.1056" timestamp="1590844232413" />
     <state width="882" height="245" key="GridCell.Tab.1.right/65.24.1855.1056@65.24.1855.1056" timestamp="1591012984740" />
     <state x="19" y="188" key="SettingsEditor" timestamp="1587927900379">
@@ -263,10 +262,10 @@
     </state>
     <state x="96" y="49" width="820" height="1035" key="dock-window-3/65.24.1855.1056/65.24.1855.1056@65.24.1855.1056" timestamp="1590656493571" />
     <state x="132" y="62" width="820" height="1035" key="dock-window-3/65.24.1855.1056@65.24.1855.1056" timestamp="1590612006340" />
-    <state x="633" y="339" width="812" height="741" key="find.popup" timestamp="1592738270022">
+    <state x="633" y="339" width="812" height="741" key="find.popup" timestamp="1592740688332">
       <screen x="0" y="0" width="1920" height="1080" />
     </state>
-    <state x="633" y="339" width="812" height="741" key="find.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1592738270022" />
+    <state x="633" y="339" width="812" height="741" key="find.popup/0.0.1920.1080@0.0.1920.1080" timestamp="1592740688332" />
     <state x="683" y="277" width="618" height="522" key="find.popup/65.24.1855.1056/65.24.1855.1056@65.24.1855.1056" timestamp="1590844231805" />
     <state x="216" y="317" width="758" height="616" key="find.popup/65.24.1855.1056@65.24.1855.1056" timestamp="1591019072120" />
     <state x="403" y="412" width="250" height="278" key="jetbrains.javascript.buildTools.run-task-popup" timestamp="1590487510446">
@@ -540,12 +539,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/redisUtil/index.go</url>
-          <line>39</line>
+          <line>40</line>
           <option name="timeStamp" value="416" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/redisUtil/index.go</url>
-          <line>33</line>
+          <line>34</line>
           <option name="timeStamp" value="417" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
@@ -555,7 +554,7 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/redisUtil/index.go</url>
-          <line>37</line>
+          <line>38</line>
           <option name="timeStamp" value="419" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
@@ -570,12 +569,12 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/redisUtil/index.go</url>
-          <line>114</line>
+          <line>118</line>
           <option name="timeStamp" value="424" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
           <url>file://$PROJECT_DIR$/redisUtil/index.go</url>
-          <line>111</line>
+          <line>112</line>
           <option name="timeStamp" value="425" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DlvLineBreakpoint">
@@ -647,6 +646,11 @@
           <url>file://$PROJECT_DIR$/service/quiz_scoring.go</url>
           <line>297</line>
           <option name="timeStamp" value="454" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DlvLineBreakpoint">
+          <url>file://$PROJECT_DIR$/api/index.go</url>
+          <line>120</line>
+          <option name="timeStamp" value="459" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>

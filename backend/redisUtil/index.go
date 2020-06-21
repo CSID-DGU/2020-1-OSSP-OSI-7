@@ -1,6 +1,7 @@
 package redisUtil
 
 import (
+	"errors"
 	"fmt"
 	"github.com/gomodule/redigo/redis"
 	"github.com/sirupsen/logrus"
@@ -112,5 +113,9 @@ func RedisRangeFromQueue(conn *redis.Conn, queueName string) (string, *models.Ap
 	if err != nil {
 		return "", models.NewRedisError(err, "failed to pop Redis queue", "")
 	}
-	return data[0], nil
+
+	if len(data) > 0 {
+		return data[0], nil
+	}
+	return "", models.NewAppError(errors.New("no element"), "", "")
 }
