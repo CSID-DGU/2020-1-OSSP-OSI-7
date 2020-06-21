@@ -25,12 +25,21 @@ const TestQuizResult = ({match, location}) =>{
         return (dec >>> 0).toString(2);
     }
     
+    const scoreAdjust = (total, score) => {
+        const xor = (total ^ score).toString();
+        const distance = total.length-xor.length;
+        if(distance) {
+            return Array(distance).fill("0").join("") + xor;
+        }
+        return xor;
+    }
+
     const setQuizTrueFalse = (total, myscore) =>{
-        return (getBinary(total) ^ getBinary(myscore)).toString().split("").map((i) =>(i==="0"));
+        return scoreAdjust(getBinary(total), getBinary(myscore)).split("").map((i) =>(i==="0")).reverse();
     }
     
     const makeQuizResult = (quizData) => {
-
+        // console.log(quizData);
         setTrueResult(setQuizTrueFalse(quizData.total_score, quizData.my_score));
         setPercent(isTrueResult.filter((c) => c=== true).length/isTrueResult.length * 100);
     }
@@ -42,10 +51,8 @@ const TestQuizResult = ({match, location}) =>{
             
             }
         )
-        console.log(quizset);
-        console.log(quizData);
     }, []);
-    
+    // console.log(quizset);
     const colorGradiant = (percent) => {
         if(percent <= 30){
             return "red";
@@ -68,7 +75,7 @@ const TestQuizResult = ({match, location}) =>{
             <hr className="profile__class__hr"/>
             <Row>
                 <Col md={{span: 4, offset:4}}> 
-                    <h2 className="align-text">Test Result</h2>
+                    <h2 className="align-text">퀴즈 결과</h2>
                 </Col>
             </Row>
             <Row>

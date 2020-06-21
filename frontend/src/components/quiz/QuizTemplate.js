@@ -154,12 +154,20 @@ const QuizTemplate = ({match}) => {
         handleChange({quizId:quizId,quiz_answer:joinAnswer});
     }
 
+    const removeContent= (type, content)=>{
+        if(type === "MULTI") {
+            return content;
+        }else{
+            return "";
+        }
+    }
+
     const makeQuiz2String = (quiz, index) =>{
         return {
             quiz_type: quiz.quiz_type,
             quiz_title: quiz.quiz_title,
             quiz_score: Math.pow(2,index),
-            quiz_content: Base64.encode(JSON.stringify(quiz.quiz_content)),
+            quiz_content: removeContent(quiz.quiz_type, Base64.encode(JSON.stringify(quiz.quiz_content))),
             quiz_answer: quiz.quiz_answer,
         }
     }
@@ -167,7 +175,6 @@ const QuizTemplate = ({match}) => {
     const makePayload = (quizzes)=>{
         let result_quizzes = [];
         quizzes.map((q, index)=>{result_quizzes = result_quizzes.concat(makeQuiz2String(q, index))});
-        console.log(result_quizzes);
         return result_quizzes;
     }
 
@@ -190,7 +197,6 @@ const QuizTemplate = ({match}) => {
             .then((res)=>setModalShow(true))
             .catch((e)=>console.log(e));
             // api 추가 예정 퀴즈 생성하기
-            console.log(JSON.stringify(quizSet));
         }
         setValidated(true);
     }

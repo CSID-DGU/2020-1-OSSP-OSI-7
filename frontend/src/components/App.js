@@ -66,7 +66,15 @@ const App = () => {
           alert("token is expired");
           logOut();
         } else{
-          console.log("token is ok");
+          // console.log("token is ok 😆 %c/////", 'color:green; background-color:green; padding: 0 10px; border-radius: 100px;');
+          console.log("%ctoken is ok 😆 %c           ",'font-size: 20px', [
+            'background-image: url("https://media.giphy.com/media/oobNzX5ICcRZC/giphy.gif")',
+            'background-size: cover',
+            'color: black',
+            'font-weight: 600',
+            'padding: 10px 20px',
+            'line-height: 35px'
+            ].join(';'));
         }
 
       }

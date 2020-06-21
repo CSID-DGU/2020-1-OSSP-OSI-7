@@ -3,7 +3,8 @@ import {useHistory} from 'react-router-dom';
 import {Container, Col,Row, Badge,Button, ButtonGroup, Dropdown, FormControl} from 'react-bootstrap';
 import { useRecoilValue } from "recoil";
 import {managingClasses, auth} from '../atoms';
-import {addQuiz2Class, removeQuizFromClass, deleteQuiz} from '../../lib/api/quiz';
+import {addQuiz2Class, removeQuizFromClass, deleteQuiz, quizDetail} from '../../lib/api/quiz';
+import {getClassQuizSet} from '../../lib/api/class';
 
 const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     <Dropdown.Toggle
@@ -52,9 +53,21 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
     },
   );
 
-const QuizSetItem = ({quizset, user,auth,itemStyle, class_code}) => {
+const QuizSetItem = ({quizset, user,auth,itemStyle, class_code, location}) => {
     const classes = useRecoilValue(managingClasses);
     const history = useHistory();
+    
+    const handleResult = () =>{
+      if(location === "/mypage") {
+        quizDetail(quizset.class_quiz_set_id).then((res)=>{
+          history.push({pathname:`/quiz/${quizset.quiz_set_name}/result`,state:{quizset:res.data}})
+        })
+      }else {
+        history.push({pathname:`/quiz/${quizset.quiz_set_name}/result`,state:{quizset:quizset}})
+      }
+
+    }
+
     return (
     <Container className={itemStyle}>
 
@@ -100,14 +113,14 @@ const QuizSetItem = ({quizset, user,auth,itemStyle, class_code}) => {
     <div>
     <ButtonGroup>
     {
-        quizset.quiz_set_author_name === user && auth &&
-        <Button size="sm">수정하기</Button>
-    }
-    {
-        !auth && 
+      !auth && 
+        <>
+        {location !== "/mypage" &&
         <Button size="sm" onClick={()=>history.push({pathname:`/quiz/${quizset.class_quiz_set_id}`, state:{quizset:quizset}})}>퀴즈풀기</Button>
-    }
-    <Button size="sm" onClick={()=>history.push({pathname:`/quiz/${quizset.quiz_set_name}/result`,state:{quizset:quizset}})}>결과보기</Button>
+      }
+      <Button size="sm" onClick={()=>handleResult()}>결과보기</Button>
+      </>
+      }
     </ButtonGroup>
     </div>
     </Col>
@@ -117,3 +130,7 @@ const QuizSetItem = ({quizset, user,auth,itemStyle, class_code}) => {
 }
 
 export default QuizSetItem;
+// {
+//     quizset.quiz_set_author_name === user && auth &&
+//     <Button size="sm">수정하기</Button>
+// }
