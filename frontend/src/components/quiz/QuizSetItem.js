@@ -56,7 +56,7 @@ const CustomToggle = React.forwardRef(({ children, onClick }, ref) => (
 const QuizSetItem = ({quizset, user,auth,itemStyle, class_code, location}) => {
     const classes = useRecoilValue(managingClasses);
     const history = useHistory();
-
+    
     const handleResult = () =>{
       if(location === "/mypage") {
         quizDetail(quizset.class_quiz_set_id).then((res)=>{

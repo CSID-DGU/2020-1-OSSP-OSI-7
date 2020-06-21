@@ -26,11 +26,12 @@ const TestQuizResult = ({match, location}) =>{
     }
     
     const scoreAdjust = (total, score) => {
-        const xor = total ^ score;
-        if(xor.toString().length < total.length) {
-            return Array(total.length-xor.toString().length).fill("0").join("") + xor.toString();
+        const xor = (total ^ score).toString();
+        const distance = total.length-xor.length;
+        if(distance) {
+            return Array(distance).fill("0").join("") + xor;
         }
-        return xor.toString();
+        return xor;
     }
 
     const setQuizTrueFalse = (total, myscore) =>{
