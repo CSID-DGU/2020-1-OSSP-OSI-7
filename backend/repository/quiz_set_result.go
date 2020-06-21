@@ -33,7 +33,7 @@ func (q *SqlQuizSetResultRepository) Get(classQuizSetResultId int64, userName st
 func (q *SqlQuizSetResultRepository) GetUserAllQuizSet(userName string) ([]*dto.GetQuizSetResult, *models.AppError) {
 	var quizSetResults []*dto.GetQuizSetResult
 	_, err := q.Master.Select(&quizSetResults,
-		`SELECT qs.quiz_set_name, c.class_name, c.class_code, qs.total_score, qsr.my_score
+		`SELECT qs.quiz_set_name, c.class_name, c.class_code, qs.total_score, qsr.my_score, cqs.class_quiz_set_id 
    			FROM quiz_set_result qsr INNER JOIN class c ON c.class_id = 
 			(SELECT class_id FROM class_quiz_set cqs1 WHERE cqs1.class_quiz_set_id = qsr.class_quiz_set_id) 
 			AND qsr.user_id = (SELECT u.user_id FROM user u WHERE u.username = ?)

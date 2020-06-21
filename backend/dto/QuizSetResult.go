@@ -5,6 +5,7 @@ type GetQuizSetResults struct {
 }
 
 type GetQuizSetResult struct {
+	ClassQuizSetId string `db:"class_quiz_set_id" json:"class_quiz_set_id"`
 	QuizSetName string `db:"quiz_set_name" json:"quiz_set_name"`
 	ClassName string `db:"class_name" json:"class_name"`
 	ClassCode string `db:"class_code" json:"class_code"`

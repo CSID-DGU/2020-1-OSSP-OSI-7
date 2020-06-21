@@ -46,6 +46,7 @@ func GetUserQuizSet (context *web.Context) gin.HandlerFunc {
 				}
 				quizzesResult = append(quizzesResult, quizGetForm)
 			}
+			
 			quizSetResult := dto.QuizSetGetForm{
 				QuizSetId: quizSet.QuizSetId,
 				QuizSetName: quizSet.QuizSetName,
