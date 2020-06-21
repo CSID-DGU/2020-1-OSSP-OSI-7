@@ -42,8 +42,6 @@ const TestQuizResult = ({match, location}) =>{
             
             }
         )
-        console.log(quizset);
-        console.log(quizData);
     }, []);
     
     const colorGradiant = (percent) => {
@@ -68,7 +66,7 @@ const TestQuizResult = ({match, location}) =>{
             <hr className="profile__class__hr"/>
             <Row>
                 <Col md={{span: 4, offset:4}}> 
-                    <h2 className="align-text">Test Result</h2>
+                    <h2 className="align-text">퀴즈 결과</h2>
                 </Col>
             </Row>
             <Row>

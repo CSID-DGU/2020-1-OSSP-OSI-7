@@ -167,7 +167,6 @@ const QuizTemplate = ({match}) => {
     const makePayload = (quizzes)=>{
         let result_quizzes = [];
         quizzes.map((q, index)=>{result_quizzes = result_quizzes.concat(makeQuiz2String(q, index))});
-        console.log(result_quizzes);
         return result_quizzes;
     }
 
