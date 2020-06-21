@@ -69,7 +69,7 @@ const ConfirmClassModal = ({onHide, onClick, class_code, class_name}) => {
                 (!isOpened && !isError) && (
                     <Modal.Footer>
                         <Button variant="outline-primary" onClick={onHide}>취소 하기</Button>
-                        <Button variant="primary" onClick={async ()=>onClick().then((res)=>{setIsOpened(true); setClasses(classes.concat([{"class_name":class_name,"class_code":class_code}]))})
+                        <Button variant="primary" onClick={async ()=>onClick().then((res)=>{setIsOpened(true); setIsError(false); setClasses(classes.concat([{"class_name":class_name,"class_code":class_code}]))})
                         .catch((e)=>setIsError(true))}>강의 개설</Button>
                     </Modal.Footer>
                         ) 

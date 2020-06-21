@@ -32,7 +32,16 @@ client.interceptors.request.use(async (config) => {
             }
             client.defaults.headers.common['Authorization'] = "Bearer " + local.token;
         }
-        console.log("loading.....");
+        const style = [
+            'background-image: url("https://media.giphy.com/media/RHEqKwRZDwFKE/giphy.gif")',
+            'background-size: cover',
+            'color: black',
+            'font-weight: 600',
+            'padding: 10px 20px',
+            'line-height: 35px'
+            ].join(';');
+        
+            console.log('Loading...!    %c               ', style);
     }
     catch(e)
     {
@@ -45,7 +54,7 @@ client.interceptors.request.use(async (config) => {
 
 client.interceptors.response.use(
     response => {
-        console.log("It's response", response);
+        // console.log("It's response", response);
         return response;
     },
     error => {

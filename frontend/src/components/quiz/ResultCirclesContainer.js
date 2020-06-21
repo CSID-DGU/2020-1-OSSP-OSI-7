@@ -18,9 +18,12 @@ const ResultCirclesContainer = ({results, quizData}) =>{
   };
 
   const handleClick = () =>{
+    if(currentIndex + 1 === results.length){
+      setModalOn(false);
+      return;
+    }
     setCurrentIndex((currentIndex + 1) % results.length);
   }
-
     return (
         <Fragment>
         <div className="circle__container">
