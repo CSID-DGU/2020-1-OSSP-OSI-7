@@ -75,7 +75,7 @@ const QuizSetItem = ({quizset, user,auth,itemStyle, class_code}) => {
       <Dropdown.Menu alignRight as={CustomMenu}>
       {
         (classes !== null) && 
-        classes.map((c,index)=><Dropdown.Item onClick={()=>addQuiz2Class(quizset.quiz_set_id, c.class_code)}
+        classes.map((c,index)=><Dropdown.Item onClick={()=>{addQuiz2Class(quizset.quiz_set_id, c.class_code); alert(`${c.class_code} 강의에 추가되었습니다.`)}}
         eventKey={index}>{c.class_name}</Dropdown.Item>)
       }
       </Dropdown.Menu>

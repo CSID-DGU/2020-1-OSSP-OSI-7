@@ -28,7 +28,7 @@ const ClassRoom = ({match, location}) =>{
         <Container className="quiz__container__no_border" as={Col} md={{ span: 8, offset: 2 }}>
         <Row>
             <Col xs={4} md={3} lg={2}>
-                <Image src="https://placekitten.com/300/300" fluid className="profile__img"></Image>
+                <Image src="https://cdn-res.keymedia.com/cms/images/au/130/0314_637232847506093449.jpg" fluid className="profile__img"></Image>
             </Col>
 
             <Col xs={8} md={9} lg={10}>
