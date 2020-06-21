@@ -7,6 +7,7 @@ import (
 
 type QuizSetResultRepository interface {
 	Get(classQuizSetResultId int64, userName string) (*models.QuizSetResult, *models.AppError)
+	//GetByClassQuizSetAndUserName(classQuizSetResultId int64, userName string) (*models.QuizSetResult, *models.AppError)
 	GetUserAllQuizSet(userName string) ([]*dto.GetQuizSetResult, *models.AppError)
 	Create(quizSetResult *models.QuizSetResult) (int64, *models.AppError)
 	Delete(quizSetResultId int64) (*models.AppError)

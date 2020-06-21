@@ -132,10 +132,15 @@ func ScoreQuizzes(context *web.Context) gin.HandlerFunc {
 			c.JSON(400, INVALID_REQUEST_BODY)
 		}
 
-		service.ScoreQuizzes(context, service.ScoringQueueIdent{
+		score_err := service.ScoreQuizzes(context, service.ScoringQueueIdent{
 			ClassQuizSetId: quizSetForScoring.ClassQuizSetId,
 			Email:          quizSetForScoring.UserName}, quizSetForScoring.QuizForScorings)
 
+		if score_err != nil {
+			c.JSON(score_err.StatusCode, score_err.DetailedError)
+		} else {
+			c.JSON(200, "OK")
+		}
 	}
 }
 
